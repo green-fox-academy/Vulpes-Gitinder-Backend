@@ -18,6 +18,13 @@ namespace GiTinder.Controllers
             return "Hello, World!";
         }
 
+        //GET api/values/hello-pablos
+        [HttpGet("hello-pablos")]
+        public ActionResult<string> SayHelloToPablos()
+        {
+            return "Hello, Pablos!";
+        }
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()

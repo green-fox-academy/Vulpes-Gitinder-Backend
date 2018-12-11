@@ -11,7 +11,7 @@ namespace GiTinder.Controllers
     public class ValuesController : ControllerBase
     {
 
-        //GET api/hello-world
+        //GET api/values/hello-world
         [HttpGet("hello-world")]
         public ActionResult<string> SayHello()
         {

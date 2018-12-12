@@ -40,6 +40,8 @@ namespace GiTinder
                 app.UseHsts();
             }
 
+            //app.UseDefaultFiles();
+
             app.UseHttpsRedirection();
             app.UseMvc();
         }

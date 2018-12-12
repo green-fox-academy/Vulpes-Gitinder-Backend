@@ -9,6 +9,23 @@ namespace GiTinder.Data
         public DbSet<Settings> Settings { get; set; }
         public DbSet<User> Users { get; set; }
 
+        //this.Configuration.AutoDetectChangesEnabled = false; 
+
+        public void SaveSettings(Settings settings)
+        {
+            if (settings.IsValid)
+            {
+                GiTinderContext context = new GiTinderContext();
+                context.Settings.Add(settings);
+                context.SaveChanges();
+
+            }
+
+
+        }
+
+
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -16,5 +16,13 @@ namespace GiTinder.Models
         public string UserName { get => userName; set => userName = value; }
         public int ReposCount { get => reposCount; set => reposCount = value; }
         public string UserToken { get => userToken; set => userToken = value; }
+        public Settings UserSettings { get; set; }
+
+        public User()
+        {
+
+        }
+
+        
     }
 }

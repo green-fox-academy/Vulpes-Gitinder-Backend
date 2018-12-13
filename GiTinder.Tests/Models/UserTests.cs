@@ -11,17 +11,26 @@ namespace GiTinder.Tests.Models
         [Fact]
         public void CanCreateUser()
         {
-            User user1 = new User();
-            Assert.True(user1 != null);
+            User user = new User();
+            Assert.False(user == null);
         }
 
         [Fact]
-        public void CanSetUserNameToString()
+        public void CanSetUserNameWithString()
         {
-            User user2 = new User();
-            user2.UserName = "Michel";
-            //Assert.Equal("Michel", "Michel");
-            Assert.Equal("Michel", user2.UserName);
+            User user = new User();
+            user.UserName = "Michel";
+            Assert.Equal("Michel", user.UserName);
         }
+
+        //[Fact]
+        //public void CanNotSetUserNameToEmpty()
+        //{
+        //    User user = new User();
+        //    user.UserName = "Michel";
+        //    user.UserName = ""; 
+        //    Assert.Equal("Michel", user.UserName);
+        //}
+
     }
 }

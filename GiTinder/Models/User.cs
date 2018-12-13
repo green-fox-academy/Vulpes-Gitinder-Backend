@@ -7,20 +7,8 @@ namespace GiTinder.Models
         
         [Key]
         [Required]
+        [MinLength(1)]
         public string UserName { get; set; }
-        //{
-        //    get            
-        //    {
-        //    return UserName;
-        //    }
-        //    set
-        //    {
-        //        if (!string.IsNullOrEmpty(value))
-        //        {
-        //            UserName = value;
-        //        }
-        //    }
-        //}
         public int ReposCount { get; set; }
         [Required]
         public string UserToken { get; set; }

@@ -23,5 +23,12 @@ namespace GiTinder.Tests.Models
             user.UserName = null;
             return user;
         }
+
+        public static User CreateUserWithNullUserToken()
+        {
+            var user = CreateUser();
+            user.UserToken = null;
+            return user;
+        }
     }
 }

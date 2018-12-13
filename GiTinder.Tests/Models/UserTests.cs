@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using GiTinder.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace GiTinder.Tests.Models
 {
@@ -11,26 +12,39 @@ namespace GiTinder.Tests.Models
         [Fact]
         public void CanCreateUser()
         {
-            User user = new User();
+            var user = new User();
             Assert.False(user == null);
         }
 
         [Fact]
         public void CanSetUserNameWithString()
         {
-            User user = new User();
+            var user = new User();
             user.UserName = "Michel";
             Assert.Equal("Michel", user.UserName);
         }
 
-        //[Fact]
-        //public void CanNotSetUserNameToEmpty()
-        //{
-        //    User user = new User();
-        //    user.UserName = "Michel";
-        //    user.UserName = ""; 
-        //    Assert.Equal("Michel", user.UserName);
-        //}
+        [Fact]
+        public void UserWithNullUserNameIsNotValid()
+        {
+            var user = UserFactory.CreateUserWithNullUserName();
+            Assert.True(ValidateModel(user).Count == 1);
+        }
+
+        [Fact]
+        public void UserWithNullUserTokenIsNotValid()
+        {
+            var user = UserFactory.CreateUserWithNullUserToken();
+            Assert.True(ValidateModel(user).Count == 1);
+        }
+
+        private IList<ValidationResult> ValidateModel(object model)
+        {
+            var validationResults = new List<ValidationResult>();
+            var ctx = new ValidationContext(model, null, null);
+            Validator.TryValidateObject(model, ctx, validationResults, true);
+            return validationResults;
+        }
 
     }
 }

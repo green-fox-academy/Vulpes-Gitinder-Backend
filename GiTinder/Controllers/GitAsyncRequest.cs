@@ -1,18 +1,29 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
+﻿using GiTinder.Models;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
-//namespace GiTinder.Controllers
-//{
-//    static async Task<Product> GetProductAsync(string path)
-//    {
-//        Product product = null;
-//        HttpResponseMessage response = await client.GetAsync(path);
-//        if (response.IsSuccessStatusCode)
-//        {
-//            product = await response.Content.ReadAsAsync<Product>();
-//        }
-//        return product;
-//    }
-//}
+namespace GiTinder.Controllers
+{
+    [Route("test")]
+    [ApiController]
+    public class GitAsyncRequest
+    {
+        [HttpGet("getUser")]
+        public async Task<User> GetProductAsync()
+        {
+            HttpClient client = new HttpClient();
+            User rawUser = null;
+            HttpResponseMessage response = await client.GetAsync("https://api.github.com/repos/Riceqrisp/Career-pivot");
+            if (response.IsSuccessStatusCode)
+            {
+                rawUser = await response.Content.ReadAsAsync<User>();
+            }
+            return rawUser;
+        }
+    }
+}
+

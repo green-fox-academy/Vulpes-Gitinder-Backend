@@ -12,6 +12,7 @@ namespace GiTinder.Models
         private string userToken;
         private int reposCount;
 
+        public static Task Content { get; internal set; }
         public int Id { get => id; set => id = value; }
         public string UserName { get => userName; set => userName = value; }
         public int ReposCount { get => reposCount; set => reposCount = value; }

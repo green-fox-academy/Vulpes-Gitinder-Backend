@@ -5,7 +5,8 @@ namespace GiTinder.Models
     public class User
     {
         
-        [Key, Required]
+        [Key]
+        [Required]
         public string UserName { get; set; }
         public int ReposCount { get; set; }
         [Required]

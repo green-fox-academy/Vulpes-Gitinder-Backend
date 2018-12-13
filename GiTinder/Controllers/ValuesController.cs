@@ -9,7 +9,8 @@ namespace GiTinder.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
-    {
+    {   //GET api/request
+        
 
         //GET api/values/hello-world
         [HttpGet("hello-world")]
@@ -18,12 +19,7 @@ namespace GiTinder.Controllers
             return "Hello, World!";
         }
 
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+
 
         // GET api/values/5
         [HttpGet("{id}")]

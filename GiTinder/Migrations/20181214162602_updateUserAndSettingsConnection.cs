@@ -2,7 +2,7 @@
 
 namespace GiTinder.Migrations
 {
-    public partial class AddedSettingsValidationRangeMin1Max3ForeignKeyAnnotationAttempt2 : Migration
+    public partial class updateUserAndSettingsConnection : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

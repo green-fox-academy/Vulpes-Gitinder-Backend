@@ -17,10 +17,9 @@ namespace GiTinder.Migrations
 
             modelBuilder.Entity("GiTinder.Models.Settings", b =>
                 {
-                    b.Property<string>("UserName")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-<<<<<<< HEAD
                     b.Property<string>("UserName");
 
                     b.HasKey("Id");
@@ -33,22 +32,15 @@ namespace GiTinder.Migrations
 
             modelBuilder.Entity("GiTinder.Models.User", b =>
                 {
-                    b.Property<string>("userName")
+                    b.Property<string>("UserName")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ReposCount");
-
-                    b.Property<string>("UserToken");
-
-                    b.HasKey("userName");
-=======
                     b.Property<int>("ReposCount");
 
                     b.Property<string>("UserToken")
                         .IsRequired();
 
                     b.HasKey("UserName");
->>>>>>> Jonathan
 
                     b.ToTable("Users");
                 });

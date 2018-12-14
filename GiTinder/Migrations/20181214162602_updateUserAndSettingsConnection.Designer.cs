@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GiTinder.Migrations
 {
     [DbContext(typeof(GiTinderContext))]
-    [Migration("20181213141248_AddedSettingsValidationRangeMin1Max3ForeignKeyAnnotation")]
-    partial class AddedSettingsValidationRangeMin1Max3ForeignKeyAnnotation
+    [Migration("20181214162602_updateUserAndSettingsConnection")]
+    partial class updateUserAndSettingsConnection
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,14 +34,15 @@ namespace GiTinder.Migrations
 
             modelBuilder.Entity("GiTinder.Models.User", b =>
                 {
-                    b.Property<string>("userName")
+                    b.Property<string>("UserName")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("ReposCount");
 
-                    b.Property<string>("UserToken");
+                    b.Property<string>("UserToken")
+                        .IsRequired();
 
-                    b.HasKey("userName");
+                    b.HasKey("UserName");
 
                     b.ToTable("Users");
                 });

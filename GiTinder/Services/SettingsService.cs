@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Services
 {
-    public class Class
+    public class SettingsService
     {
+
     }
 }

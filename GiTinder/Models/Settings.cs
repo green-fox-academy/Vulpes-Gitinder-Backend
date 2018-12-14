@@ -1,25 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace GiTinder.Models
 {
-    public class Settings : IValidatable
+    public class Settings
+    //: IValidatable
     {
         [Key]
         public int Id { get; set; }
+
+
+        [ForeignKey("User.UserName")]
         public string UserName { get; set; }
 
         //Only valid settings can be saved in the database
-        public bool IsValid
-        {
-            get
-            {
-                return (!string.IsNullOrEmpty(this.UserName) && this.Id != 0);
-            }
-        }
+        //public bool IsValid
+        //{
+        //    get
+        //    {
+        //        return (!string.IsNullOrEmpty(this.UserName) && this.Id != 0);
+        //    }
+        //}
 
 
         //public event EventHandler SavingChanges;
@@ -35,21 +40,20 @@ namespace GiTinder.Models
         //    if (!Settings.IsValid)
         //    {
         // throw some exception
-        //    }
-        //}
-
-        //        Entity is created belonging to a user
-        //User model updated
-        //Repository is created
-        //Database migration is created
-
-        //Only valid settings can be saved in the database
-
-        //Test for checking validity of the settings
-
-
-
     }
 }
+
+//        Entity is created belonging to a user
+//User model updated
+//Repository is created
+//Database migration is created
+
+//Only valid settings can be saved in the database
+
+//Test for checking validity of the settings
+
+
+
+
 
 

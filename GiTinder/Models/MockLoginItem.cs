@@ -7,5 +7,9 @@ namespace GiTinder.Models
 {
     public class MockLoginItem
     {
+        public string username;
+        public string acces_token;
+        public string status;
+        public string gitinder_token;
     }
 }

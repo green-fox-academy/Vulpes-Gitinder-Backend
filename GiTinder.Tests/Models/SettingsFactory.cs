@@ -8,7 +8,10 @@ namespace GiTinder.Tests.Models
     class SettingsFactory
     {
 
-        public Settings CreateSettings()
+        
+
+
+        public Settings CreateSettingsWithValidUserName()
         {
 
             return new Settings()
@@ -19,6 +22,14 @@ namespace GiTinder.Tests.Models
 
         }
 
+        public Settings CreateUserWithGivenUserNameAndDefaultSettings()
+        {
+
+            return new Settings()
+            {
+                UserName = "Test Tomek"
+            };
+        }
 
     }
 }

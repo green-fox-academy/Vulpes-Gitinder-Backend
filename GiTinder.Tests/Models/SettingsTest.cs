@@ -9,12 +9,26 @@ namespace GiTinder.Tests.Models
     {
 
         [Fact]
-        public void CanCreateSettings()
+        public void CanCreateSettingsWithValidUserName()
         {
             var testSettings = new SettingsTest();
             Assert.False(testSettings == null);
         }
-        
-        
+
+        [Fact]
+        public void CanCreateSettingsWithGivenNameAndDefaultSettings()
+        {
+            //var testSettings = new SettingsFactory();
+            var settingsFactory = new SettingsFactory();
+            var testSettings = settingsFactory.CreateUserWithGivenUserNameAndDefaultSettings();
+
+            //CreateDefaultUserWithGivenUserName();
+
+            Assert.True(testSettings.UserName == "Test Tomek");
+            Assert.True(testSettings.EnableNotification == true);
+            Assert.True(testSettings.MaxDistanceInMeters == 10000);
+            Assert.False(testSettings.MaxDistanceInMeters == 1);
+        }
+
     }
 }

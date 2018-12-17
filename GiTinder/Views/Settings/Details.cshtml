@@ -1,0 +1,37 @@
+﻿@model GiTinder.Models.Settings
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "SettingsView";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Settings</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.EnableNotification)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EnableNotification)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MaxDistanceInMeters)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MaxDistanceInMeters)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PrefferedLanguages)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PrefferedLanguages)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

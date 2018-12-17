@@ -11,34 +11,7 @@ namespace GiTinder.Data
 
         //this.Configuration.AutoDetectChangesEnabled = false;
 
-        //List<string> list = new List<string>();
-        //User user1 = new User();
-        //User user2 = new User();
-
-        //user1.UserName = "Filip Teply";
-        //    user2.UserName = "Jonathan Bonnin";
-
-        //    GiTinderContext context = new GiTinderContext();
-        //context.Users.Add(user1);
-        //    context.Users.Add(user2);
-        //    context.SaveChanges();
-
-        //    list.Add(item: user1.UserName);
-        //    list.Add(item: user2.UserName);
-
-
-
-        //public void SaveSettings(Settings settings)
-        //{
-        //    if (settings.IsValid)
-        //    {
-        //        GiTinderContext context = new GiTinderContext();
-        //        context.Settings.Add(settings);
-        //        context.SaveChanges();
-        //    }
-
-
-        //}
+       
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -48,3 +21,31 @@ namespace GiTinder.Data
     }
 }
 
+//List<string> list = new List<string>();
+//User user1 = new User();
+//User user2 = new User();
+
+//user1.UserName = "Filip Teply";
+//    user2.UserName = "Jonathan Bonnin";
+
+//    GiTinderContext context = new GiTinderContext();
+//context.Users.Add(user1);
+//    context.Users.Add(user2);
+//    context.SaveChanges();
+
+//    list.Add(item: user1.UserName);
+//    list.Add(item: user2.UserName);
+
+
+
+//public void SaveSettings(Settings settings)
+//{
+//    if (settings.IsValid)
+//    {
+//        GiTinderContext context = new GiTinderContext();
+//        context.Settings.Add(settings);
+//        context.SaveChanges();
+//    }
+
+
+//}

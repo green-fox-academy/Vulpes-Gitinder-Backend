@@ -54,7 +54,7 @@ namespace GiTinder.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserName,EnableNotification,MaxDistanceInMeters,PrefferedLanguages")] Settings settings)
+        public async Task<IActionResult> Create([Bind("Id,UserName,EnableNotification,MaxDistanceInKm,PreferredLanguages")] Settings settings)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace GiTinder.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserName,EnableNotification,MaxDistanceInMeters,PrefferedLanguages")] Settings settings)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserName,EnableNotification,MaxDistanceInKm,PreferredLanguages")] Settings settings)
         {
             if (id != settings.Id)
             {

@@ -13,7 +13,9 @@ namespace GiTinder.Models
         [Required]
         [MinLength(1)]
         public string UserName { get; set; }
+
         public int ReposCount { get; set; }
+
         [Required]
         public string UserToken { get; set; }
 

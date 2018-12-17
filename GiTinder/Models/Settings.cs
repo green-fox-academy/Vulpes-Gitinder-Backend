@@ -14,22 +14,34 @@ namespace GiTinder.Models
         public int Id { get; set; }
 
         [ForeignKey("User.UserName")]
+        [Required]
+        [MinLength(2)]
         public string UserName { get; set; }
 
+        [Required(AllowEmptyStrings = false)]
         public bool EnableNotification { get; set; }
 
-        public int MaxDistanceInMeters  { get; set; }
+        [Required]
+        [Range(10,160)]
+        public int MaxDistanceInKm { get; set; }
 
-        public string PrefferedLanguages { get; set; }
+        [Required]
+        [MinLength(2)]
+        public string PreferredLanguages { get; set; }
 
         public Settings()
         {
             EnableNotification = true;
-            MaxDistanceInMeters = 10000;
-            PrefferedLanguages = "English" ;
+            MaxDistanceInKm = 160;
+            PreferredLanguages = "English";
         }
 
-}
+        public Settings(string UserName, bool EnableNotification,
+            int MaxDistanceInKm, string PreferredLanguages)
+        {
+        }
+
+    }
 }
 
 

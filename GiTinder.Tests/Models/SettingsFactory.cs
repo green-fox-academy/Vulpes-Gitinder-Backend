@@ -1,17 +1,19 @@
 ﻿using GiTinder.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GiTinder.Tests.Models
 {
     class SettingsFactory
+
     {
 
-        
+
+        public static Settings CreateSettings()
+        {
+            return new Settings();
+        }
 
 
-        public Settings CreateSettingsWithValidUserName()
+        public static Settings CreateSettingsWithValidUserName()
         {
 
             return new Settings()
@@ -22,14 +24,52 @@ namespace GiTinder.Tests.Models
 
         }
 
-        public Settings CreateUserWithGivenUserNameAndDefaultSettings()
+        public static Settings CreateSettingsWithInValidUserName()
         {
 
             return new Settings()
             {
-                UserName = "Test Tomek"
+                UserName = "f",
+            };
+
+
+        }
+
+        public static Settings CreateSettingsWithGivenUserNameTest_TomekAndDefaultSettings()
+        {
+
+            return new Settings()
+            {
+                UserName = "Test_Tomek"
             };
         }
 
+
+
+        public static Settings CreateSettingsWithNullUserName()
+        {
+            var settings = CreateSettings();
+            //  settings.UserName = null;
+            return settings;
+        }
+
+        public static Settings CreateSettingsWithDistance170Km()
+        {
+            var settings = CreateSettings();
+            settings.MaxDistanceInKm = 170;
+            return settings;
+        }
+
+        public static Settings CreateSettingsWithDistance9Km()
+        {
+            var settings = CreateSettings();
+            settings.MaxDistanceInKm = 9;
+            return settings;
+        }
+
+
     }
+
+
 }
+

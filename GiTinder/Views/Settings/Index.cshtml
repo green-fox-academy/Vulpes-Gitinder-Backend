@@ -17,10 +17,10 @@
                 @Html.DisplayNameFor(model => model.EnableNotification)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaxDistanceInMeters)
+                @Html.DisplayNameFor(model => model.MaxDistanceInKm)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PrefferedLanguages)
+                @Html.DisplayNameFor(model => model.PreferredLanguages)
             </th>
             <th></th>
         </tr>
@@ -32,10 +32,10 @@
                 @Html.DisplayFor(modelItem => item.EnableNotification)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MaxDistanceInMeters)
+                @Html.DisplayFor(modelItem => item.MaxDistanceInKm)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PrefferedLanguages)
+                @Html.DisplayFor(modelItem => item.PreferredLanguages)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

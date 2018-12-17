@@ -13,13 +13,13 @@ namespace GiTinder.Migrations
                 defaultValue: (short)0);
 
             migrationBuilder.AddColumn<int>(
-                name: "MaxDistanceInMeters",
+                name: "MaxDistanceInKm",
                 table: "Settings",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<string>(
-                name: "PrefferedLanguages",
+                name: "PreferredLanguages",
                 table: "Settings",
                 nullable: true);
         }
@@ -31,11 +31,11 @@ namespace GiTinder.Migrations
                 table: "Settings");
 
             migrationBuilder.DropColumn(
-                name: "MaxDistanceInMeters",
+                name: "MaxDistanceInKm",
                 table: "Settings");
 
             migrationBuilder.DropColumn(
-                name: "PrefferedLanguages",
+                name: "PreferredLanguages",
                 table: "Settings");
         }
     }

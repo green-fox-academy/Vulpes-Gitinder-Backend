@@ -24,9 +24,9 @@ namespace GiTinder.Migrations
 
                     b.Property<bool>("EnableNotification");
 
-                    b.Property<int>("MaxDistanceInMeters");
+                    b.Property<int>("MaxDistanceInKm");
 
-                    b.Property<string>("PrefferedLanguages");
+                    b.Property<string>("PreferredLanguages");
 
                     b.Property<string>("UserName");
 

@@ -31,6 +31,7 @@ namespace GiTinder.Controllers
         [HttpPost("/login")]
         public IActionResult MockLogin([FromBody]MockLoginItem item, MockResponse response, MockErrorMessage errorMessage)
         {
+            
 
             if (item != null)
             {
@@ -47,16 +48,17 @@ namespace GiTinder.Controllers
         [HttpDelete("/logout")]
         public IActionResult MockLogout([FromHeader]MockLoginItem item, MockErrorMessage errorMessage)
         {
-          
-            if (item.acces_token == null)
+            string Token = Request.Headers["acces_token"];
+
+            if (Token == null)
             {
                 return StatusCode(StatusCodes.Status403Forbidden, new MockErrorMessage { status = "error", message = "Unauthorized request!" });
 
 
             }
-            else if (item.acces_token == "abc")
+            else if (Token == "abc")
             {
-                //item.acces_token = [] Request.Headers.ToString();
+               
                 return StatusCode(StatusCodes.Status200OK, new MockErrorMessage { status = "ok", message = "Logged out succesfully!" });
             }
             return StatusCode(StatusCodes.Status400BadRequest, new MockErrorMessage { status = "error", message = "Used wrong acces_token!"});
@@ -64,19 +66,18 @@ namespace GiTinder.Controllers
         }
 
         [HttpGet("/profile")]
-        public IActionResult MockProfile(MockProfile profile)
+        public IActionResult MockProfile([FromHeader]MockProfile profile)
         {
             string Token = Request.Headers["username"];
             
-            //string temp = Request.Headers.GetType("something");
 
-            if (Token == null/*profile.username == null*/)
+            if (Token == null)
             {
                 return StatusCode(StatusCodes.Status403Forbidden, new MockErrorMessage { status = "error", message = "Unauthorized request!" });
 
 
             }
-            else if (Token == "aze"/* profile.username == "aze"*/)
+            else if (Token == "aze")
             {
                 return new ObjectResult(profile);
             }
@@ -84,17 +85,6 @@ namespace GiTinder.Controllers
            
         }
 
-        [HttpGet("/prof")]
-        public IActionResult Prof([FromBody]object jsonData)
-        {
-            IEnumerable<string> headerValues;
-
-            if (Request.Headers.TryGetValue("Custom", out headerValues))
-            {
-                string token = headerValues.First();
-            }
-            return new OkObjectResult(headerValues);
-        }
 
 
 

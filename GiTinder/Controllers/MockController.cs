@@ -64,17 +64,19 @@ namespace GiTinder.Controllers
         }
 
         [HttpGet("/profile")]
-        public IActionResult MockProfile([FromHeader]MockProfile profile)
+        public IActionResult MockProfile(MockProfile profile)
         {
+            string Token = Request.Headers["username"];
+            
             //string temp = Request.Headers.GetType("something");
 
-            if (profile.username == null)
+            if (Token == null/*profile.username == null*/)
             {
                 return StatusCode(StatusCodes.Status403Forbidden, new MockErrorMessage { status = "error", message = "Unauthorized request!" });
 
 
             }
-            else if (profile.username == "aze")
+            else if (Token == "aze"/* profile.username == "aze"*/)
             {
                 return new ObjectResult(profile);
             }
@@ -82,7 +84,19 @@ namespace GiTinder.Controllers
            
         }
 
-        
+        [HttpGet("/prof")]
+        public IActionResult Prof([FromBody]object jsonData)
+        {
+            IEnumerable<string> headerValues;
+
+            if (Request.Headers.TryGetValue("Custom", out headerValues))
+            {
+                string token = headerValues.First();
+            }
+            return new OkObjectResult(headerValues);
+        }
+
+
 
     }
 }

@@ -9,12 +9,6 @@ namespace GiTinder.Tests.Models
 {
     public class UserTests
     {
-        [Fact]
-        public void CanCreateUser()
-        {
-            var user = new User();
-            Assert.False(user == null);
-        }
 
         [Fact]
         public void CanSetUserNameWithString()

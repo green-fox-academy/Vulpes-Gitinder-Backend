@@ -10,8 +10,8 @@ namespace GiTinder.Models
     public class MockLoginItem
     {
         [Key]
-        public string username { get; set; } 
-        public string acces_token { get; set; }
+        public string username { get; set; }
+        public string acces_token  { get; set; }
        
        
     }

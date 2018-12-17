@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GiTinder.Models;
-using GiTinder.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -30,7 +29,7 @@ namespace GiTinder.Controllers
 
 
         [HttpPost("/login")]
-        public IActionResult Res([FromBody]MockLoginItem item, MockResponse response, MockErrorMessage errorMessage)
+        public IActionResult MockLogin([FromBody]MockLoginItem item, MockResponse response, MockErrorMessage errorMessage)
         {
 
             if (item != null)
@@ -44,6 +43,26 @@ namespace GiTinder.Controllers
 
             }
         }
+
+        [HttpDelete("/logout")]
+        public IActionResult MockLogout([FromHeader]MockLoginItem item, MockErrorMessage errorMessage)
+        {
+            //item.acces_token = Request.Headers.ToString();
+            if (item.acces_token == null)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new MockErrorMessage { status = "error", message = "Unauthorized request!" });
+
+
+            }
+            else if (item.acces_token == "abc")
+            {
+                //item.acces_token = [] Request.Headers.ToString();
+                return StatusCode(StatusCodes.Status200OK, new MockErrorMessage { status = "ok", message = "Logged out succesfully!" });
+            }
+            return StatusCode(StatusCodes.Status400BadRequest, new MockErrorMessage { status = "error", message = "Used wrong acces_token!"});
+            
+        }
+
         
 
     }

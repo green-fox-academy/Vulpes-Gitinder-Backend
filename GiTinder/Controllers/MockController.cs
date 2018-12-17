@@ -47,7 +47,7 @@ namespace GiTinder.Controllers
         [HttpDelete("/logout")]
         public IActionResult MockLogout([FromHeader]MockLoginItem item, MockErrorMessage errorMessage)
         {
-            //item.acces_token = Request.Headers.ToString();
+          
             if (item.acces_token == null)
             {
                 return StatusCode(StatusCodes.Status403Forbidden, new MockErrorMessage { status = "error", message = "Unauthorized request!" });
@@ -61,6 +61,25 @@ namespace GiTinder.Controllers
             }
             return StatusCode(StatusCodes.Status400BadRequest, new MockErrorMessage { status = "error", message = "Used wrong acces_token!"});
             
+        }
+
+        [HttpGet("/profile")]
+        public IActionResult MockProfile([FromHeader]MockProfile profile)
+        {
+            //string temp = Request.Headers.GetType("something");
+
+            if (profile.username == null)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new MockErrorMessage { status = "error", message = "Unauthorized request!" });
+
+
+            }
+            else if (profile.username == "aze")
+            {
+                return new ObjectResult(profile);
+            }
+            return StatusCode(StatusCodes.Status404NotFound);
+           
         }
 
         

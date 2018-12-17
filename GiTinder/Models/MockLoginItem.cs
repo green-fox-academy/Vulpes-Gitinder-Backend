@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GiTinder.Models
 {
     public class MockLoginItem
     {
-        public string username;
-        public string acces_token;
-        public string status;
-        public string gitinder_token;
+        [Key]
+        public string username { get; set; } 
+        public string acces_token { get; set; }
+       
+       
     }
-}
+}   

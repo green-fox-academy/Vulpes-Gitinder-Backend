@@ -24,7 +24,6 @@ namespace GiTinder.Controllers
     }
            
 
-         // private ActionResult<List<string>> list;
         private GiTinderContex _giTinderContext;
 
         //GET api/values/hello-world

@@ -40,9 +40,7 @@ namespace GiTinder.Tests.Models
             Assert.False(testSettings.MaxDistanceInKm == 1);
             Assert.True(testSettings.PreferredLanguages == "English");
             Assert.False(testSettings.PreferredLanguages == "Czech");
-            //  Assert.True(testSettings.PreferredLanguages == "Czech");
-
-
+            
         }
 
 
@@ -65,14 +63,14 @@ namespace GiTinder.Tests.Models
         }
 
         [Fact]
-        public void SettingsWithMaxDistance170KmIsNotValid()
+        public void SettingsWithMaxDistance170KmAreNotValid()
         {
             var settings = SettingsFactory.CreateSettingsWithDistance170Km();
             Assert.True(ValidateModel(settings).Count == 1);
         }
 
         [Fact]
-        public void SettingsWithMaxDistance9KmIsNotValid()
+        public void SettingsWithMaxDistance9KmAreNotValid()
         {
             var settings = SettingsFactory.CreateSettingsWithDistance9Km();
             Assert.True(ValidateModel(settings).Count == 1);

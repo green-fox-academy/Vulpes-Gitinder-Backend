@@ -24,9 +24,11 @@ namespace GiTinder.Migrations
 
                     b.Property<int>("MaxDistanceInKm");
 
-                    b.Property<string>("PreferredLanguages");
+                    b.Property<string>("PreferredLanguages")
+                        .IsRequired();
 
-                    b.Property<string>("UserName");
+                    b.Property<string>("UserName")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -55,7 +57,8 @@ namespace GiTinder.Migrations
                 {
                     b.HasOne("GiTinder.Models.User")
                         .WithOne("UserSettings")
-                        .HasForeignKey("GiTinder.Models.Settings", "UserName");
+                        .HasForeignKey("GiTinder.Models.Settings", "UserName")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20181213102530_rm_Id_field_and_set_UserName_as_Key.cs" />
     <Compile Remove="Migrations\20181213102530_rm_Id_field_and_set_UserName_as_Key.Designer.cs" />
+    <Compile Remove="Migrations\20181217154755_UpdatingSettingsAnnotationsForUserName.cs" />
+    <Compile Remove="Migrations\20181217154755_UpdatingSettingsAnnotationsForUserName.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

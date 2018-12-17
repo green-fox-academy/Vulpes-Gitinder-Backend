@@ -49,7 +49,7 @@ namespace GiTinder.Tests.Models
         public static Settings CreateSettingsWithNullUserName()
         {
             var settings = CreateSettings();
-            //  settings.UserName = null;
+            //settings.UserName = null;
             return settings;
         }
 

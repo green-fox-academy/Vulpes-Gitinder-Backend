@@ -10,6 +10,9 @@ using GiTinder.Models;
 
 namespace GiTinder.Controllers
 {
+
+    [Route("api/[controller]")]
+    [ApiController]
     public class SettingsController : Controller
     {
         private readonly GiTinderContext _context;
@@ -17,6 +20,27 @@ namespace GiTinder.Controllers
         public SettingsController(GiTinderContext context)
         {
             _context = context;
+        }
+
+        //          Mock GET /settings
+        //          Mock PUT /settings
+        //          Tests for all
+
+
+        // GET: Settings
+        //[HttpGet]
+        //[Route("/settings]")]
+
+        [HttpGet("/settings")]
+        public IActionResult GetSettings()
+        {
+            var mockSettings = new Settings() {
+
+                EnableNotification = true;
+            MaxDistanceInKm = 160;
+            PreferredLanguages = "English";
+        }
+        return mockSettings;
         }
 
         // GET: Settings

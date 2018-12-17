@@ -14,6 +14,9 @@ namespace GiTinder.Models
 
         public static Task Content { get; internal set; }
         public int Id { get => id; set => id = value; }
+        public string avatar_url { get; set; }
+        public List<string> Repos = new List<string>();
+        public string Snippets { get; set; }
         public string UserName { get => userName; set => userName = value; }
         public int ReposCount { get => reposCount; set => reposCount = value; }
         public string UserToken { get => userToken; set => userToken = value; }

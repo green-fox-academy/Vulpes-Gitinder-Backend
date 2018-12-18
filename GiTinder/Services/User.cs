@@ -14,14 +14,14 @@
 //        {
 //            _context = context;
 //        }
-//        static ActionResult<string> CreateUserFromGitApi (string jsonFile, string username)
+//        static ActionResult<string> CreateUserFromGitApi(string jsonFile, string username)
 //        {
-            
+
 //            {
 //                HttpClient client = new HttpClient();
 //                client.DefaultRequestHeaders.Add("User-agent", "GiTinderApp");
 //                HttpResponseMessage response = await client.GetAsync("https://api.github.com/repos/Riceqrisp/Career-pivot");
-                
+
 //            }
 //        }
 //    }

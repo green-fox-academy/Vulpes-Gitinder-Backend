@@ -13,24 +13,24 @@ namespace GiTinder.Controllers
     [ApiController]
     public class GitAsyncRequest
     {
-        private readonly GiTinderContext _context;
-
-      
         [HttpGet("username")]
 
         //async method is used everytime something should take long time like for requesting for data await allows certain line to run independently.
         //if user doesn't exist in github then it shouldnt respond
         public async Task<User> GetUserAsync()
         {
-       
             HttpClient client = new HttpClient();
-            //client.DefaultRequestHeaders.Clear() to clear headers being sure that it should only have requested headers.
+            //client.DefaultRequestHeaders.Clear() to clear headers being sure that it should only have requested headers. Learning
+            //
+            //Gihub API needs to track requests through header User Agent (https://developer.github.com/v3/#user-agent-required).
             client.DefaultRequestHeaders.Add("User-Agent", "frog");
             User rawUser = null;
+            Object json = null;
             HttpResponseMessage response = await client.GetAsync("https://api.github.com/users/Riceqrisp");
             if (response.IsSuccessStatusCode)
             {
                 rawUser = await response.Content.ReadAsAsync<User>();
+                json = await response.Content.ReadAsAsync<Object>();
             }
             return rawUser;
         }

@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GiTinder.Migrations
 {
     [DbContext(typeof(GiTinderContext))]
-    [Migration("20181214162602_updateUserAndSettingsConnection")]
-    partial class updateUserAndSettingsConnection
+    [Migration("20181218181841_LanguageModelAdded")]
+    partial class LanguageModelAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -17,12 +17,32 @@ namespace GiTinder.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024");
 
+            modelBuilder.Entity("GiTinder.Models.Language", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("LanguageName")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Languages");
+                });
+
             modelBuilder.Entity("GiTinder.Models.Settings", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("UserName");
+                    b.Property<bool>("EnableBackgroundSync");
+
+                    b.Property<bool>("EnableNotification");
+
+                    b.Property<int>("MaxDistanceInKm");
+
+                    b.Property<string>("UserName")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -51,7 +71,8 @@ namespace GiTinder.Migrations
                 {
                     b.HasOne("GiTinder.Models.User")
                         .WithOne("UserSettings")
-                        .HasForeignKey("GiTinder.Models.Settings", "UserName");
+                        .HasForeignKey("GiTinder.Models.Settings", "UserName")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

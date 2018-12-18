@@ -2,29 +2,28 @@
 
 namespace GiTinder.Migrations
 {
-    public partial class init : Migration
+    public partial class LanguageModelAdded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "Languages",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
-                    UserName = table.Column<string>(nullable: true),
-                    ReposCount = table.Column<int>(nullable: false)
+                    LanguageName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Languages", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Languages");
         }
     }
 }

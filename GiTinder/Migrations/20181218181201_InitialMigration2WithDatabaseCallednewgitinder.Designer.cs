@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GiTinder.Migrations
 {
     [DbContext(typeof(GiTinderContext))]
-    [Migration("20181212175203_InSettingsModelTwoNewPropertiesAddedCalledId[Key]AndSettingsAreValid")]
-    partial class InSettingsModelTwoNewPropertiesAddedCalledIdKeyAndSettingsAreValid
+    [Migration("20181218181201_InitialMigration2WithDatabaseCallednewgitinder")]
+    partial class InitialMigration2WithDatabaseCallednewgitinder
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,29 +22,44 @@ namespace GiTinder.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("SettingsAreValid");
+                    b.Property<bool>("EnableBackgroundSync");
 
-                    b.Property<string>("UserName");
+                    b.Property<bool>("EnableNotification");
+
+                    b.Property<int>("MaxDistanceInKm");
+
+                    b.Property<string>("UserName")
+                        .IsRequired();
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserName")
+                        .IsUnique();
 
                     b.ToTable("Settings");
                 });
 
             modelBuilder.Entity("GiTinder.Models.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("UserName")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("ReposCount");
 
-                    b.Property<string>("UserName");
+                    b.Property<string>("UserToken")
+                        .IsRequired();
 
-                    b.Property<string>("UserToken");
-
-                    b.HasKey("Id");
+                    b.HasKey("UserName");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("GiTinder.Models.Settings", b =>
+                {
+                    b.HasOne("GiTinder.Models.User")
+                        .WithOne("UserSettings")
+                        .HasForeignKey("GiTinder.Models.Settings", "UserName")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

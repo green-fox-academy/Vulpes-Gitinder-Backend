@@ -7,24 +7,18 @@ using GiTinder.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GiTinder.Controllers
-
-    
-
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
 
     {
-    public ValuesController(GiTinderContex giTinderContex)
-    {
-            _giTinderContext = giTinderContex;
+        private readonly GiTinderContext _context;
 
-
-    }
-           
-
-        private GiTinderContex _giTinderContext;
+        public ValuesController(GiTinderContext context)
+        {
+            _context = context;
+        }
 
         //GET api/values/hello-world
         [HttpGet("hello-world")]
@@ -61,7 +55,7 @@ namespace GiTinder.Controllers
         //    return list;
         //}
 
-       
+
 
 
         //[HttpPost]

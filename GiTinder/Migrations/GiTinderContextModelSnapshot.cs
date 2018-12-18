@@ -15,17 +15,29 @@ namespace GiTinder.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024");
 
+            modelBuilder.Entity("GiTinder.Models.Language", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("LanguageName")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Languages");
+                });
+
             modelBuilder.Entity("GiTinder.Models.Settings", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("EnableBackgroundSync");
+
                     b.Property<bool>("EnableNotification");
 
                     b.Property<int>("MaxDistanceInKm");
-
-                    b.Property<string>("PreferredLanguages")
-                        .IsRequired();
 
                     b.Property<string>("UserName")
                         .IsRequired();

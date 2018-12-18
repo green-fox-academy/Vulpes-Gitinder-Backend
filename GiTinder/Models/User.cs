@@ -6,9 +6,6 @@ namespace GiTinder.Models
 {
     public class User
     {
-                         
-
-        
         [Key]
         [Required]
         [MinLength(1)]

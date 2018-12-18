@@ -8,9 +8,11 @@ namespace GiTinder.Models
 {
     public class User
     {
+        [JsonIgnore]
         public int id;
         [JsonProperty(PropertyName ="login")]
         public string userName;
+        [JsonIgnore]
         public string userToken;
         [JsonProperty(PropertyName = "public_repos")]
         public int reposCount;

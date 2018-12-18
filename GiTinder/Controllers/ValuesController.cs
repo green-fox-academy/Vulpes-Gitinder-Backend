@@ -18,13 +18,6 @@ namespace GiTinder.Controllers
             return "Hello, World!";
         }
 
-        //GET api/values/login
-        [HttpGet("login")]
-        public ActionResult<string> Mocklogin(string name)
-        {
-            return name;
-        }
-
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()

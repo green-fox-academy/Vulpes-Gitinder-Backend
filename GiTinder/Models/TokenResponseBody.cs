@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using GiTinder.Services;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,11 @@ namespace GiTinder.Models
         [JsonProperty("gitinder_token")]
         public string GiTinderToken { get; set; }
 
-        public TokenResponseBody()
+        public TokenResponseBody(/* string giTinderToken */)
         {
             Status = "ok";
-            GiTinderToken = "456646f4g4g";
+            GiTinderToken = UserServices.CreateGiTinderToken();
+            //  GiTinderToken = giTinderToken ?
         }
     }
 }

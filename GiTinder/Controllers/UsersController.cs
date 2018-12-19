@@ -41,6 +41,8 @@ namespace GiTinder.Controllers
             }                
             else
             {
+                _context.Find<User>(UserExists);
+                _context.SaveChanges();
                 responseBody = new TokenResponseBody();
             }
 
@@ -147,9 +149,9 @@ namespace GiTinder.Controllers
             return Ok(user);
         }
 
-        private bool UserExists(string id)
+        private bool UserExists(string username)
         {
-            return _context.Users.Any(e => e.UserName == id);
+            return _context.Users.Any(e => e.Username == username);
         }
     }
 }

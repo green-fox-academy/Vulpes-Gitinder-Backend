@@ -9,6 +9,7 @@ using GiTinder.Data;
 using GiTinder.Models;
 using System.Net.Http;
 using System.Net;
+using GiTinder.Services;
 
 namespace GiTinder.Controllers
 {
@@ -39,12 +40,18 @@ namespace GiTinder.Controllers
                 Response.StatusCode = 400;
                 responseBody = new ErrorResponseBody("access_token");
             }                
+            else if (UserExists(loginRequestBody.Username))
+            {
+                _context.Find<User>(loginRequestBody.Username).Username = UserServices.CreateGiTinderToken();                          
+                _context.SaveChanges();
+                responseBody = new TokenResponseBody(/*_context.Find<User>(loginRequestBody.Username).UserToken*/);
+            }      
             else
             {
-                //var user = UserServices.CreateOrEditUser(loginRequestBody); <-- Tomek's job, should it check if user exists?              
-                _context.SaveChanges();
-                responseBody = new TokenResponseBody(/*user.UserToken*/);
-            }          
+                string token = UserServices.CreateGiTinderToken();
+                _context.Users.Add(new User(loginRequestBody.Username/*, token*/)); //CreateProfile should be here?
+                responseBody = new TokenResponseBody(/*token*/);
+            }
 
             return responseBody;
         }

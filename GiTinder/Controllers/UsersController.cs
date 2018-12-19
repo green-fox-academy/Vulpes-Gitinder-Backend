@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GiTinder.Controllers
 {
-    [Route("api/[controller]")]
     public class UsersController : Controller
     {
         private MockLoginContext _loginItem;

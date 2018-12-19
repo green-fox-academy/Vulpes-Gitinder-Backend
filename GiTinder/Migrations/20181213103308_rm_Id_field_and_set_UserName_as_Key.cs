@@ -6,10 +6,6 @@ namespace GiTinder.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Users",
-                table: "Users");
-
             migrationBuilder.DropColumn(
                 name: "Id",
                 table: "Users");

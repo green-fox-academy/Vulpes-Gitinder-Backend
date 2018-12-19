@@ -1,9 +1,7 @@
-﻿using Xunit;
-using System;
+﻿using GiTinder.Models;
 using System.Collections.Generic;
-using System.Text;
-using GiTinder.Models;
 using System.ComponentModel.DataAnnotations;
+using Xunit;
 
 namespace GiTinder.Tests.Models
 {

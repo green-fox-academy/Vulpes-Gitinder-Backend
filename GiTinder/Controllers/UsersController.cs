@@ -41,12 +41,10 @@ namespace GiTinder.Controllers
             }                
             else
             {
-                _context.Find<User>(UserExists);
+                //var user = UserServices.CreateOrEditUser(loginRequestBody); <-- Tomek's job, should it check if user exists?              
                 _context.SaveChanges();
-                responseBody = new TokenResponseBody();
-            }
-
-            
+                responseBody = new TokenResponseBody(/*user.UserToken*/);
+            }          
 
             return responseBody;
         }
@@ -87,7 +85,7 @@ namespace GiTinder.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != user.UserName)
+            if (id != user.Username)
             {
                 return BadRequest();
             }
@@ -125,7 +123,7 @@ namespace GiTinder.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.UserName }, user);
+            return CreatedAtAction("GetUser", new { id = user.Username }, user);
         }
 
         // DELETE: api/Users/5

@@ -12,7 +12,10 @@ namespace GiTinder.Models
         [Key]
         public string username { get; set; }
         public string acces_token  { get; set; }
-       
-       
+
+        public static object CreateUserWithNullUserName()
+        {
+            throw new NotImplementedException();
+        }
     }
 }   

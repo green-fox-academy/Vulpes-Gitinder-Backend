@@ -8,7 +8,7 @@ namespace GiTinder.Models
     public class MockErrorMessage
     {
         public string status = "error";
-        public string message = "<parameter> is missing!";
+        public string message = "parameter is missing!";
     }
 
 }

@@ -9,6 +9,10 @@ namespace GiTinder.Models
 {
     public class MockLoginContext : DbContext
     {
+        public MockLoginContext()
+        {
+        }
+
         public MockLoginContext(DbContextOptions<MockLoginContext> options): base(options)
         {
         }

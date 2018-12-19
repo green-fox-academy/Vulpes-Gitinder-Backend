@@ -18,10 +18,12 @@ namespace GiTinder.Controllers
     public class UsersController : ControllerBase
     {
         private readonly GiTinderContext _context;
+        private readonly UserServices _userServices;
 
-        public UsersController(GiTinderContext context)
+        public UsersController(GiTinderContext context, UserServices userServices)
         {
             _context = context;
+            _userServices = userServices;
         }
         
         // POST: /api/login
@@ -42,13 +44,13 @@ namespace GiTinder.Controllers
             }                
             else if (UserExists(loginRequestBody.Username))
             {
-                _context.Find<User>(loginRequestBody.Username).Username = UserServices.CreateGiTinderToken();                          
+                _context.Find<User>(loginRequestBody.Username).Username = _userServices.CreateGiTinderToken();                          
                 _context.SaveChanges();
                 responseBody = new TokenResponseBody(/*_context.Find<User>(loginRequestBody.Username).UserToken*/);
             }      
             else
             {
-                string token = UserServices.CreateGiTinderToken();
+                string token = _userServices.CreateGiTinderToken();
                 _context.Users.Add(new User(loginRequestBody.Username/*, token*/)); //CreateProfile should be here?
                 responseBody = new TokenResponseBody(/*token*/);
             }

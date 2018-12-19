@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GiTinder.Models;
+﻿using GiTinder.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 namespace GiTinder.Controllers
 {
     [Route("api/[controller]")]
-    public class MockController : Controller
+    public class UsersController : Controller
     {
         private MockLoginContext _loginItem;
 
-        public MockController(MockLoginContext loginItem)
+        public UsersController(MockLoginContext loginItem)
         {
             _loginItem = loginItem;
            // _loginItem.LoginItems.Add(new MockLoginItem {  });

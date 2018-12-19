@@ -11,7 +11,7 @@ namespace GiTinder.Models
         [Key]
         public int Id { get; set; }
 
-        //I tried to have the following params in [Required(params)]but I got error 
+        //this error appeared 
         //You have an error in your SQL syntax; check the manual that corresponds to your 
         //MySQL server version for the right syntax 
         //to use near 'CONSTRAINT `FK_Settings_Users_UserName`' at line 1
@@ -32,6 +32,7 @@ namespace GiTinder.Models
 
         [JsonProperty(PropertyName = "max_distance")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Maximum distance information (in km) is required")]
+        [Range(10, 160)]
         public int MaxDistanceInKm { get; set; }
 
         [NotMapped]
@@ -39,10 +40,8 @@ namespace GiTinder.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Information on preferred languages is required")]
         public List<Language> PreferredLanguages { get; set; }
 
-        public Settings() { }
-
         public Settings(string UserName, bool EnableNotification, bool EnableBackgroundSync,
-        int MaxDistanceInKm, List<Language> PreferredLanguages)
+            int MaxDistanceInKm, List<Language> PreferredLanguages)
         {
             this.UserName = UserName;
             this.EnableNotification = EnableNotification;

@@ -1,50 +1,35 @@
-﻿//using GiTinder.Models;
+﻿using GiTinder.Models;
+using System.Collections.Generic;
 
-//namespace GiTinder.Tests.Models
-//{
-//    class SettingsFactory
-//    {
-//        public static Settings CreateSettingsWithValidUserName()
-//        {
-//            return new Settings("Filip Eager", true, 160, "English")
-//            {
-//            };
-//        }
+namespace GiTinder.Tests.Models
+{
+    class SettingsFactory
+    {
+        public static Settings CreateSettingsWithValidUserName()
+        {
+            var settings = new Settings("Mock Filip", true, true, 160, new List<Language> { new Language("Java"), new Language("C#") });
+            return settings;
+        }
 
-//        public static Settings CreateSettingsWithInValidUserName()
-//        {
-//            return new Settings("", true, 160, "English")
-//            {
-//            };
-//        }
+        public static Settings AttemptToCreateSettingsWithInvalidUserName()
+        {
+            return new Settings("", true, true, 160, new List<Language> { new Language("Java"), new Language("C#") });
+        }
 
-//        public static Settings CreateSettingsWithGivenUserNameTest_TomekAndDefaultSettings()
-//        {
-//            return new Settings("Test_Tomek", true, 160, "English")
-//            {
-//            };
-//        }
+        public static Settings CreateSettingsWithNullUserName()
+        {
+            return new Settings(null, true, true, 160, new List<Language> { new Language("Java"), new Language("C#") });
+        }
 
-//        public static Settings CreateSettingsWithNullUserName()
-//        {
-//            var settings = CreateSettingsWithValidUserName();
-//            settings.UserName = null;
-//            return settings;
-//        }
+        public static Settings AttemptToCreateSettingsWithInvalidDistance170Km()
+        {
+            return new Settings("Mock Filip", true, true, 170, new List<Language> { new Language("Java"), new Language("C#") });
+        }
 
-//        public static Settings CreateSettingsWithDistance170Km()
-//        {
-//            var settings = CreateSettingsWithValidUserName();
-//            settings.MaxDistanceInKm = 170;
-//            return settings;
-//        }
-
-//        public static Settings CreateSettingsWithDistance9Km()
-//        {
-//            var settings = CreateSettingsWithValidUserName();
-//            settings.MaxDistanceInKm = 9;
-//            return settings;
-//        }
-//    }
-//}
+        public static Settings AttemptToCreateSettingsWithInvalidDistance9Km()
+        {
+            return new Settings("Mock Filip", true, true, 9, new List<Language> { new Language("Java"), new Language("C#") });
+        }
+    }
+}
 

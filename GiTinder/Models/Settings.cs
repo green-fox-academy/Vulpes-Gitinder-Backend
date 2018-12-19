@@ -37,23 +37,25 @@ namespace GiTinder.Models
 
         [NotMapped]
         [JsonProperty(PropertyName = "preferred_languages")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Information on preferred languages is required")]
+        //[Required(AllowEmptyStrings = false, ErrorMessage = "Information on preferred languages is required")]
         public List<Language> PreferredLanguages { get; set; }
 
         public Settings(string UserName, bool EnableNotification, bool EnableBackgroundSync,
-            int MaxDistanceInKm, List<Language> PreferredLanguages)
+            int MaxDistanceInKm)
         {
+            //, List<Language> PreferredLanguages
             this.UserName = UserName;
             this.EnableNotification = EnableNotification;
             this.EnableBackgroundSync = EnableBackgroundSync;
             this.MaxDistanceInKm = MaxDistanceInKm;
-            this.PreferredLanguages = PreferredLanguages;
+            //            this.PreferredLanguages = PreferredLanguages;
         }
     }
 }
 
 
-
+//info from API docs:
+//Settings have:
 //enable_notifications	boolean
 //enable_background_sync boolean
 //max_distance integer

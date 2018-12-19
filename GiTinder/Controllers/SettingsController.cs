@@ -25,25 +25,46 @@ namespace GiTinder.Controllers
         //          Tests for all
 
         // GET: Settings
-        //[HttpGet]
-        //[Route("/settings]")]
-
-
         [HttpGet("/settings")]
-        public object settings()
+        public object GetSettings()
         {
-            var settings = new Settings("Mock Filip", true, true, 160, new List<Language> { new Language("Java"), new Language( "C#") });
-
-            // Add a range of items  
-            //string[] authors = { "Mike Gold", "Don Box",
-            //            "Sundar Lal", "Neel Beniwal" };
-            //AuthorList.AddRange(authors);
-            //settings.PreferredLanguages.Add("Java");
-            //settings.PreferredLanguages.Add("C#");
+            var settings = new Settings("Mock Filip", true, true, 160);
+            //, new List<Language> { new Language("Java"), new Language("C#") }
             return settings;
         }
 
+        [HttpPost("/settings")]
+        public object PostSettings([FromBody] Settings settings)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(settings);
+                _context.SaveChanges();
+                return settings;
+            }
 
+            return "error";
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Add a range of items  
+        //string[] authors = { "Mike Gold", "Don Box",
+        //            "Sundar Lal", "Neel Beniwal" };
+        //AuthorList.AddRange(authors);
+        //settings.PreferredLanguages.Add("Java");
+        //settings.PreferredLanguages.Add("C#");
 
         // GET: Settings
 

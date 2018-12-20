@@ -1,5 +1,6 @@
 ﻿using GiTinder.Data;
 using GiTinder.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,12 @@ namespace GiTinder.Controllers
     [ApiController]
     public class GitAsyncRequest
     {
-        [HttpGet("username")]
-
+        
+        [HttpGet("{username}")]
+        //dev/user_profile/{username}
         //async method is used everytime something should take long time like for requesting for data await allows certain line to run independently.
         //if user doesn't exist in github then it shouldnt respond
-        public async Task<User> GetUserAsync()
+        public async Task<User> GetUserAsync(string username)
         {
             HttpClient client = new HttpClient();
             //client.DefaultRequestHeaders.Clear() to clear headers being sure that it should only have requested headers. Learning
@@ -25,15 +27,32 @@ namespace GiTinder.Controllers
             //Gihub API needs to track requests through header User Agent (https://developer.github.com/v3/#user-agent-required).
             client.DefaultRequestHeaders.Add("User-Agent", "frog");
             User rawUser = null;
-            Object json = null;
-            HttpResponseMessage response = await client.GetAsync("https://api.github.com/users/Riceqrisp");
-            if (response.IsSuccessStatusCode)
+            //UserRepos newUserRepos = null;
+
+            HttpResponseMessage responseUser = await client.GetAsync("https://api.github.com/users/"+username);
+            if (responseUser.IsSuccessStatusCode)
             {
-                rawUser = await response.Content.ReadAsAsync<User>();
-                json = await response.Content.ReadAsAsync<Object>();
+                rawUser = await responseUser.Content.ReadAsAsync<User>();
             }
+
             return rawUser;
         }
+        //[HttpGet("username/repos")]
+        //public async Task<UserRepos> GetUserReposAsync()
+        //{
+        //    HttpClient client = new HttpClient();
+        //    client.DefaultRequestHeaders.Add("User-Agent", "repofrog");
+        //    UserRepos newRepo = null;
+        //    HttpResponseMessage responseUserRepos = await client.GetAsync("https://api.github.com/users/Riceqrisp/repos");
+        //    if (responseUserRepos.IsSuccessStatusCode)
+        //    {
+        //        List<UserRepos> repos = await responseUserRepos.Content.ReadAsAsync<UserRepos>();
+        //    }
+            
+        //    return newRepo;
+        //}
     }
 }
+ 
+
 

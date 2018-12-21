@@ -13,13 +13,13 @@ namespace GiTinder.Controllers
     [Route("test")]
     [ApiController]
     public class GitAsyncRequest
-    {
-        
+    //{
+
         [HttpGet("{username}")]
-        //dev/user_profile/{username}
-        //async method is used everytime something should take long time like for requesting for data await allows certain line to run independently.
-        //if user doesn't exist in github then it shouldnt respond
-        public async Task<User> GetUserAsync(string username)
+    //dev/user_profile/{username}
+    //async method is used everytime something should take long time like for requesting for data await allows certain line to run independently.
+    //if user doesn't exist in github then it shouldnt respond
+    public async Task<User> GetUserAsync(string username)
         {
             HttpClient client = new HttpClient();
             //client.DefaultRequestHeaders.Clear() to clear headers being sure that it should only have requested headers. Learning
@@ -29,7 +29,7 @@ namespace GiTinder.Controllers
             User rawUser = null;
             //UserRepos newUserRepos = null;
 
-            HttpResponseMessage responseUser = await client.GetAsync("https://api.github.com/users/"+username);
+            HttpResponseMessage responseUser = await client.GetAsync("https://api.github.com/users/" + username);
             if (responseUser.IsSuccessStatusCode)
             {
                 rawUser = await responseUser.Content.ReadAsAsync<User>();
@@ -48,11 +48,11 @@ namespace GiTinder.Controllers
         //    {
         //        List<UserRepos> repos = await responseUserRepos.Content.ReadAsAsync<UserRepos>();
         //    }
-            
+
         //    return newRepo;
         //}
     }
 }
- 
+
 
 

@@ -17,8 +17,13 @@ namespace GiTinder.Models
 
         public string Username { get; set; }
         public string Avatar_url { get; set; }
-        public List<string> Repos { get; set; }
+        public string Repos { get; set; }
         public List<string> Languages { get; set; }
         public List<string> Snippets { get; set; }
     }
+    //public Array reposToString(string urls)
+    //{
+    //    Array toList = urls.Split(" ");
+    //    return toList;
+    //}
 }

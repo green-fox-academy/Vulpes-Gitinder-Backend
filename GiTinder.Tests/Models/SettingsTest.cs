@@ -50,7 +50,6 @@ namespace GiTinder.Tests.Models
             Validator.TryValidateObject(model, ctx, validationResults, true);
             return validationResults;
         }
-
     }
 }
 

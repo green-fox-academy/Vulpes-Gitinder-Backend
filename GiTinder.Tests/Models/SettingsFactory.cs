@@ -38,9 +38,6 @@ namespace GiTinder.Tests.Models
             settings.MaxDistanceInKm = 9;
             return settings;
         }
-
-        //public static Settings 
-
     }
 }
 

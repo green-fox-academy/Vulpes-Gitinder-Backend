@@ -27,53 +27,6 @@ namespace GiTinder.Controllers
             return "Hello, World!";
         }
 
-
-        ////GET api/values/listusernames
-        //[HttpGet("listusernames")]
-        //public ActionResult<List<string>> ListUserNames()
-        //{
-        //    //ActionResult res = new ActionResult<<>>();
-
-
-        //    List<string> list = new List<string>();
-        //    User user1 = new User();
-        //    User user2 = new User();
-        //    user1.userName = "filip teply";
-        //    user2.userName = "jonathan bonnin";
-
-        //    GiTinderContext context = new GiTinderContext();
-        //    context.Users.Add(user1);
-        //    context.Users.Add(user2);
-        //    context.SaveChanges();
-
-        //    list.Add(item: user1.userName);
-        //    list.Add(item: user2.userName);
-
-
-        //    //list = list.AddAll(foreach(Setting setting : settings.UserName);
-
-        //    return list;
-        //}
-
-
-
-
-        //[HttpPost]
-        //public async Task<ActionResult<Settings>> PostSettings(Settings settings)
-        //{  
-        //    _giTinderContext.Settings.Add(settings);
-        //    await _giTinderContext.SaveChangesAsync();
-        //    return CreatedAtAction("GetSettings", settings);
-        //   //ew { id = settings.Id },
-        //}
-
-        //// POST api/values/postusernames
-        //[HttpPost]
-        //public void PostUserName([FromBody] string UserName)
-        //{
-
-        //}
-
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()

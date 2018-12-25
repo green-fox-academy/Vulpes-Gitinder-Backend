@@ -7,15 +7,9 @@ namespace GiTinder.Models
 {
     public class Settings
     {
-        // [JsonIgnore]
         [Key, JsonProperty(PropertyName = "id")]
         public int Id { get; set; }
 
-        //this error appeared 
-        //You have an error in your SQL syntax; check the manual that corresponds to your 
-        //MySQL server version for the right syntax 
-        //to use near 'CONSTRAINT `FK_Settings_Users_UserName`' at line 1
-        //(AllowEmptyStrings = false, ErrorMessage = "User name is required")
         [JsonProperty(PropertyName = "username")]
         [Required]
         [MinLength(1)]
@@ -35,32 +29,17 @@ namespace GiTinder.Models
         [Range(10, 160)]
         public int MaxDistanceInKm { get; set; }
 
-        //[NotMapped]
-        //// [JsonIgnore]
-        //[JsonProperty(PropertyName = "preferred_languages")]
-        ////[Required(AllowEmptyStrings = false, ErrorMessage = "Information on preferred languages is required")]
-        //public List<Language> PreferredLanguages { get; set; }
-
         public Settings(string UserName, bool EnableNotification, bool EnableBackgroundSync,
-            int MaxDistanceInKm)
+    int MaxDistanceInKm)
         {
-            //, List<Language> PreferredLanguages
             this.UserName = UserName;
             this.EnableNotification = EnableNotification;
             this.EnableBackgroundSync = EnableBackgroundSync;
             this.MaxDistanceInKm = MaxDistanceInKm;
-            //            this.PreferredLanguages = PreferredLanguages;
         }
     }
 }
 
-
-//info from API docs:
-//Settings have:
-//enable_notifications	boolean
-//enable_background_sync boolean
-//max_distance integer
-//preferred_languages[string]
 
 
 

@@ -8,7 +8,7 @@ namespace GiTinder.Models
     public class Settings
     {
         // [JsonIgnore]
-        [Key]
+        [Key, JsonProperty(PropertyName = "id")]
         public int Id { get; set; }
 
         //this error appeared 
@@ -35,10 +35,11 @@ namespace GiTinder.Models
         [Range(10, 160)]
         public int MaxDistanceInKm { get; set; }
 
-        [NotMapped]
-        [JsonProperty(PropertyName = "preferred_languages")]
-        //[Required(AllowEmptyStrings = false, ErrorMessage = "Information on preferred languages is required")]
-        public List<Language> PreferredLanguages { get; set; }
+        //[NotMapped]
+        //// [JsonIgnore]
+        //[JsonProperty(PropertyName = "preferred_languages")]
+        ////[Required(AllowEmptyStrings = false, ErrorMessage = "Information on preferred languages is required")]
+        //public List<Language> PreferredLanguages { get; set; }
 
         public Settings(string UserName, bool EnableNotification, bool EnableBackgroundSync,
             int MaxDistanceInKm)

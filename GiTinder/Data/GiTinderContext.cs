@@ -15,5 +15,21 @@ namespace GiTinder.Data
             optionsBuilder.UseMySQL("server=localhost;database=newgitinder;user=root;password=1234");
             base.OnConfiguring(optionsBuilder);
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<SettingsLanguage>()
+                .HasKey(t => new { t.SettingsId, t.LanguageId });
+
+            modelBuilder.Entity<SettingsLanguage>()
+                .HasOne(pt => pt.Settings)
+                .WithMany(p => p.SettingsLanguages)
+                .HasForeignKey(pt => pt.SettingsId);
+
+            modelBuilder.Entity<SettingsLanguage>()
+                .HasOne(pt => pt.Language)
+                .WithMany(t => t.SettingsLanguages)
+                .HasForeignKey(pt => pt.LanguageId);
+        }
     }
 }

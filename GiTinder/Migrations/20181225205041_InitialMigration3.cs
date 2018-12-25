@@ -2,7 +2,7 @@
 
 namespace GiTinder.Migrations
 {
-    public partial class InitialMigration2 : Migration
+    public partial class InitialMigration3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,13 +10,13 @@ namespace GiTinder.Migrations
                 name: "Languages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    LanguageId = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
                     LanguageName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Languages", x => x.Id);
+                    table.PrimaryKey("PK_Languages", x => x.LanguageId);
                 });
 
             migrationBuilder.CreateTable(
@@ -36,7 +36,7 @@ namespace GiTinder.Migrations
                 name: "Settings",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    SettingsId = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
                     UserName = table.Column<string>(nullable: false),
                     EnableNotification = table.Column<short>(nullable: false),
@@ -45,7 +45,7 @@ namespace GiTinder.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Settings", x => x.Id);
+                    table.PrimaryKey("PK_Settings", x => x.SettingsId);
                     table.ForeignKey(
                         name: "FK_Settings_Users_UserName",
                         column: x => x.UserName,
@@ -54,15 +54,47 @@ namespace GiTinder.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "SettingsLanguage",
+                columns: table => new
+                {
+                    SettingsId = table.Column<int>(nullable: false),
+                    LanguageId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SettingsLanguage", x => new { x.SettingsId, x.LanguageId });
+                    table.ForeignKey(
+                        name: "FK_SettingsLanguage_Languages_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Languages",
+                        principalColumn: "LanguageId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SettingsLanguage_Settings_SettingsId",
+                        column: x => x.SettingsId,
+                        principalTable: "Settings",
+                        principalColumn: "SettingsId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Settings_UserName",
                 table: "Settings",
                 column: "UserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SettingsLanguage_LanguageId",
+                table: "SettingsLanguage",
+                column: "LanguageId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "SettingsLanguage");
+
             migrationBuilder.DropTable(
                 name: "Languages");
 

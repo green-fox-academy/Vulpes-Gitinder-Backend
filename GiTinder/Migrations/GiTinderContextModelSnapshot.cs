@@ -17,20 +17,20 @@ namespace GiTinder.Migrations
 
             modelBuilder.Entity("GiTinder.Models.Language", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("LanguageId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("LanguageName")
                         .IsRequired();
 
-                    b.HasKey("Id");
+                    b.HasKey("LanguageId");
 
                     b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("GiTinder.Models.Settings", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("SettingsId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("EnableBackgroundSync");
@@ -42,12 +42,25 @@ namespace GiTinder.Migrations
                     b.Property<string>("UserName")
                         .IsRequired();
 
-                    b.HasKey("Id");
+                    b.HasKey("SettingsId");
 
                     b.HasIndex("UserName")
                         .IsUnique();
 
                     b.ToTable("Settings");
+                });
+
+            modelBuilder.Entity("GiTinder.Models.SettingsLanguage", b =>
+                {
+                    b.Property<int>("SettingsId");
+
+                    b.Property<int>("LanguageId");
+
+                    b.HasKey("SettingsId", "LanguageId");
+
+                    b.HasIndex("LanguageId");
+
+                    b.ToTable("SettingsLanguage");
                 });
 
             modelBuilder.Entity("GiTinder.Models.User", b =>
@@ -70,6 +83,19 @@ namespace GiTinder.Migrations
                     b.HasOne("GiTinder.Models.User")
                         .WithOne("UserSettings")
                         .HasForeignKey("GiTinder.Models.Settings", "UserName")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("GiTinder.Models.SettingsLanguage", b =>
+                {
+                    b.HasOne("GiTinder.Models.Language", "Language")
+                        .WithMany("SettingsLanguages")
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GiTinder.Models.Settings", "Settings")
+                        .WithMany("SettingsLanguages")
+                        .HasForeignKey("SettingsId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

@@ -7,8 +7,8 @@ namespace GiTinder.Models
 {
     public class Settings
     {
-        [Key, JsonProperty(PropertyName = "id")]
-        public int Id { get; set; }
+        [Key]
+        public int SettingsId { get; set; }
 
         [JsonProperty(PropertyName = "username")]
         [Required]
@@ -28,6 +28,8 @@ namespace GiTinder.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Maximum distance information (in km) is required")]
         [Range(10, 160)]
         public int MaxDistanceInKm { get; set; }
+
+        public List<SettingsLanguage> SettingsLanguages { get; set; }
 
         public Settings(string UserName, bool EnableNotification, bool EnableBackgroundSync,
     int MaxDistanceInKm)

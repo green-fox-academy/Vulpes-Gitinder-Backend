@@ -31,10 +31,25 @@ namespace GiTinder.Controllers
         [HttpPost("/settings")]
         public void PostSettings([FromBody] Settings settings)
         {
-            _context.Settings.Add(settings);
-            _context.SaveChanges();
-            return;
 
+            //using (var context = new SchoolContext())
+            //{
+            //    var std = new Student()
+            //    {
+            //        FirstName = "Bill",
+            //        LastName = "Gates"
+            //    };
+            //    context.Students.Add(std);
+
+            //    // or
+            //    // context.Add<Student>(std);
+
+            //    context.SaveChanges();
+            //}
+
+            _context.Settings.Add(settings);
+
+            _context.SaveChanges();
         }
     }
 }

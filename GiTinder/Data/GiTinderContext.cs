@@ -9,6 +9,8 @@ namespace GiTinder.Data
         public DbSet<Settings> Settings { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Language> Languages { get; set; }
+        //Do I need the following DbSet for the join entity here?  
+        //public DbSet<SettingsLanguage> SettingsLanguages { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

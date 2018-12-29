@@ -17,15 +17,15 @@ namespace GiTinder.Models
         public string UserName { get; set; }
 
         [JsonProperty(PropertyName = "enable_notifications")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Enable notification information is required")]
+        [Required(ErrorMessage = "Enable notification information is required")]
         public bool EnableNotification { get; set; }
 
         [JsonProperty(PropertyName = "enable_background_sync")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Enable background sync information is required")]
+        [Required( ErrorMessage = "Enable background sync information is required")]
         public bool EnableBackgroundSync { get; set; }
 
         [JsonProperty(PropertyName = "max_distance")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Maximum distance information (in km) is required")]
+        [Required(ErrorMessage = "Maximum distance information (in km) is required")]
         [Range(10, 160)]
         public int MaxDistanceInKm { get; set; }
 

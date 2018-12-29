@@ -24,6 +24,8 @@ namespace GiTinder.Controllers
         [HttpGet("hello-world")]
         public ActionResult<string> SayHello()
         {
+            System.Diagnostics.Debug.WriteLine("OK1 Hello!!!");
+            Console.WriteLine("OK2 Hello!!!");
             return "Hello, World!";
         }
 

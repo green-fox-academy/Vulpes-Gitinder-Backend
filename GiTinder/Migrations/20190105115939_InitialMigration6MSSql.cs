@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GiTinder.Migrations
 {
-    public partial class InitialMigration3 : Migration
+    public partial class InitialMigration6MSSql : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,7 +12,7 @@ namespace GiTinder.Migrations
                 columns: table => new
                 {
                     LanguageId = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     LanguageName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -37,10 +38,10 @@ namespace GiTinder.Migrations
                 columns: table => new
                 {
                     SettingsId = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UserName = table.Column<string>(nullable: false),
-                    EnableNotification = table.Column<short>(nullable: false),
-                    EnableBackgroundSync = table.Column<short>(nullable: false),
+                    EnableNotification = table.Column<bool>(nullable: false),
+                    EnableBackgroundSync = table.Column<bool>(nullable: false),
                     MaxDistanceInKm = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

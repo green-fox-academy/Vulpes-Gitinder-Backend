@@ -12,11 +12,18 @@ namespace GiTinder.Data
         //Do I need the following DbSet for the join entity here?  
         //public DbSet<SettingsLanguage> SettingsLanguages { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseMySQL("server=localhost;database=newgitinder;user=root;password=1234");
-            base.OnConfiguring(optionsBuilder);
-        }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseMySQL("server=localhost;database=newgitinder;user=root;password=1234");
+        //    //optionsBuilder.UseMySQL("connectionStrings: GiTinderContextDBConnectionString")
+
+        //    base.OnConfiguring(optionsBuilder);
+        //}
+
+        public GiTinderContext(DbContextOptions<GiTinderContext> options)
+  : base(options)
+        { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

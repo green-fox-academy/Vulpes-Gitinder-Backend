@@ -8,12 +8,20 @@ using Microsoft.EntityFrameworkCore;
 using GiTinder.Data;
 using GiTinder.Models;
 using System.Collections;
+using Microsoft.Extensions.Logging;
 
 namespace GiTinder.Controllers
 {
-    public class SettingsController : ControllerBase
+    public class SettingsController : Controller
     {
-        private readonly GiTinderContext _context;
+        //private ILogger<SettingsController> _logger;
+
+        //public SettingsController(ILogger<SettingsController> logger)
+        //{
+        //    _logger = logger;
+        //}
+
+        private GiTinderContext _context;
 
         public SettingsController(GiTinderContext context)
         {
@@ -25,39 +33,61 @@ namespace GiTinder.Controllers
         public object GetSettings()
         {
             var settings = new Settings("Mock Filip", true, true, 160);
-            
+            //_logger.LogInformation("Mock Settings was created!" );
             System.Diagnostics.Debug.WriteLine("OK GETsettings!");
-            return settings;
+            return settings; 
+                               
         }
 
         [HttpPost("/settings")]
-        public IActionResult PostSettings([FromBody] Settings settings)
+        //[ValidateAntiForgeryToken]
+        public IActionResult PostSettings([FromBody]Settings settings)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-
                 return BadRequest();
             }
-            try
-            {
 
+            _context.Settings.Add(settings);
 
-                _context.Settings.Add(settings);
-                
-                System.Diagnostics.Debug.WriteLine("OK1 PostSettings!");
+            System.Diagnostics.Debug.WriteLine("OK1 PostSettings!");
 
-                _context.SaveChanges();
-                
-                System.Diagnostics.Debug.WriteLine("OK2 PostSettings!");
-                return Ok(settings);
-            }
-            catch (Exception e)
-            {
-                
-                System.Diagnostics.Debug.WriteLine("Error- PostSettingsException!");
-                return StatusR
-            }
+            _context.SaveChanges();
+
+            System.Diagnostics.Debug.WriteLine("OK2 PostSettings!");
+
+            return NoContent();
         }
+
+
+        //[HttpPost("/settings")]
+        //public IActionResult PostSettings([FromBody] Settings settings)
+        //{
+        //    if(!ModelState.IsValid)
+        //    {
+
+        //        return BadRequest();
+        //    }
+        //    try
+        //    {
+
+
+        //        _context.Settings.Add(settings);
+
+        //        System.Diagnostics.Debug.WriteLine("OK1 PostSettings!");
+
+        //        _context.SaveChanges();
+
+        //        System.Diagnostics.Debug.WriteLine("OK2 PostSettings!");
+        //        return Ok(settings);
+        //    }
+        //    catch (Exception e)
+        //    {
+
+        //        System.Diagnostics.Debug.WriteLine("Error- PostSettingsException!");
+        //        return StatusR
+        //    }
+        //}
     }
 }
 

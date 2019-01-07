@@ -68,19 +68,26 @@ namespace GiTinder.Controllers
         }
 
         [HttpGet("/profile")]
-        public IActionResult MockProfile([FromHeader]MockProfile profile)
+        public ResponseBody MockProfile()
         {
-            string Token = Request.Headers["username"];
-            
+            string Token = Request.Headers["X-Gitinder-Token"];
+            ResponseBody responseBody;
+
             if (Token == null)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, new ResponseBody { Status = "error"});
+                Response.StatusCode = 403;
+                responseBody = new ErrorGitinderResponse("Unauthorized request!");
             }
             else if (Token == "aze")
             {
-                return new ObjectResult(profile);
+                responseBody = new ProfileResponse();
             }
-            return StatusCode(StatusCodes.Status404NotFound);          
+            else
+            {
+                Response.StatusCode = 403;
+                responseBody = new ErrorGitinderResponse("Unauthorized request!");
+            }
+            return responseBody;      
         }
 
     }

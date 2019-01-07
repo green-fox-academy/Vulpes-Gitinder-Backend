@@ -33,7 +33,7 @@ namespace GiTinder.Tests.Models
         [Fact]
         public void CheckProfile()
         {
-            var prof = new MockProfile();
+            var prof = new ProfileResponse();
 
             Assert.Equal("aze", prof.username = "aze");
         }

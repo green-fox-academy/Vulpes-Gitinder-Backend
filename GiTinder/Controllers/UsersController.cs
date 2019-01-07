@@ -44,7 +44,7 @@ namespace GiTinder.Controllers
         }
 
         [HttpDelete("/logout")]
-        public ResponseBody MockLogout([FromHeader]LoginItem item)
+        public ResponseBody MockLogout()
         {
             string Token = Request.Headers["X-Gitinder-Token"];
             ResponseBody responseBody;

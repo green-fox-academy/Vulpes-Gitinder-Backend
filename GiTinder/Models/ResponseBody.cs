@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Models
 {
-    public class ErrorMessage
+    public class ResponseBody
     {
-        [JsonProperty("status")]
+        [JsonProperty("status", Order =-2)]
         public string Status { get; set; }
     }
 

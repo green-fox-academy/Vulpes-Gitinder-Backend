@@ -7,22 +7,16 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Models
 {
-    public class Response : ErrorMessage
+    public class ErrorResponse : ResponseBody
     {
         [JsonProperty("message")]
         public string Message { get; set; }
 
-        public ResponseBody(string missingParam)
+        public ErrorResponse(string missingParam)
         {
             Status = "error";
             Message = missingParam + " is missing!";
         }
-
-        //public string status = "ok";
-        //public string gitinder_token = "abc123";
-
-
-
-
+        
     }
 }

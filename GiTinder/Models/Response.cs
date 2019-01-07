@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Models
 {
-    public class MockResponse
+    public class Response
     {
 
         public string status = "ok";

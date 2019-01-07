@@ -1,4 +1,5 @@
-﻿using GiTinder.Models;
+﻿using GiTinder.Data;
+using GiTinder.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,24 +10,18 @@ namespace GiTinder.Controllers
 {
     public class UsersController : Controller
     {
-        private MockLoginContext _loginItem;
+        private GiTinderContext _loginItem;
+        private Response response;
+        private ErrorMessage errorMessage;
 
-        public UsersController(MockLoginContext loginItem)
+        public UsersController(GiTinderContext loginItem)
         {
             _loginItem = loginItem;
-           // _loginItem.LoginItems.Add(new MockLoginItem {  });
-            //_loginItem.SaveChanges();
-
-           
-
         }
 
-
         [HttpPost("/login")]
-        public IActionResult MockLogin([FromBody]MockLoginItem item, MockResponse response, MockErrorMessage errorMessage)
+        public IActionResult MockLogin([FromBody]LoginItem item)
         {
-            
-
             if (item != null)
             {
                 return new ObjectResult(response);
@@ -34,29 +29,23 @@ namespace GiTinder.Controllers
             else
             {
                 return StatusCode(StatusCodes.Status400BadRequest,errorMessage);
-              
-
             }
         }
 
         [HttpDelete("/logout")]
-        public IActionResult MockLogout([FromHeader]MockLoginItem item, MockErrorMessage errorMessage)
+        public IActionResult MockLogout([FromHeader]LoginItem item, ErrorMessage errorMessage)
         {
             string Token = Request.Headers["acces_token"];
 
             if (Token == null)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, new MockErrorMessage { status = "error", message = "Unauthorized request!" });
-
-
+                return StatusCode(StatusCodes.Status403Forbidden, new ErrorMessage { status = "error", message = "Unauthorized request!" });
             }
             else if (Token == "abc")
             {
-               
-                return StatusCode(StatusCodes.Status200OK, new MockErrorMessage { status = "ok", message = "Logged out succesfully!" });
+                return StatusCode(StatusCodes.Status200OK, new ErrorMessage { status = "ok", message = "Logged out succesfully!" });
             }
-            return StatusCode(StatusCodes.Status400BadRequest, new MockErrorMessage { status = "error", message = "Used wrong acces_token!"});
-            
+            return StatusCode(StatusCodes.Status400BadRequest, new ErrorMessage { status = "error", message = "Used wrong acces_token!"});
         }
 
         [HttpGet("/profile")]
@@ -64,23 +53,16 @@ namespace GiTinder.Controllers
         {
             string Token = Request.Headers["username"];
             
-
             if (Token == null)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, new MockErrorMessage { status = "error", message = "Unauthorized request!" });
-
-
+                return StatusCode(StatusCodes.Status403Forbidden, new ErrorMessage { status = "error", message = "Unauthorized request!" });
             }
             else if (Token == "aze")
             {
                 return new ObjectResult(profile);
             }
-            return StatusCode(StatusCodes.Status404NotFound);
-           
+            return StatusCode(StatusCodes.Status404NotFound);          
         }
-
-
-
 
     }
 }

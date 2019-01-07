@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Models
 {
-    public class MockErrorMessage
+    public class ErrorMessage
     {
         public string status = "error";
         public string message = "parameter is missing!";

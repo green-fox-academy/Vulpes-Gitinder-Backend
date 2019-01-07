@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GiTinder.Data;
 using GiTinder.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,9 +28,8 @@ namespace GiTinder
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<MockLoginContext>(opt =>
-                                        opt.UseInMemoryDatabase("MockLoginList"));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddDbContext<GiTinderContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -22,7 +22,7 @@ namespace GiTinder.Tests.Models
         [Fact]
         public void CheckStatus()
         {
-            var response = new MockResponse();
+            var response = new Response();
             MockLoginContext item = new MockLoginContext();
 
             Assert.Contains("ok", response.status = "ok");

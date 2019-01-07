@@ -22,6 +22,7 @@ namespace GiTinder.Tests.Models
             Assert.True(ValidateModel(settings).Count == 1);
         }
 
+        ////////////////////this test is failing
         [Fact]
         public void CannotCreateSettingsWithInvalidNullUserName()
         {

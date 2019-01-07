@@ -14,13 +14,6 @@ namespace GiTinder.Controllers
 {
     public class SettingsController : Controller
     {
-        //private ILogger<SettingsController> _logger;
-
-        //public SettingsController(ILogger<SettingsController> logger)
-        //{
-        //    _logger = logger;
-        //}
-
         private GiTinderContext _context;
 
         public SettingsController(GiTinderContext context)
@@ -29,41 +22,15 @@ namespace GiTinder.Controllers
         }
 
         // GET: Settings
-        [HttpGet("/settings/{username}")]
-        public object GetSettings(string username)
+        [HttpGet("/settings")]
+        public object GetSettings([FromRoute] string username)
         {
             GeneralApiResponseBody responseBody;
 
-            if (Request.Headers["X-Gitinder-Token"] == "")
+            if (Request.Headers["X-Gitinder-Token"] == "" || !UserExists(Request.Headers["X-Gitinder-Token"]))
             {
                 responseBody = new ErrorResponseBody("error", "Unauthorized request!");
                 return StatusCode(403, responseBody);
-            }
-            else
-            {
-                var settings = _context.Settings.Where(s => s.UserName == username).FirstOrDefault();
-                // var settings = new Settings("Mock Filip", true, true, 160);
-                //_logger.LogInformation("Mock Settings was created!" );
-                return settings;
-            }
-        }
-
-        [HttpPut("/settings/{username}")]
-        //[ValidateAntiForgeryToken]
-        public object PutSettings([FromBody]Settings settings, string username)
-        {
-            var set = _context.Settings.Where(s => s.UserName == username).FirstOrDefault();
-            GeneralApiResponseBody responseBody;
-
-            if (Request.Headers["X-Gitinder-Token"] == "")
-            {
-                responseBody = new ErrorResponseBody("error", "Unauthorized request!");
-                return StatusCode(403, responseBody);
-            }
-
-            if (settings == null)
-            {
-                return BadRequest(ModelState);
             }
 
             if (!ModelState.IsValid)
@@ -71,21 +38,54 @@ namespace GiTinder.Controllers
                 return BadRequest(ModelState);
             }
 
-            //if (set != null)
-            //{
-                _context.Settings.Update(settings);
-                _context.SaveChanges();
-                responseBody = new OKResponseBody("ok", "success");
-                return StatusCode(200, responseBody);
-            //}
+            var foundUser = _context.Users.Where(s => s.UserToken == Request.Headers["X-Gitinder-Token"]).FirstOrDefault();
+            var foundSettings = _context.Settings.Where(s => s.UserName == foundUser.UserName).FirstOrDefault();
             
-            //if (set == null)
-            //{
-            //_context.Settings.Add(settings);
-            //_context.SaveChanges();
-            //responseBody = new OKResponseBody("ok", "success");
-            //return StatusCode(200, responseBody);
-            //}                   
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            else
+            {
+                // var settings = new Settings("Mock Filip", true, true, 160);
+                //_logger.LogInformation("Mock Settings was created!" );
+                return foundSettings;
+            }
+        }
+
+        ///////
+        [HttpPut("/settings")]
+        //[ValidateAntiForgeryToken]
+        public object PutSettings([FromBody] Settings settings)
+        {
+
+            GeneralApiResponseBody responseBody;
+
+            if (Request.Headers["X-Gitinder-Token"] == "" || !UserExists(Request.Headers["X-Gitinder-Token"]))
+            {
+                responseBody = new ErrorResponseBody("error", "Unauthorized request!");
+                return StatusCode(403, responseBody);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var foundUser = _context.Users.Where(s => s.UserToken == Request.Headers["X-Gitinder-Token"]).FirstOrDefault();
+            var foundSettings = _context.Settings.Where(s => s.UserName == foundUser.UserName).FirstOrDefault();
+
+            //foundSettings.SettingsId = settings.SettingsId;
+            foundSettings.UserName = settings.UserName;
+            foundSettings.EnableNotification = settings.EnableNotification;
+            foundSettings.EnableBackgroundSync = settings.EnableBackgroundSync;
+            foundSettings.MaxDistanceInKm = settings.MaxDistanceInKm;
+
+            _context.Settings.Update(foundSettings);
+            _context.SaveChanges();
+            responseBody = new OKResponseBody("ok", "success");
+            return StatusCode(200, responseBody);
         }
 
         [HttpPost("/settings")]
@@ -93,13 +93,6 @@ namespace GiTinder.Controllers
         public object PostSettings([FromBody]Settings settings)
         {
             GeneralApiResponseBody responseBody;
-
-            //if (Request.Headers["X-Gitinder-Token"] == "")
-            //{
-            //    Response.StatusCode = 403;
-            //    responseBody = new ErrorResponseBody("error", "Unauthorized request!");
-            //    return responseBody;
-            //}
 
             if (Request.Headers["X-Gitinder-Token"] == "")
             {
@@ -119,54 +112,11 @@ namespace GiTinder.Controllers
             return NoContent();
         }
 
-
-        //[HttpPost("/settings")]
-        //public IActionResult PostSettings([FromBody] Settings settings)
-        //{
-        //    if(!ModelState.IsValid)
-        //    {
-
-        //        return BadRequest();
-        //    }
-        //    try
-        //    {
-
-
-        //        _context.Settings.Add(settings);
-
-        //        System.Diagnostics.Debug.WriteLine("OK1 PostSettings!");
-
-        //        _context.SaveChanges();
-
-        //        System.Diagnostics.Debug.WriteLine("OK2 PostSettings!");
-        //        return Ok(settings);
-        //    }
-        //    catch (Exception e)
-        //    {
-
-        //        System.Diagnostics.Debug.WriteLine("Error- PostSettingsException!");
-        //        return StatusR
-        //    }
-        //}
+        private bool UserExists(string usertoken)
+        {
+            return _context.Users.Any(e => e.UserToken == usertoken);
+        }
     }
 }
 
 
-//using (var context = new SchoolContext())
-//{
-//    var std = new Student()
-//    {
-//        FirstName = "Bill",
-//        LastName = "Gates"
-//    };
-//    context.Students.Add(std);
-
-//    // or
-//    // context.Add<Student>(std);
-
-//    context.SaveChanges();
-//}
-
-//_context.Settings.Add(settings);
-
-//_context.SaveChanges();

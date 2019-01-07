@@ -9,21 +9,14 @@ namespace GiTinder.Data
         public DbSet<Settings> Settings { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Language> Languages { get; set; }
+        
         //Do I need the following DbSet for the join entity here?  
         //public DbSet<SettingsLanguage> SettingsLanguages { get; set; }
-
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseMySQL("server=localhost;database=newgitinder;user=root;password=1234");
-        //    //optionsBuilder.UseMySQL("connectionStrings: GiTinderContextDBConnectionString")
-
-        //    base.OnConfiguring(optionsBuilder);
-        //}
 
         public GiTinderContext(DbContextOptions<GiTinderContext> options)
   : base(options)
         { }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,5 +33,7 @@ namespace GiTinder.Data
                 .WithMany(t => t.SettingsLanguages)
                 .HasForeignKey(pt => pt.LanguageId);
         }
+
+
     }
 }

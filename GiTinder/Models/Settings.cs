@@ -10,7 +10,7 @@ namespace GiTinder.Models
         [Key]
         public int SettingsId { get; set; }
 
-       // [JsonProperty(PropertyName = "username")]
+        // [JsonProperty(PropertyName = "username")]
         //[Required]
         [MinLength(1)]
         [ForeignKey("User.UserName")]
@@ -32,14 +32,9 @@ namespace GiTinder.Models
         [JsonIgnore]
         public List<SettingsLanguage> SettingsLanguages { get; set; }
 
-        public Settings(string UserName, bool EnableNotification, bool EnableBackgroundSync,
-    int MaxDistanceInKm)
-        {
-            this.UserName = UserName;
-            this.EnableNotification = EnableNotification;
-            this.EnableBackgroundSync = EnableBackgroundSync;
-            this.MaxDistanceInKm = MaxDistanceInKm;
-        }
+
+        public List<Language> PreferredLanguages { get; set; }
+
     }
 }
 

@@ -34,29 +34,37 @@ namespace GiTinder.Controllers
             }
             else if (item.Username == "pavel")
             {
-                responseBody = new GitinderResponse("exist_token");
+                responseBody = new ErrorGitinderResponse("exist_token");
             }
             else
             {
-                responseBody = new GitinderResponse("new_token");
+                responseBody = new ErrorGitinderResponse("new_token");
             }
             return responseBody;
         }
 
         [HttpDelete("/logout")]
-        public IActionResult MockLogout([FromHeader]LoginItem item, ResponseBody errorMessage)
+        public ResponseBody MockLogout([FromHeader]LoginItem item)
         {
-            string Token = Request.Headers["acces_token"];
+            string Token = Request.Headers["X-Gitinder-Token"];
+            ResponseBody responseBody;
 
             if (Token == null)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, new ResponseBody { Status = "error" });
+                Response.StatusCode = 403;
+                responseBody = new ErrorResponse("X-Gititnder-token");
             }
             else if (Token == "abc")
             {
-                return StatusCode(StatusCodes.Status200OK, new ResponseBody { Status = "ok" });
+                responseBody = new GitinderResponse("Logged out successfully!");
             }
-            return StatusCode(StatusCodes.Status400BadRequest, new ResponseBody { Status = "error"});
+            else
+            {
+                Response.StatusCode = 403;
+                responseBody = new ErrorGitinderResponse("bad X-Gititnder-token");
+                
+            }
+            return responseBody;
         }
 
         [HttpGet("/profile")]

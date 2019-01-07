@@ -16,5 +16,6 @@ namespace GiTinder.Models
             Status = "ok";
             GiTinderToken = token;
         }
+       
     }
 }

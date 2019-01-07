@@ -29,33 +29,93 @@ namespace GiTinder.Controllers
         }
 
         // GET: Settings
-        [HttpGet("/settings")]
-        public object GetSettings()
+        [HttpGet("/settings/{username}")]
+        public object GetSettings(string username)
         {
-            var settings = new Settings("Mock Filip", true, true, 160);
-            //_logger.LogInformation("Mock Settings was created!" );
-            System.Diagnostics.Debug.WriteLine("OK GETsettings!");
-            return settings; 
-                               
+            GeneralApiResponseBody responseBody;
+
+            if (Request.Headers["X-Gitinder-Token"] == "")
+            {
+                responseBody = new ErrorResponseBody("error", "Unauthorized request!");
+                return StatusCode(403, responseBody);
+            }
+            else
+            {
+                var settings = _context.Settings.Where(s => s.UserName == username).FirstOrDefault();
+                // var settings = new Settings("Mock Filip", true, true, 160);
+                //_logger.LogInformation("Mock Settings was created!" );
+                return settings;
+            }
+        }
+
+        [HttpPut("/settings/{username}")]
+        //[ValidateAntiForgeryToken]
+        public object PutSettings([FromBody]Settings settings, string username)
+        {
+            var set = _context.Settings.Where(s => s.UserName == username).FirstOrDefault();
+            GeneralApiResponseBody responseBody;
+
+            if (Request.Headers["X-Gitinder-Token"] == "")
+            {
+                responseBody = new ErrorResponseBody("error", "Unauthorized request!");
+                return StatusCode(403, responseBody);
+            }
+
+            if (settings == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            //if (set != null)
+            //{
+                _context.Settings.Update(settings);
+                _context.SaveChanges();
+                responseBody = new OKResponseBody("ok", "success");
+                return StatusCode(200, responseBody);
+            //}
+            
+            //if (set == null)
+            //{
+            //_context.Settings.Add(settings);
+            //_context.SaveChanges();
+            //responseBody = new OKResponseBody("ok", "success");
+            //return StatusCode(200, responseBody);
+            //}                   
         }
 
         [HttpPost("/settings")]
         //[ValidateAntiForgeryToken]
-        public IActionResult PostSettings([FromBody]Settings settings)
+        public object PostSettings([FromBody]Settings settings)
         {
-            if (!ModelState.IsValid)
+            GeneralApiResponseBody responseBody;
+
+            //if (Request.Headers["X-Gitinder-Token"] == "")
+            //{
+            //    Response.StatusCode = 403;
+            //    responseBody = new ErrorResponseBody("error", "Unauthorized request!");
+            //    return responseBody;
+            //}
+
+            if (Request.Headers["X-Gitinder-Token"] == "")
+            {
+
+                responseBody = new ErrorResponseBody("error", "Unauthorized request!");
+
+                return StatusCode(403, responseBody);
+            }
+
+            else if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
             _context.Settings.Add(settings);
-
-            System.Diagnostics.Debug.WriteLine("OK1 PostSettings!");
-
             _context.SaveChanges();
-
-            System.Diagnostics.Debug.WriteLine("OK2 PostSettings!");
-
             return NoContent();
         }
 

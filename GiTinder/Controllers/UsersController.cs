@@ -11,8 +11,8 @@ namespace GiTinder.Controllers
     public class UsersController : Controller
     {
         private GiTinderContext _loginItem;
-        private Response response;
-        private ErrorMessage errorMessage;
+        public Response response;
+        public ErrorMessage errorMessage;
 
         public UsersController(GiTinderContext loginItem)
         {

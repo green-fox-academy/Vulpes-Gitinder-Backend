@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -6,9 +7,10 @@ namespace GiTinder.Models
 {
     public class LoginItem
     {
-        [Key]
-        public string username { get; set; }
-        public string acces_token  { get; set; }
+        [JsonProperty("username")]
+        public string Username { get; set; }
+        [JsonProperty("access_token")]
+        public string AccessToken  { get; set; }
 
         public static object CreateUserWithNullUserName()
         {

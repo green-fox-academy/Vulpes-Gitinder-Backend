@@ -37,10 +37,6 @@ namespace GiTinder.Services
                 _context.Users.Add(rawUser);
                 _context.SaveChanges();
             }
-            
-            
-            //find and save to be added
-
             return rawUser;
         }
     }

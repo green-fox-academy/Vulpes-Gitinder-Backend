@@ -21,11 +21,11 @@ namespace GiTinder.Controllers
             _userService = userService;
         }
 
-        //GET api/values/hello-world
+        //GET hello-world
         [HttpGet("hello-world")]
-        public async void SayHello()
+        public async Task RequestForUser()
         {
-           await _userService.GetUserAsync("Riceqrisp");
+            await _userService.GetUserAsync("FilipTeply");
             return;
         }
 
@@ -40,7 +40,6 @@ namespace GiTinder.Controllers
         [HttpPost("")]
         public void Post([FromBody] string value)
         {
-
         }
 
         // PUT api/values/5

@@ -12,7 +12,7 @@ namespace GiTinder.Models
         public int Id { get; set; }
         [JsonProperty("login")]
         public string UserName { get; set; }
-        [JsonIgnore]
+        [JsonProperty("public_repos")]
         public int ReposCount { get; set; }
         [JsonIgnore]
         public string UserToken { get; set; }

@@ -19,7 +19,7 @@ namespace GiTinder.Models
         [JsonProperty("avatar_url")]
         public string Avatar { get; set; }
         public string Repos { get; set; }
-        public List<string> Languages { get; set; }
-        public List<string> Snippets { get; set; }
+        //public List<string> Languages { get; set; }
+        //public List<string> Snippets { get; set; }
     }
 }

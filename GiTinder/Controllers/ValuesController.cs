@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GiTinder.Data;
+using GiTinder.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GiTinder.Controllers
@@ -10,16 +12,22 @@ namespace GiTinder.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {   //GET api/request
-        
+        private readonly GiTinderContext _context;
+        private readonly UserServices _userService;
+
+        public ValuesController(GiTinderContext context, UserServices userService)
+        {
+            _context = context;
+            _userService = userService;
+        }
 
         //GET api/values/hello-world
         [HttpGet("hello-world")]
-        public ActionResult<string> SayHello()
+        public async void SayHello()
         {
-            return "Hello, World!";
+           await _userService.GetUserAsync("Riceqrisp");
+            return;
         }
-
-
 
         // GET api/values/5
         [HttpGet("{id}")]
@@ -46,5 +54,6 @@ namespace GiTinder.Controllers
         public void Delete(int id)
         {
         }
+
     }
 }

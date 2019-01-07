@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GiTinder.Models
 {
@@ -16,6 +13,7 @@ namespace GiTinder.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Language information is required")]
         public string LanguageName { get; set; }
 
+        [JsonIgnore]
         public List<SettingsLanguage> SettingsLanguages { get; set; }
 
         public Language(string LanguageName)

@@ -3,23 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GiTinder.Migrations
 {
-    public partial class InitialMigration6MSSql : Migration
+    public partial class InitialMigration7 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Languages",
-                columns: table => new
-                {
-                    LanguageId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    LanguageName = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Languages", x => x.LanguageId);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
@@ -39,7 +26,7 @@ namespace GiTinder.Migrations
                 {
                     SettingsId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserName = table.Column<string>(nullable: false),
+                    UserName = table.Column<string>(nullable: true),
                     EnableNotification = table.Column<bool>(nullable: false),
                     EnableBackgroundSync = table.Column<bool>(nullable: false),
                     MaxDistanceInKm = table.Column<int>(nullable: false)
@@ -52,7 +39,27 @@ namespace GiTinder.Migrations
                         column: x => x.UserName,
                         principalTable: "Users",
                         principalColumn: "UserName",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Languages",
+                columns: table => new
+                {
+                    LanguageId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    LanguageName = table.Column<string>(nullable: false),
+                    SettingsId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Languages", x => x.LanguageId);
+                    table.ForeignKey(
+                        name: "FK_Languages_Settings_SettingsId",
+                        column: x => x.SettingsId,
+                        principalTable: "Settings",
+                        principalColumn: "SettingsId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,10 +87,16 @@ namespace GiTinder.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Languages_SettingsId",
+                table: "Languages",
+                column: "SettingsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Settings_UserName",
                 table: "Settings",
                 column: "UserName",
-                unique: true);
+                unique: true,
+                filter: "[UserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SettingsLanguage_LanguageId",

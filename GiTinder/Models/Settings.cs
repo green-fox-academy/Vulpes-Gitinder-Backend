@@ -8,10 +8,11 @@ namespace GiTinder.Models
     public class Settings
     {
         [Key]
+        [JsonIgnore]
         public int SettingsId { get; set; }
 
         // [JsonProperty(PropertyName = "username")]
-        //[Required]
+        [JsonIgnore]
         [MinLength(1)]
         [ForeignKey("User.UserName")]
         public string UserName { get; set; }
@@ -21,7 +22,7 @@ namespace GiTinder.Models
         public bool EnableNotification { get; set; }
 
         [JsonProperty(PropertyName = "enable_background_sync")]
-        [Required( ErrorMessage = "Enable background sync information is required")]
+        [Required(ErrorMessage = "Enable background sync information is required")]
         public bool EnableBackgroundSync { get; set; }
 
         [JsonProperty(PropertyName = "max_distance")]
@@ -32,11 +33,20 @@ namespace GiTinder.Models
         [JsonIgnore]
         public List<SettingsLanguage> SettingsLanguages { get; set; }
 
-
+        [JsonIgnore]
         public List<Language> PreferredLanguages { get; set; }
 
+        public Settings(string UserName, bool EnableNotification, bool EnableBackgroundSync,
+  int MaxDistanceInKm)
+        {
+            this.UserName = UserName;
+            this.EnableNotification = EnableNotification;
+            this.EnableBackgroundSync = EnableBackgroundSync;
+            this.MaxDistanceInKm = MaxDistanceInKm;
+        }
     }
 }
+
 
 
 

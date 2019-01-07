@@ -21,7 +21,6 @@ namespace GiTinder.Controllers
             _context = context;
         }
 
-        /////////////////////////////////
         // POST: api/Users
         [HttpPost]
         public async Task<IActionResult> PostUser([FromBody] User user)
@@ -97,12 +96,6 @@ namespace GiTinder.Controllers
 
             return NoContent();
         }
-
-       
-
-        ///////////////////////
-
-
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]

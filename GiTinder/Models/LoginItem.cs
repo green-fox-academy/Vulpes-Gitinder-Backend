@@ -11,10 +11,5 @@ namespace GiTinder.Models
         public string Username { get; set; }
         [JsonProperty("access_token")]
         public string AccessToken  { get; set; }
-
-        public static object CreateUserWithNullUserName()
-        {
-            throw new NotImplementedException();
-        }
     }
 }   

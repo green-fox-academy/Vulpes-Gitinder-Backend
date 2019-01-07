@@ -13,11 +13,10 @@ namespace GiTinder.Models
         [JsonProperty("gitinder_token")]
         public string GiTinderToken { get; set; }
 
-        public TokenResponseBody(/* string giTinderToken */)
+        public TokenResponseBody(string giTinderToken)
         {
             Status = "ok";
-            GiTinderToken = UserServices.CreateGiTinderToken();
-            //  GiTinderToken = giTinderToken ?
+            GiTinderToken = giTinderToken;
         }
     }
 }

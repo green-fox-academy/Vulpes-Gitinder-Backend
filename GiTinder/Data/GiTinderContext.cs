@@ -9,7 +9,7 @@ namespace GiTinder.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server=localhost;database=gitinder;user=Jonathan;password=Michel123");
+            optionsBuilder.UseMySQL("server=localhost;database=gitinder;user=Jonathan;password=Michel123");
             base.OnConfiguring(optionsBuilder);
         }
     }

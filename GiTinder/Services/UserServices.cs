@@ -1,7 +1,9 @@
 ﻿using GiTinder.Data;
+using GiTinder.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace GiTinder.Services
@@ -29,9 +31,10 @@ namespace GiTinder.Services
                     token += tokenChars[random.Next(0, tokenChars.Length)];
                 }
             }
-            while (_context.Users.Any(e => e.UserToken == token));
+            while (_context.Users.Where(e => e.UserToken == token).Count() > 0);
 
             return token;
         }
     }
 }
+

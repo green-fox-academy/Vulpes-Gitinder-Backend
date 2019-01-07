@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace GiTinder.Models
 {
@@ -8,9 +9,16 @@ namespace GiTinder.Models
         [Key]
         [Required]
         [MinLength(1)]
-        public string UserName { get; set; }
+        public string Username { get; set; }
+        [Required]
+        [JsonProperty("public_repos")]
         public int ReposCount { get; set; }
         [Required]
         public string UserToken { get; set; }
+
+        public User(string username)
+        {
+            Username = username;
+        }
     }
 }

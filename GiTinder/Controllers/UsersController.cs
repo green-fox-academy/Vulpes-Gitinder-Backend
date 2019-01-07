@@ -41,20 +41,24 @@ namespace GiTinder.Controllers
             {
                 Response.StatusCode = 400;
                 responseBody = new ErrorResponseBody("access_token");
-            }                
+            }
             else if (UserExists(loginRequestBody.Username))
             {
-                _context.Find<User>(loginRequestBody.Username).Username = _userServices.CreateGiTinderToken();                          
+                string newToken = _userServices.CreateGiTinderToken();
+                _context.Find<User>(loginRequestBody.Username).UserToken = newToken;                         
                 _context.SaveChanges();
-                responseBody = new TokenResponseBody(/*_context.Find<User>(loginRequestBody.Username).UserToken*/);
-            }      
+                responseBody = new TokenResponseBody(newToken);
+            }
             else
             {
-                string token = _userServices.CreateGiTinderToken();
-                _context.Users.Add(new User(loginRequestBody.Username/*, token*/)); //CreateProfile should be here?
-                responseBody = new TokenResponseBody(/*token*/);
-            }
 
+                string token = _userServices.CreateGiTinderToken();
+                var newProfile = new User(loginRequestBody.Username);
+                newProfile.UserToken = token;
+                _context.Users.Add(newProfile);
+                _context.SaveChanges();
+                responseBody = new TokenResponseBody(token);
+            }
             return responseBody;
         }
 
@@ -158,7 +162,7 @@ namespace GiTinder.Controllers
 
         private bool UserExists(string username)
         {
-            return _context.Users.Any(e => e.Username == username);
+            return _context.Users.Where(e => e.Username == username).Count() > 0;
         }
     }
 }

@@ -7,7 +7,11 @@ namespace GiTinder.Tests.Models
 {
     class UserFactory
     {
+<<<<<<< HEAD
         private static User CreateUser()
+=======
+        public static User CreateUser()
+>>>>>>> 86ace2f0f4fee38e0556e02328d08e632d49bf24
         {
             return new User()
             {

@@ -1,4 +1,4 @@
-﻿using GiTinder.Models;
+using GiTinder.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Xunit;
@@ -8,18 +8,10 @@ namespace GiTinder.Tests.Models
     public class UserTests
     {
         [Fact]
-        public void CanCreateUser()
-        {
-            var user = new User();
-            Assert.False(user == null);
-        }
-
-        [Fact]
         public void CanSetUserNameWithString()
         {
-            var user = new User();
-            user.UserName = "Michel";
-            Assert.Equal("Michel", user.UserName);
+            var user = new User("Michel");
+            Assert.Equal("Michel", user.Username);
         }
 
         [Fact]

@@ -2,14 +2,16 @@
 using GiTinder.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GiTinder.Migrations
 {
     [DbContext(typeof(GiTinderContext))]
-    partial class GiTinderContextModelSnapshot : ModelSnapshot
+    [Migration("20181213103308_rm_Id_field_and_set_UserName_as_Key")]
+    partial class rm_Id_field_and_set_UserName_as_Key
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -17,22 +19,6 @@ namespace GiTinder.Migrations
 
             modelBuilder.Entity("GiTinder.Models.User", b =>
                 {
-<<<<<<< HEAD
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Avatar");
-
-                    b.Property<string>("Repos");
-
-                    b.Property<int>("ReposCount");
-
-                    b.Property<string>("UserName");
-
-                    b.Property<string>("UserToken");
-
-                    b.HasKey("Id");
-=======
                     b.Property<string>("UserName")
                         .ValueGeneratedOnAdd();
 
@@ -42,7 +28,6 @@ namespace GiTinder.Migrations
                         .IsRequired();
 
                     b.HasKey("UserName");
->>>>>>> b8a52ca500712c4e2ec5919c74bb702fa02b19ef
 
                     b.ToTable("Users");
                 });

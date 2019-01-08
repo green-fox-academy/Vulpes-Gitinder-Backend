@@ -25,8 +25,11 @@ namespace GiTinder.Controllers
         [HttpGet("hello-world")]
         public async Task RequestForUser()
         {
-            await _userService.GetUserAsync("Jonathan-Bonnin");
-            await _userService.GetUserReposAsync("Jonathan-Bonin");
+            //await _userService.GetUserAsync("Jonathan-Bonnin");
+
+
+
+            await _userService.GetUserReposAsync("Riceqrisp");
             return;
         }
 

@@ -20,22 +20,22 @@ namespace GiTinder.Tests.Models
 
         }
 
-        //[Fact]
-        //public void CheckStatus()
-        //{
-        //    var response = new ErrorResponse("error");
-        //    GiTinderContext item = new GiTinderContext();
+        [Fact]
+        public void CheckStatus()
+        {
+            var response = new ErrorResponse("error");
+            GiTinderContext item = new GiTinderContext();
 
-        //    Assert.Contains("ok", response.Status = "ok");
+            Assert.Contains("ok", response.Status = "ok");
 
-        //}
+        }
 
         [Fact]
         public void CheckProfile()
         {
             var prof = new ProfileResponse();
 
-            Assert.Equal("aze", prof.username = "aze");
+            Assert.Equal("aze", prof.Username = "aze");
         }
 
 

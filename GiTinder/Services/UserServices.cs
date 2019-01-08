@@ -39,6 +39,20 @@ namespace GiTinder.Services
             }
             return rawUser;
         }
+        public async Task<UserRepos> GetUserReposAsync(string username)
+        {
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("User-Agent", "GiTinderApp");
+            UserRepos rawRepos = null;
+            HttpResponseMessage responseRepos = await client.GetAsync("https://api.github.com/users/" + username + "repos");
+            if (responseRepos.IsSuccessStatusCode)
+            {
+                rawRepos = await responseRepos.Content.ReadAsAsync<UserRepos>();
+                _context.Users.Find(username).Repos = rawRepos.ToString();
+                _context.SaveChanges();
+            }
+            return rawRepos;
+        }
     }
 }
 

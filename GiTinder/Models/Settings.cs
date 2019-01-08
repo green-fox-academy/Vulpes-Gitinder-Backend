@@ -34,7 +34,8 @@ namespace GiTinder.Models
         public List<SettingsLanguage> SettingsLanguages { get; set; }
 
         [JsonIgnore]
-        public List<Language> PreferredLanguages { get; set; }
+        [NotMapped]
+        public List<Language> PreferredLanguagesList { get; set; }
 
         public Settings(string UserName, bool EnableNotification, bool EnableBackgroundSync,
   int MaxDistanceInKm)
@@ -46,6 +47,7 @@ namespace GiTinder.Models
         }
     }
 }
+
 
 
 

@@ -1,6 +1,7 @@
 ﻿using GiTinder.Data;
 using GiTinder.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace GiTinder.Controllers
@@ -27,14 +28,15 @@ namespace GiTinder.Controllers
             }
 
             var foundUser = _context.Users.Where(s => s.UserToken == Request.Headers["X-Gitinder-Token"]).FirstOrDefault();
-            var foundSettings = _context.Settings.Where(s => s.UserName == foundUser.UserName).FirstOrDefault();
-
+            var foundSettings = _context.Settings.Include(e=>e.SettingsLanguages).ThenInclude(l=>l.Language).Where(s => s.UserName == foundUser.UserName).FirstOrDefault();
+            
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            return foundSettings;
+            var settingsDAO = new SettingsDAO(foundSettings);
+            return settingsDAO;
+            // return foundSettings;
         }
 
         [HttpPut("/settings")]

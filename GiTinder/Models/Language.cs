@@ -16,9 +16,6 @@ namespace GiTinder.Models
         [JsonIgnore]
         public List<SettingsLanguage> SettingsLanguages { get; set; }
 
-        public Language(string LanguageName)
-        {
-            this.LanguageName = LanguageName;
-        }
+        
     }
 }

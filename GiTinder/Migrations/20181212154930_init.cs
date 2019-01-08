@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GiTinder.Migrations
-{//dbsnapshot thingy
-    public partial class init : Migration
+{    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

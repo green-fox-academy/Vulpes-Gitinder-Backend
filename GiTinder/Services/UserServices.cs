@@ -1,10 +1,6 @@
 ﻿using GiTinder.Data;
-using GiTinder.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace GiTinder.Services
 {
@@ -19,17 +15,11 @@ namespace GiTinder.Services
 
         public string CreateGiTinderToken()
         {
-            string token = "";
-            string[] tokenChars = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
-                "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-            Random random = new Random();
+            string token;
 
             do
             {
-                for (int i = 0; i < 28; i++)
-                {
-                    token += tokenChars[random.Next(0, tokenChars.Length)];
-                }
+                token = Guid.NewGuid().ToString();
             }
             while (_context.Users.Where(e => e.UserToken == token).Count() > 0);
 

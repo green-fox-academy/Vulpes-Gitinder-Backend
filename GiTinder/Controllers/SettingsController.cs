@@ -30,10 +30,17 @@ namespace GiTinder.Controllers
                 return StatusCode(403, responseBody);
             }
 
-            if (!SettingsExists(Request.Headers["X-Gitinder-Token"]))
-            {
-                return NotFound();
-            }
+            //Existing User with nonexisting Settings will not happen, default Settings will be created for each User in User constructor
+            
+            //UserSettings.EnableNotification = true;
+            //UserSettings.EnableBackgroundSync = true;
+            //UserSettings.MaxDistanceInKm = 10;
+            //UserSettings.PreferredLanguagesNames = null;
+
+            //if (!SettingsExists(Request.Headers["X-Gitinder-Token"]))
+            //{
+            //    return NotFound();
+            //}
 
             var foundUser = _context.Users.Where(s => s.UserToken == Request.Headers["X-Gitinder-Token"]).FirstOrDefault();
             var foundSettings = _context.Settings.Include(e => e.SettingsLanguages).ThenInclude(l => l.Language).Where(s => s.UserName == foundUser.UserName).FirstOrDefault();
@@ -42,8 +49,8 @@ namespace GiTinder.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var settingsDAO = new SettingsDAO(foundSettings);
-            return settingsDAO;
+            var settingsResponse = new SettingsResponse(foundSettings);
+            return settingsResponse;
             // return foundSettings;
         }
 
@@ -73,7 +80,7 @@ namespace GiTinder.Controllers
                 _context.Settings.Add(settings);
                 _context.SaveChanges();
 
-                _settingsServices.saveSettingsLanguageList(settings);
+                _settingsServices.addSettingsLanguageList(settings);
 
                 responseBody = new OKResponseBody("ok", "success");
                 return StatusCode(200, responseBody);

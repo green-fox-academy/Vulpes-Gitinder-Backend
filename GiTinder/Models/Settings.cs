@@ -38,6 +38,8 @@ namespace GiTinder.Models
         public List<Language> PreferredLanguagesList { get; set; }
 
         [JsonProperty("preferred_languages")]
+        //???Is the following constraint OK???
+        [Required(ErrorMessage = "At least one language should be selected.")]
         [NotMapped]
         public List<string> PreferredLanguagesNames { get; set; }
 

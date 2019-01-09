@@ -16,7 +16,7 @@ namespace GiTinder.Services
             _context = context;
         }
                
-        public void saveSettingsLanguageList(Settings settings)
+        public void addSettingsLanguageList(Settings settings)
         {
             var languageNameList = settings.PreferredLanguagesNames;
             var settingsId = settings.SettingsId;
@@ -33,7 +33,7 @@ namespace GiTinder.Services
             }
         }
 
-        public void updateSettingsLanguageItem(Settings settings)
+        public void updateSettingsLanguageList(Settings settings)
         {
             var languageNameList = settings.PreferredLanguagesNames;
             var settingsId = settings.SettingsId;

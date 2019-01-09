@@ -18,5 +18,12 @@ namespace GiTinder.Models
 
         public Settings UserSettings { get; set; }
 
+        public User()
+        {
+            //UserSettings.EnableNotification = true;
+            //UserSettings.EnableBackgroundSync = true;
+            //UserSettings.MaxDistanceInKm = 10;
+            //UserSettings.PreferredLanguagesNames = null;
+        }
     }
 }

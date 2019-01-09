@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace GiTinder.Models
 {
-    public class SettingsDAO
+    public class SettingsResponse
     {
         [JsonIgnore]
-        public Settings settingsForDAO;
+        public Settings settingsForSettingsResponse;
         
         [JsonProperty("enable_notifications")]
         public bool EnableNotification { get; set; }
@@ -22,12 +22,12 @@ namespace GiTinder.Models
         [JsonProperty("preferred_languages")]
         public List<string> PreferredLanguagesNames { get; set; }
 
-        public SettingsDAO(Settings settings)
+        public SettingsResponse(Settings settings)
         {
-            settingsForDAO = settings;
-            EnableNotification = settingsForDAO.EnableNotification;
-            EnableBackgroundSync = settingsForDAO.EnableBackgroundSync;
-            MaxDistanceInKm = settingsForDAO.MaxDistanceInKm;
+            settingsForSettingsResponse = settings;
+            EnableNotification = settingsForSettingsResponse.EnableNotification;
+            EnableBackgroundSync = settingsForSettingsResponse.EnableBackgroundSync;
+            MaxDistanceInKm = settingsForSettingsResponse.MaxDistanceInKm;
 
             List<string> preferredLanguagesNames = new List<string>();
             preferredLanguagesNames = settings.SettingsLanguages.Select(sl => sl.Language.LanguageName).ToList();
@@ -36,11 +36,3 @@ namespace GiTinder.Models
     }
 }
 
-//{
-//  "enable_notifications": true,
-//  "enable_background_sync": true,
-//  "max_distance": 0,
-//  "preferred_languages": [
-//    "string"
-//  ]
-//}

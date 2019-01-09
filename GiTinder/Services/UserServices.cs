@@ -1,4 +1,5 @@
 ﻿using GiTinder.Data;
+<<<<<<< HEAD
 using GiTinder.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,13 @@ using System.Threading.Tasks;
 namespace GiTinder.Services
 {
 
+=======
+using System;
+using System.Linq;
+
+namespace GiTinder.Services
+{
+>>>>>>> ba9123ab47868405d039c3851fbcfee816e84dc4
     public class UserServices
     {
         private readonly GiTinderContext _context;
@@ -19,6 +27,7 @@ namespace GiTinder.Services
         {
             _context = context;
         }
+<<<<<<< HEAD
         //async method is used everytime something should take long time like for requesting for data await allows certain line to run independently.
         //if user doesn't exist in github then it shouldnt respond
         public async Task<User> GetUserAsync(string username)
@@ -57,9 +66,26 @@ namespace GiTinder.Services
                 _context.SaveChanges();
             }
             return rawRepos;
+=======
+
+        public string CreateGiTinderToken()
+        {
+            string token;
+
+            do
+            {
+                token = Guid.NewGuid().ToString();
+            }
+            while (_context.Users.Where(e => e.UserToken == token).Count() > 0);
+
+            return token;
+>>>>>>> ba9123ab47868405d039c3851fbcfee816e84dc4
         }
     }
 }
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> ba9123ab47868405d039c3851fbcfee816e84dc4

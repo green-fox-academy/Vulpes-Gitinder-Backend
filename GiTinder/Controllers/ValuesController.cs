@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+<<<<<<< HEAD
 using System.Linq;
 using System.Threading.Tasks;
 using GiTinder.Data;
 using GiTinder.Services;
 using Microsoft.AspNetCore.Mvc;
+=======
+>>>>>>> ba9123ab47868405d039c3851fbcfee816e84dc4
 
 namespace GiTinder.Controllers
 {

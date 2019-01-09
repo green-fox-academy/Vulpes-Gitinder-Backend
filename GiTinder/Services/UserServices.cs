@@ -44,7 +44,7 @@ namespace GiTinder.Services
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("User-Agent", "GiTinderApp");
             List<UserRepos> rawRepos = null;
-            HttpResponseMessage responseRepos = await client.GetAsync("https://api.github.com/users/"+"Riceqrisp"+"/repos");
+            HttpResponseMessage responseRepos = await client.GetAsync("https://api.github.com/users/"+username+"/repos");
             if (responseRepos.IsSuccessStatusCode)
             {
                 rawRepos = await responseRepos.Content.ReadAsAsync<List<UserRepos>>();

@@ -21,12 +21,12 @@ namespace GiTinder.Controllers
             _userService = userService;
         }
 
-        //GET hello-world
-        [HttpGet("hello-world")]
+        //GET api/values/create-user
+        [HttpGet("create-user")]
         public async Task RequestForUser()
         {
-            //await _userService.GetUserAsync("Jonathan-Bonnin");
-            await _userService.GetUserReposAsync("Riceqrisp");
+           // await _userService.GetUserAsync("dypher91");
+            await _userService.GetUserReposAsync("Jonathan-Bonnin");
             return;
         }
 

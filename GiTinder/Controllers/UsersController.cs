@@ -55,7 +55,7 @@ namespace GiTinder.Controllers
 
         private bool UserExists(string username)
         {
-            return _context.Users.Where(e => e.Username == username).Count() > 0;
+            return _context.Users.Where(e => e.UserName == username).Count() > 0;
         }
     }
 }

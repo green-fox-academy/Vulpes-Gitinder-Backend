@@ -7,15 +7,10 @@ namespace GiTinder.Tests.Models
 {
     class UserFactory
     {
-<<<<<<< HEAD
         private static User CreateUser()
-=======
-        public static User CreateUser()
->>>>>>> 86ace2f0f4fee38e0556e02328d08e632d49bf24
         {
-            return new User()
+            return new User("Michel")
             {
-                UserName = "Michel",
                 ReposCount = 8,
                 UserToken = "abc123"
             };
@@ -24,7 +19,7 @@ namespace GiTinder.Tests.Models
         public static User CreateUserWithNullUserName()
         {
             var user = CreateUser();
-            user.UserName = null;
+            user.Username = null;
             return user;
         }
 

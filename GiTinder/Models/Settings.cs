@@ -37,6 +37,10 @@ namespace GiTinder.Models
         [NotMapped]
         public List<Language> PreferredLanguagesList { get; set; }
 
+        [JsonProperty("preferred_languages")]
+        [NotMapped]
+        public List<string> PreferredLanguagesNames { get; set; }
+
         public Settings(string UserName, bool EnableNotification, bool EnableBackgroundSync,
   int MaxDistanceInKm)
         {

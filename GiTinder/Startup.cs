@@ -1,4 +1,5 @@
 ﻿using GiTinder.Data;
+using GiTinder.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ namespace GiTinder
             services.AddDbContext<GiTinderContext>(options => options.UseSqlServer(_configuration.GetConnectionString("GiTinderContextMSSqlDb")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddTransient<SettingsServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

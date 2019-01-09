@@ -16,6 +16,12 @@ namespace GiTinder.Models
 
         public int LanguageId { get; set; }
         public Language Language { get; set; }
+
+        public SettingsLanguage(int settingsId, int languageId)
+        {
+            SettingsId = settingsId;
+            LanguageId = languageId;
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using GiTinder.Data;
 using GiTinder.Models;
+using GiTinder.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -9,10 +10,12 @@ namespace GiTinder.Controllers
     public class SettingsController : Controller
     {
         private GiTinderContext _context;
+        private SettingsServices _settingsServices;
 
-        public SettingsController(GiTinderContext context)
+        public SettingsController(GiTinderContext context, SettingsServices settingsServices)
         {
             _context = context;
+            _settingsServices = settingsServices;
         }
 
         // GET: Settings
@@ -27,9 +30,14 @@ namespace GiTinder.Controllers
                 return StatusCode(403, responseBody);
             }
 
+            if (!SettingsExists(Request.Headers["X-Gitinder-Token"]))
+            {
+                return NotFound();
+            }
+
             var foundUser = _context.Users.Where(s => s.UserToken == Request.Headers["X-Gitinder-Token"]).FirstOrDefault();
-            var foundSettings = _context.Settings.Include(e=>e.SettingsLanguages).ThenInclude(l=>l.Language).Where(s => s.UserName == foundUser.UserName).FirstOrDefault();
-            
+            var foundSettings = _context.Settings.Include(e => e.SettingsLanguages).ThenInclude(l => l.Language).Where(s => s.UserName == foundUser.UserName).FirstOrDefault();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -57,17 +65,21 @@ namespace GiTinder.Controllers
             }
 
             var foundUser = _context.Users.Where(s => s.UserToken == Request.Headers["X-Gitinder-Token"]).FirstOrDefault();
+            var foundSettings = _context.Settings.Where(s => s.UserName == foundUser.UserName).FirstOrDefault();
 
             if (!SettingsExists(Request.Headers["X-Gitinder-Token"]))
             {
                 settings.UserName = foundUser.UserName;
                 _context.Settings.Add(settings);
                 _context.SaveChanges();
+
+                _settingsServices.saveSettingsLanguageList(settings);
+
                 responseBody = new OKResponseBody("ok", "success");
                 return StatusCode(200, responseBody);
             }
-            
-            var foundSettings = _context.Settings.Where(s => s.UserName == foundUser.UserName).FirstOrDefault();
+
+
 
             foundSettings.UserName = foundUser.UserName;
             foundSettings.EnableNotification = settings.EnableNotification;

@@ -31,7 +31,7 @@ namespace GiTinder.Controllers
             }
 
             //Existing User with nonexisting Settings will not happen, default Settings will be created for each User in User constructor
-            
+
             //UserSettings.EnableNotification = true;
             //UserSettings.EnableBackgroundSync = true;
             //UserSettings.MaxDistanceInKm = 10;
@@ -74,25 +74,25 @@ namespace GiTinder.Controllers
             var foundUser = _context.Users.Where(s => s.UserToken == Request.Headers["X-Gitinder-Token"]).FirstOrDefault();
             var foundSettings = _context.Settings.Where(s => s.UserName == foundUser.UserName).FirstOrDefault();
 
+            ///This if clause can be omitted once each user will have its default settings upon user creation 
             if (!SettingsExists(Request.Headers["X-Gitinder-Token"]))
             {
                 settings.UserName = foundUser.UserName;
                 _context.Settings.Add(settings);
-                _context.SaveChanges();
-
                 _settingsServices.addSettingsLanguageList(settings);
-
+                _context.SaveChanges();
+                
                 responseBody = new OKResponseBody("ok", "success");
                 return StatusCode(200, responseBody);
             }
-
-
+            ///
 
             foundSettings.UserName = foundUser.UserName;
             foundSettings.EnableNotification = settings.EnableNotification;
             foundSettings.EnableBackgroundSync = settings.EnableBackgroundSync;
             foundSettings.MaxDistanceInKm = settings.MaxDistanceInKm;
 
+            _settingsServices.updateSettingsLanguageList(settings, Request.Headers["X-Gitinder-Token"]);
             _context.Settings.Update(foundSettings);
             _context.SaveChanges();
             responseBody = new OKResponseBody("ok", "success");
@@ -104,6 +104,7 @@ namespace GiTinder.Controllers
             return _context.Users.Any(e => e.UserToken == usertoken);
         }
 
+        ///This method can be perhaps omitted once each user will have its default settings upon user creation 
         private bool SettingsExists(string usertoken)
         {
             var foundUser = _context.Users.Where(s => s.UserToken == usertoken).FirstOrDefault();

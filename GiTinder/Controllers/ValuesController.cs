@@ -25,8 +25,8 @@ namespace GiTinder.Controllers
         [HttpGet("create-user")]
         public async Task RequestForUser()
         {
-           // await _userService.GetUserAsync("dypher91");
-            await _userService.GetUserReposAsync("Jonathan-Bonnin");
+            //await _userService.GetUserAsync("Riceqrisp");
+            await _userService.GetUserReposAsync("Riceqrisp");
             return;
         }
 

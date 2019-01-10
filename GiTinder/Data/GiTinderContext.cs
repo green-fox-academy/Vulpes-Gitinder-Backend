@@ -9,9 +9,8 @@ namespace GiTinder.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Settings> Settings { get; set; }
         public DbSet<Language> Languages { get; set; }
-        //Should the following DbSet be here?
-        public DbSet<SettingsLanguage> SettingsLanguage {get; set; }
-               
+        public DbSet<SettingsLanguage> SettingsLanguage { get; set; }
+
         public GiTinderContext(DbContextOptions<GiTinderContext> options)
   : base(options)
         { }

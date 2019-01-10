@@ -2,32 +2,40 @@
 using GiTinder.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GiTinder.Migrations
 {
     [DbContext(typeof(GiTinderContext))]
-    [Migration("20181213103308_rm_Id_field_and_set_UserName_as_Key")]
-    partial class rm_Id_field_and_set_UserName_as_Key
+    [Migration("20190110125114_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024");
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("GiTinder.Models.User", b =>
                 {
-                    b.Property<string>("UserName")
+                    b.Property<string>("Username")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Avatar");
+
+                    b.Property<int>("Id");
+
+                    b.Property<string>("Repos");
 
                     b.Property<int>("ReposCount");
 
-                    b.Property<string>("UserToken")
-                        .IsRequired();
+                    b.Property<string>("UserToken");
 
-                    b.HasKey("UserName");
+                    b.HasKey("Username");
 
                     b.ToTable("Users");
                 });

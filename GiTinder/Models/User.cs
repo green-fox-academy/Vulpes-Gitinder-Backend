@@ -17,7 +17,7 @@ namespace GiTinder.Models
         [MinLength(1)]
 
         [JsonProperty("login")]
-        public string UserName { get; set; }
+        public string Username { get; set; }
         [JsonProperty("public_repos")]
         public int ReposCount { get; set; }
         [JsonIgnore]
@@ -28,7 +28,7 @@ namespace GiTinder.Models
 
         public User(string username)
         {
-            UserName = username;
+            Username = username;
         }
     }
 }

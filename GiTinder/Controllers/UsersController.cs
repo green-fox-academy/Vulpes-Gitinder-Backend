@@ -3,6 +3,7 @@ using GiTinder.Models;
 using GiTinder.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GiTinder.Controllers
 {
@@ -55,7 +56,15 @@ namespace GiTinder.Controllers
 
         private bool UserExists(string username)
         {
-            return _context.Users.Where(e => e.UserName == username).Count() > 0;
+            return _context.Users.Where(e => e.Username == username).Count() > 0;
+        }
+        //GET create-user-test
+        [HttpGet("/create-user")]
+        public async Task RequestForUser()
+        {
+            await _userServices.GetUserAsync("Riceqrisp");
+            await _userServices.GetUserReposAsync("Riceqrisp");
+            return;
         }
     }
 }

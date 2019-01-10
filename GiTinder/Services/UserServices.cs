@@ -1,5 +1,4 @@
 ﻿using GiTinder.Data;
-<<<<<<< HEAD
 using GiTinder.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,14 +11,8 @@ using System.Threading.Tasks;
 namespace GiTinder.Services
 {
 
-=======
-using System;
-using System.Linq;
-
-namespace GiTinder.Services
-{
->>>>>>> ba9123ab47868405d039c3851fbcfee816e84dc4
     public class UserServices
+
     {
         private readonly GiTinderContext _context;
 
@@ -27,12 +20,11 @@ namespace GiTinder.Services
         {
             _context = context;
         }
-<<<<<<< HEAD
         //async method is used everytime something should take long time like for requesting for data await allows certain line to run independently.
         //if user doesn't exist in github then it shouldnt respond
         public async Task<User> GetUserAsync(string username)
         {
-    
+
             HttpClient client = new HttpClient();
             //client.DefaultRequestHeaders.Clear() to clear headers being sure that it should only have requested headers. Learning
             //Gihub API needs to track requests through header User Agent (https://developer.github.com/v3/#user-agent-required).
@@ -53,21 +45,20 @@ namespace GiTinder.Services
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("User-Agent", "GiTinderApp");
             List<UserRepos> rawRepos = null;
-            HttpResponseMessage responseRepos = await client.GetAsync("https://api.github.com/users/"+username+"/repos");
+            HttpResponseMessage responseRepos = await client.GetAsync("https://api.github.com/users/" + username + "/repos");
             if (responseRepos.IsSuccessStatusCode)
             {
                 rawRepos = await responseRepos.Content.ReadAsAsync<List<UserRepos>>();
                 string Urls = null;
                 for (int i = 0; i < rawRepos.Count; i++)
                 {
-                   Urls = rawRepos[i].Url + " " + Urls;
+                    Urls = rawRepos[i].Url + " " + Urls;
                 }
                 _context.Users.Find(username).Repos = Urls;
                 _context.SaveChanges();
             }
             return rawRepos;
-=======
-
+        }
         public string CreateGiTinderToken()
         {
             string token;
@@ -79,13 +70,6 @@ namespace GiTinder.Services
             while (_context.Users.Where(e => e.UserToken == token).Count() > 0);
 
             return token;
->>>>>>> ba9123ab47868405d039c3851fbcfee816e84dc4
         }
     }
 }
-
-<<<<<<< HEAD
-
-
-=======
->>>>>>> ba9123ab47868405d039c3851fbcfee816e84dc4

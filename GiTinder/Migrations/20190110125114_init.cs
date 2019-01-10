@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GiTinder.Migrations
-
 {
     public partial class init : Migration
     {
@@ -11,14 +10,16 @@ namespace GiTinder.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
-                    UserName = table.Column<string>(nullable: true),
-                    ReposCount = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false),
+                    Username = table.Column<string>(nullable: false),
+                    ReposCount = table.Column<int>(nullable: false),
+                    UserToken = table.Column<string>(nullable: true),
+                    Avatar = table.Column<string>(nullable: true),
+                    Repos = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Username);
                 });
         }
 

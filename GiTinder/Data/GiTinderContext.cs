@@ -5,12 +5,10 @@ namespace GiTinder.Data
 {
     public class GiTinderContext : DbContext 
     {
-        public DbSet<User> Users { get; set; }
+    public DbSet<User> Users { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseMySQL("server=localhost;database=gitinder;user=root;password=1234");
-            base.OnConfiguring(optionsBuilder);
-        }
+    public GiTinderContext(DbContextOptions<GiTinderContext> options)
+        : base(options)
+        { }
     }
 }

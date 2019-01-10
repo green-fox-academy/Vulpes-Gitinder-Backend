@@ -14,14 +14,14 @@ namespace GiTinder.Tests.Models
         public static Settings CreateSettingWithEmptyStringUserName()
         {
             var settings = CreateSettingsWithValidUserName();
-            settings.UserName = "";
+            settings.Username = "";
             return settings;
         }
 
         public static Settings CreateSettingsWithNullUserName()
         {
             var settings = CreateSettingsWithValidUserName();
-            settings.UserName = null;
+            settings.Username = null;
             return settings;
         }
 

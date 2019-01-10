@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -9,7 +10,7 @@ namespace GiTinder.Models
         [Key]
         [Required]
         [MinLength(1)]
-        public string UserName { get; set; }
+        public string Username { get; set; }
 
         public int ReposCount { get; set; }
 
@@ -17,13 +18,13 @@ namespace GiTinder.Models
         public string UserToken { get; set; }
 
         public Settings UserSettings { get; set; }
-
-        public User()
+              
+        public User(string Username, string UserToken, int ReposCount)
         {
-            //UserSettings.EnableNotification = true;
-            //UserSettings.EnableBackgroundSync = true;
-            //UserSettings.MaxDistanceInKm = 10;
-            //UserSettings.PreferredLanguagesNames = null;
+            this.Username = Username;
+            this.UserToken = UserToken;
+            this.ReposCount = ReposCount;
+            Settings defaultSettings = new Settings(Username, true, true, 10);   
         }
     }
 }

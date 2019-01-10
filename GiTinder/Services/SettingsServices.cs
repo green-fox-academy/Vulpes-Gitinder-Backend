@@ -1,5 +1,6 @@
 ﻿using GiTinder.Data;
 using GiTinder.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,20 +17,65 @@ namespace GiTinder.Services
             _context = context;
         }
 
-        public void addSettingsLanguageItem(int settingsId, int languageId)
+        public bool TokenExists(string usertoken)
         {
-            var settingsLanguageItem = new SettingsLanguage(settingsId, languageId);
-            _context.Add(settingsLanguageItem);
+            return _context.Users.Any(u => u.UserToken == usertoken);
         }
 
-        public void removeSettingsLanguageItem(int settingsId, int languageId)
+        public bool UserTokenCorrespondsToUsername(string username, string usertoken)
         {
-            SettingsLanguage settingsLanguageItemForRemoval =
-                _context.SettingsLanguage.Where(sl => sl.SettingsId == settingsId).Where(sl => sl.LanguageId == languageId).FirstOrDefault();
-            _context.SettingsLanguage.Remove(settingsLanguageItemForRemoval);
+            return _context.Users.Where(u => u.Username == username).Any(u => u.UserToken == usertoken);
         }
 
-        public void updateSettingsLanguageList(Settings settings, string usertoken)
+        public User FindUserByUserToken(string usertoken)
+        {
+            User foundUser = _context.Users.Where(u => u.UserToken == usertoken).FirstOrDefault();
+            return foundUser;
+        }
+
+        public Settings FindSettingsWithLanguagesByUser(User user)
+        {
+            var foundSettings = _context.Settings.Include(e => e.SettingsLanguages).ThenInclude(l => l.Language).Where(s => s.Username == user.Username).FirstOrDefault();
+            return foundSettings;
+        }
+
+        public Settings FindSettingsWithLanguagesByUserToken(string usertoken)
+        {
+            var foundUser = FindUserByUserToken(usertoken);
+            var foundSettings = FindSettingsWithLanguagesByUser(foundUser);
+            return foundSettings;
+        }
+
+        private bool UserExists(string username)
+        {
+            return _context.Users.Any(e => e.Username == username);
+        }
+
+        private bool SettingsExists(string username)
+        {
+            return _context.Settings.Any(s => s.Username == username);
+        }
+
+        public void UpdateAndSaveSettingsFoundByUserToken(Settings settings, string usertoken)
+        {
+            var foundSettings = FindSettingsWithLanguagesByUserToken(usertoken);
+            UpdateSettings(foundSettings, settings, usertoken);
+            _context.SaveChanges();
+        }
+
+        public void UpdateSettings(Settings oldsettings, Settings newsettings, string usertoken)
+        {
+            var foundUser = FindUserByUserToken(usertoken);
+            oldsettings.Username = foundUser.Username;
+            oldsettings.EnableNotification = newsettings.EnableNotification;
+            oldsettings.EnableBackgroundSync = newsettings.EnableBackgroundSync;
+            oldsettings.MaxDistanceInKm = newsettings.MaxDistanceInKm;
+            _context.Settings.Update(oldsettings);
+            UpdateSettingsLanguageList(newsettings, usertoken);
+        }
+
+
+        public void UpdateSettingsLanguageList(Settings settings, string usertoken)
         {
             List<string> passedLanguageNameList = settings.PreferredLanguagesNames;
             User foundUser = _context.Users.Where(e => e.UserToken == usertoken).FirstOrDefault();
@@ -43,7 +89,7 @@ namespace GiTinder.Services
 
                 if (!_context.SettingsLanguage.Where(sl => sl.SettingsId == settingsId).Any(sl => sl.LanguageId == languageId))
                 {
-                    addSettingsLanguageItem(settingsId, languageId);
+                    AddSettingsLanguageItem(settingsId, languageId);
                 }
             }
 
@@ -57,27 +103,22 @@ namespace GiTinder.Services
                 if (_context.SettingsLanguage.Where(sl => sl.SettingsId == settingsId).Any(sl => sl.LanguageId == languageId) &&
                     !passedLanguageNameList.Contains(languageName))
                 {
-                    removeSettingsLanguageItem(settingsId, languageId);
+                    RemoveSettingsLanguageItem(settingsId, languageId);
                 }
             }
         }
 
-        ///The following method will probably be removed after each user will have its default settings upon user creation
-        public void addSettingsLanguageList(Settings settings)
+        public void AddSettingsLanguageItem(int settingsId, int languageId)
         {
-            var languageNameList = settings.PreferredLanguagesNames;
-            var settingsId = settings.SettingsId;
-
-            foreach (string languageName in languageNameList)
-            {
-                var foundLanguage = _context.Languages.Where(l => l.LanguageName == languageName).FirstOrDefault();
-
-                var languageId = foundLanguage.LanguageId;
-
-                addSettingsLanguageItem(settingsId, languageId);
-                
-            }
+            var settingsLanguageItem = new SettingsLanguage(settingsId, languageId);
+            _context.Add(settingsLanguageItem);
         }
-        ///
+
+        public void RemoveSettingsLanguageItem(int settingsId, int languageId)
+        {
+            SettingsLanguage settingsLanguageItemForRemoval =
+                _context.SettingsLanguage.Where(sl => sl.SettingsId == settingsId).Where(sl => sl.LanguageId == languageId).FirstOrDefault();
+            _context.SettingsLanguage.Remove(settingsLanguageItemForRemoval);
+        }
     }
 }

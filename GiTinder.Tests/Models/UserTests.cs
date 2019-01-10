@@ -20,8 +20,8 @@ namespace GiTinder.Tests.Models
         public void CanSetUserNameWithString()
         {
             var user = new User();
-            user.UserName = "Michel";
-            Assert.Equal("Michel", user.UserName);
+            user.Username = "Michel";
+            Assert.Equal("Michel", user.Username);
         }
 
         [Fact]

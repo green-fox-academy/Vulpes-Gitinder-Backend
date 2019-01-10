@@ -15,7 +15,6 @@ namespace GiTinder.Models
         [Key]
         [Required]
         [MinLength(1)]
-
         [JsonProperty("login")]
         public string Username { get; set; }
         [JsonProperty("public_repos")]

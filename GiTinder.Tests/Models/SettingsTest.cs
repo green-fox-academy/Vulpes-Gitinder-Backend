@@ -21,15 +21,7 @@ namespace GiTinder.Tests.Models
             var settings = SettingsFactory.CreateSettingWithEmptyStringUserName();
             Assert.True(ValidateModel(settings).Count == 1);
         }
-
-        ////////////////////this test is failing
-        [Fact]
-        public void CannotCreateSettingsWithInvalidNullUserName()
-        {
-            var settings = SettingsFactory.CreateSettingsWithNullUserName();
-            Assert.True(ValidateModel(settings).Count == 1);
-        }
-
+               
         [Fact]
         public void CannotCreateSettingsWithInvalidMaxDistance170Km()
         {

@@ -1,7 +1,7 @@
 ﻿using GiTinder.Data;
 using GiTinder.Models;
+using GiTinder.Models.GitResponses;
 using GiTinder.Services;
-using GiTinder.Services.GitResponses;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -61,7 +61,8 @@ namespace GiTinder.Controllers
         [HttpGet("/create-user")]
         public async Task RequestForUser()
         {
-            await _userServices.GetGithubProfileAsync("anyUserName");
+            //await _userServices.GetGithubProfileAsync("anyUserName");
+            //This maay only work once for now.
             await _userServices.GetGithubProfilesReposAsync("anyUserName");
             return;
         }

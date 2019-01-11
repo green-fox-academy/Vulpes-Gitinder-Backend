@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 
 namespace GiTinder.Models
-{
+{ 
     public class User
     {
         public static Task Content { get; internal set; }

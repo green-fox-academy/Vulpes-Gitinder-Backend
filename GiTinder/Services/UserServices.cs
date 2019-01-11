@@ -10,28 +10,22 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Services
 {
-
     public class UserServices
-
     {
         private readonly GiTinderContext _context;
+        public const string ApiUrl = "https://api.github.com/users/";
+        private HttpClient client = new HttpClient();
 
         public UserServices(GiTinderContext context)
         {
             _context = context;
         }
-        //async method is used everytime something should take long time like for requesting for data await allows certain line to run independently.
-        //if user doesn't exist in github then it shouldnt respond
-        public async Task<User> GetUserAsync(string username)
+        public async Task<User> GetGithubProfileAsync(string username)
         {
-
-            HttpClient client = new HttpClient();
-            //client.DefaultRequestHeaders.Clear() to clear headers being sure that it should only have requested headers. Learning
-            //Gihub API needs to track requests through header User Agent (https://developer.github.com/v3/#user-agent-required).
-            client.DefaultRequestHeaders.Add("User-Agent", "GiTinderApp");
+            HeadersSettingForGitHubApi();
             User rawUser = null;
 
-            HttpResponseMessage responseUser = await client.GetAsync("https://api.github.com/users/" + username);
+            HttpResponseMessage responseUser = await client.GetAsync(ApiUrl + username);
             if (responseUser.IsSuccessStatusCode)
             {
                 rawUser = await responseUser.Content.ReadAsAsync<User>();
@@ -40,19 +34,18 @@ namespace GiTinder.Services
             }
             return rawUser;
         }
-        public async Task<List<UserRepos>> GetUserReposAsync(string username)
+        public async Task<List<UserRepos>> GetGithubProfilesReposAsync(string username)
         {
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", "GiTinderApp");
+            HeadersSettingForGitHubApi();
             List<UserRepos> rawRepos = null;
-            HttpResponseMessage responseRepos = await client.GetAsync("https://api.github.com/users/" + username + "/repos");
+            HttpResponseMessage responseRepos = await client.GetAsync(ApiUrl + username + "/repos");
             if (responseRepos.IsSuccessStatusCode)
             {
                 rawRepos = await responseRepos.Content.ReadAsAsync<List<UserRepos>>();
                 string Urls = null;
                 for (int i = 0; i < rawRepos.Count; i++)
                 {
-                    Urls = rawRepos[i].Url + " " + Urls;
+                    Urls = rawRepos[i].Url + ";" + Urls;
                 }
                 _context.Users.Find(username).Repos = Urls;
                 _context.SaveChanges();
@@ -70,6 +63,10 @@ namespace GiTinder.Services
             while (_context.Users.Where(e => e.UserToken == token).Count() > 0);
 
             return token;
+        }
+        public void HeadersSettingForGitHubApi()
+        {
+            client.DefaultRequestHeaders.Add("User-Agent", "GiTinderApp");
         }
     }
 }

@@ -7,6 +7,7 @@ namespace GiTinder.Models
 {
     public class UserLanguages
     {
+        public string User { get; set; }
         public string languages { get; set; }
     }
 }

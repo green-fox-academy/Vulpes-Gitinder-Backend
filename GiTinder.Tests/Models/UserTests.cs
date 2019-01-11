@@ -1,4 +1,4 @@
-﻿using Xunit;
+﻿﻿using Xunit;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,17 +10,9 @@ namespace GiTinder.Tests.Models
     public class UserTests
     {
         [Fact]
-        public void CanCreateUser()
-        {
-            var user = new User();
-            Assert.False(user == null);
-        }
-
-        [Fact]
         public void CanSetUserNameWithString()
         {
-            var user = new User();
-            user.Username = "Michel";
+            var user = new User("Michel");
             Assert.Equal("Michel", user.Username);
         }
 
@@ -45,6 +37,5 @@ namespace GiTinder.Tests.Models
             Validator.TryValidateObject(model, ctx, validationResults, true);
             return validationResults;
         }
-
     }
 }

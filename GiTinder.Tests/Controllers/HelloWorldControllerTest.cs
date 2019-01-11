@@ -1,4 +1,5 @@
 ﻿using GiTinder.Controllers;
+using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
 namespace GiTinder.Tests.Controllers

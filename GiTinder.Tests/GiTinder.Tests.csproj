@@ -18,6 +18,4 @@
     <ProjectReference Include="..\GiTinder\GiTinder.csproj" />
   </ItemGroup>
 
-  
-
 </Project>

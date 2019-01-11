@@ -3,14 +3,16 @@ using GiTinder.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GiTinder.Migrations
 {
     [DbContext(typeof(GiTinderContext))]
-    partial class GiTinderContextModelSnapshot : ModelSnapshot
+    [Migration("20190108155553_InitialMigration9")]
+    partial class InitialMigration9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,13 +46,13 @@ namespace GiTinder.Migrations
 
                     b.Property<int>("MaxDistanceInKm");
 
-                    b.Property<string>("Username");
+                    b.Property<string>("UserName");
 
                     b.HasKey("SettingsId");
 
-                    b.HasIndex("Username")
+                    b.HasIndex("UserName")
                         .IsUnique()
-                        .HasFilter("[Username] IS NOT NULL");
+                        .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("Settings");
                 });
@@ -70,7 +72,7 @@ namespace GiTinder.Migrations
 
             modelBuilder.Entity("GiTinder.Models.User", b =>
                 {
-                    b.Property<string>("Username")
+                    b.Property<string>("UserName")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("ReposCount");
@@ -78,7 +80,7 @@ namespace GiTinder.Migrations
                     b.Property<string>("UserToken")
                         .IsRequired();
 
-                    b.HasKey("Username");
+                    b.HasKey("UserName");
 
                     b.ToTable("Users");
                 });
@@ -87,7 +89,7 @@ namespace GiTinder.Migrations
                 {
                     b.HasOne("GiTinder.Models.User")
                         .WithOne("UserSettings")
-                        .HasForeignKey("GiTinder.Models.Settings", "Username");
+                        .HasForeignKey("GiTinder.Models.Settings", "UserName");
                 });
 
             modelBuilder.Entity("GiTinder.Models.SettingsLanguage", b =>

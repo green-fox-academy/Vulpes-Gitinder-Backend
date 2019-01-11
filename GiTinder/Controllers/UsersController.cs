@@ -2,6 +2,7 @@
 using GiTinder.Models;
 using GiTinder.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 
 namespace GiTinder.Controllers
@@ -23,12 +24,12 @@ namespace GiTinder.Controllers
         {
             GeneralApiResponseBody responseBody;
 
-            if (loginRequestBody.Username == null)
+            if (String.IsNullOrEmpty(loginRequestBody.Username))
             {
                 Response.StatusCode = 400;
                 responseBody = new ErrorResponseBody("username");
             }                
-            else if (loginRequestBody.AccessToken == null)
+            else if (String.IsNullOrEmpty(loginRequestBody.AccessToken))
             {
                 Response.StatusCode = 400;
                 responseBody = new ErrorResponseBody("access_token");

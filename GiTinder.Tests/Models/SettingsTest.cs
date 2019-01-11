@@ -1,6 +1,4 @@
-﻿using GiTinder.Controllers;
-using GiTinder.Data;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Xunit;
 
@@ -21,7 +19,7 @@ namespace GiTinder.Tests.Models
             var settings = SettingsFactory.CreateSettingWithEmptyStringUserName();
             Assert.True(ValidateModel(settings).Count == 1);
         }
-               
+
         [Fact]
         public void CannotCreateSettingsWithInvalidMaxDistance170Km()
         {
@@ -45,6 +43,3 @@ namespace GiTinder.Tests.Models
         }
     }
 }
-
-
-

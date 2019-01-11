@@ -13,10 +13,10 @@ namespace GiTinder.Models
             Message = missingParameter + " is missing!";
         }
 
-        public ErrorResponseBody(string Statu, string Messag)
+        public ErrorResponseBody(string status, string message)
         {
-            Status = Statu;
-            Message = Messag;
+            Status = status;
+            Message = message;
         }
     }
 }

@@ -44,8 +44,5 @@ namespace GiTinder.Services
             User foundUser = _context.Users.Where(u => u.UserToken == usertoken).FirstOrDefault();
             return foundUser;
         }
-
-
     }
 }
-

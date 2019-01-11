@@ -61,9 +61,7 @@ namespace GiTinder.Controllers
             _settingsServices.UpdateAndSaveSettingsFoundByUserToken(settings, usertoken);
 
             responseBody = new OKResponseBody("ok", "success");
-            return StatusCode(200, responseBody);
+            return Ok(responseBody);
         }
     }
 }
-
-

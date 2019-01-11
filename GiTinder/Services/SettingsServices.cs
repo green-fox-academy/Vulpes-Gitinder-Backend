@@ -11,26 +11,12 @@ namespace GiTinder.Services
     public class SettingsServices
     {
         private GiTinderContext _context;
+        private UserServices _userServices;
 
-        public SettingsServices(GiTinderContext context)
+        public SettingsServices(GiTinderContext context, UserServices userServices)
         {
             _context = context;
-        }
-
-        public bool TokenExists(string usertoken)
-        {
-            return _context.Users.Any(u => u.UserToken == usertoken);
-        }
-
-        public bool UserTokenCorrespondsToUsername(string username, string usertoken)
-        {
-            return _context.Users.Where(u => u.Username == username).Any(u => u.UserToken == usertoken);
-        }
-
-        public User FindUserByUserToken(string usertoken)
-        {
-            User foundUser = _context.Users.Where(u => u.UserToken == usertoken).FirstOrDefault();
-            return foundUser;
+            _userServices = userServices;
         }
 
         public Settings FindSettingsWithLanguagesByUser(User user)
@@ -41,7 +27,7 @@ namespace GiTinder.Services
 
         public Settings FindSettingsWithLanguagesByUserToken(string usertoken)
         {
-            var foundUser = FindUserByUserToken(usertoken);
+            var foundUser = _userServices.FindUserByUserToken(usertoken);
             var foundSettings = FindSettingsWithLanguagesByUser(foundUser);
             return foundSettings;
         }
@@ -65,7 +51,7 @@ namespace GiTinder.Services
 
         public void UpdateSettings(Settings oldsettings, Settings newsettings, string usertoken)
         {
-            var foundUser = FindUserByUserToken(usertoken);
+            var foundUser = _userServices.FindUserByUserToken(usertoken);
             oldsettings.Username = foundUser.Username;
             oldsettings.EnableNotification = newsettings.EnableNotification;
             oldsettings.EnableBackgroundSync = newsettings.EnableBackgroundSync;

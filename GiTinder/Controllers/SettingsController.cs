@@ -10,10 +10,12 @@ namespace GiTinder.Controllers
     public class SettingsController : Controller
     {
         private SettingsServices _settingsServices;
+        private UserServices _userServices;
 
-        public SettingsController(SettingsServices settingsServices)
+        public SettingsController(SettingsServices settingsServices, UserServices userServices)
         {
             _settingsServices = settingsServices;
+            _userServices = userServices;
         }
 
         [HttpGet("/settings")]
@@ -22,7 +24,7 @@ namespace GiTinder.Controllers
             GeneralApiResponseBody responseBody;
             var usertoken = Request.Headers["X-Gitinder-Token"];
 
-            if (usertoken == "" || !_settingsServices.TokenExists(usertoken))
+            if (usertoken == "" || !_userServices.TokenExists(usertoken))
             {
                 responseBody = new ErrorResponseBody("error", "Unauthorized request!");
                 return StatusCode(403, responseBody);
@@ -45,7 +47,7 @@ namespace GiTinder.Controllers
             GeneralApiResponseBody responseBody;
             var usertoken = Request.Headers["X-Gitinder-Token"];
 
-            if (usertoken == "" || !_settingsServices.TokenExists(usertoken))
+            if (usertoken == "" || !_userServices.TokenExists(usertoken))
             {
                 responseBody = new ErrorResponseBody("error", "Unauthorized request!");
                 return StatusCode(403, responseBody);

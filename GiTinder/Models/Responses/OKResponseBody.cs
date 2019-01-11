@@ -11,10 +11,10 @@ namespace GiTinder.Models
         [JsonProperty("message")]
         public string Message { get; set; }
 
-        public OKResponseBody(string Statu, string Messag)
+        public OKResponseBody(string status, string message)
         {
-            Status = Statu;
-            Message = Messag;
+            Status = status;
+            Message = message;
         }
     }
 }

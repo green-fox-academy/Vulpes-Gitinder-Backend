@@ -56,15 +56,3 @@ namespace GiTinder.Models
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

@@ -18,13 +18,22 @@ namespace GiTinder.Models
         public string UserToken { get; set; }
 
         public Settings UserSettings { get; set; }
-              
+
+        public User()
+        {
+        }
+
+        public User(string username)
+        {
+            Username = username;
+        }
+
         public User(string Username, string UserToken, int ReposCount)
         {
             this.Username = Username;
             this.UserToken = UserToken;
             this.ReposCount = ReposCount;
-            Settings defaultSettings = new Settings(Username, true, true, 10);   
+            Settings defaultSettings = new Settings(Username, true, true, 10);
         }
     }
 }

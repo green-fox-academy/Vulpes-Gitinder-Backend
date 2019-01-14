@@ -49,9 +49,11 @@ namespace GiTinder.Controllers
                 _context.Users.Add(newProfile);
                 _context.SaveChanges();
                 responseBody = new TokenResponseBody(token);
+
             }
             return responseBody;
         }
+
 
         private bool UserExists(string username)
         {
@@ -59,3 +61,4 @@ namespace GiTinder.Controllers
         }
     }
 }
+

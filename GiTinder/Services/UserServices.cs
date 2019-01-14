@@ -65,6 +65,7 @@ namespace GiTinder.Services
         public virtual string GetTokenOf(string username)
         {
             return _context.Find<User>(username).UserToken;
+        }
         public bool TokenExists(string usertoken)
         {
             return _context.Users.Any(u => u.UserToken == usertoken);

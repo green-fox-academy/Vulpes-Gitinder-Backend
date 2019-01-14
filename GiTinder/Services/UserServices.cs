@@ -1,4 +1,5 @@
-﻿using GiTinder.Data;
+
+using GiTinder.Data;
 using GiTinder.Models;
 using GiTinder.Models.GitResponses;
 using Microsoft.AspNetCore.Http;
@@ -65,9 +66,27 @@ namespace GiTinder.Services
 
             return token;
         }
+
         public void HeadersSettingForGitHubApi()
         {
             client.DefaultRequestHeaders.Add("User-Agent", "GiTinderApp");
+
         }
+            public bool TokenExists(string usertoken)
+            {
+                return _context.Users.Any(u => u.UserToken == usertoken);
+            }
+
+            public bool UserTokenCorrespondsToUsername(string username, string usertoken)
+            {
+                return _context.Users.Where(u => u.Username == username).Any(u => u.UserToken == usertoken);
+            }
+
+            public User FindUserByUserToken(string usertoken)
+            {
+                User foundUser = _context.Users.Where(u => u.UserToken == usertoken).FirstOrDefault();
+                return foundUser;
+
+            }
     }
 }

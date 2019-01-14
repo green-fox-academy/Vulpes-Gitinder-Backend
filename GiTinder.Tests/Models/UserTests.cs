@@ -1,7 +1,9 @@
-using GiTinder.Models;
+﻿﻿using Xunit;
+using System;
 using System.Collections.Generic;
+using System.Text;
+using GiTinder.Models;
 using System.ComponentModel.DataAnnotations;
-using Xunit;
 
 namespace GiTinder.Tests.Models
 {
@@ -35,6 +37,5 @@ namespace GiTinder.Tests.Models
             Validator.TryValidateObject(model, ctx, validationResults, true);
             return validationResults;
         }
-
     }
 }

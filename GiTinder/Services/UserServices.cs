@@ -1,4 +1,3 @@
-
 using GiTinder.Data;
 using GiTinder.Models;
 using GiTinder.Models.GitResponses;

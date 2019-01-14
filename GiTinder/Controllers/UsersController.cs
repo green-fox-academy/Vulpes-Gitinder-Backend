@@ -59,12 +59,16 @@ namespace GiTinder.Controllers
             return _context.Users.Where(e => e.Username == username).Count() > 0;
         }
         [HttpGet("/create-user")]
-        public async Task RequestForUser()
+        public async Task RequestForUser(string username)
         {
-            //await _userServices.GetGithubProfileAsync("anyUserName");
-            //This maay only work once for now.
-            await _userServices.GetGithubProfilesReposAsync("anyUserName");
+            await _userServices.GetGithubProfileAsync(username);
             return;
+        }
+        [HttpGet("/create-user-repos")]
+        public async Task RequestForUserRepos(string username)
+        {
+           await _userServices.GetGithubProfilesReposAsync(username);
+           return;
         }
     }
 }

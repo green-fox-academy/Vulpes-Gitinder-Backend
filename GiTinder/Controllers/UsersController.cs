@@ -3,6 +3,7 @@ using GiTinder.Models;
 using GiTinder.Models.GitResponses;
 using GiTinder.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,45 +19,28 @@ namespace GiTinder.Controllers
             _context = context;
             _userServices = userServices;
         }
-        
+
         [HttpPost("/login")]
         public GeneralApiResponseBody Login([FromBody] LoginRequestBody loginRequestBody)
         {
             GeneralApiResponseBody responseBody;
+            var username = loginRequestBody.Username;
+            var accessToken = loginRequestBody.AccessToken;
 
-            if (loginRequestBody.Username == null)
+            if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(accessToken))
             {
                 Response.StatusCode = 400;
-                responseBody = new ErrorResponseBody("username");
-            }                
-            else if (loginRequestBody.AccessToken == null)
-            {
-                Response.StatusCode = 400;
-                responseBody = new ErrorResponseBody("access_token");
-            }
-            else if (UserExists(loginRequestBody.Username))
-            {
-                string newToken = _userServices.CreateGiTinderToken();
-                _context.Find<User>(loginRequestBody.Username).UserToken = newToken;                         
-                _context.SaveChanges();
-                responseBody = new TokenResponseBody(newToken);
+                responseBody =
+                    String.IsNullOrEmpty(username) ?
+                    new ErrorResponseBody("username") : new ErrorResponseBody("access_token");
             }
             else
             {
 
-                string token = _userServices.CreateGiTinderToken();
-                var newProfile = new User(loginRequestBody.Username);
-                newProfile.UserToken = token;
-                _context.Users.Add(newProfile);
-                _context.SaveChanges();
-                responseBody = new TokenResponseBody(token);
+                _userServices.UpdateUser(username);
+                responseBody = new TokenResponseBody(_userServices.GetTokenOf(username));
             }
             return responseBody;
-        }
-
-        private bool UserExists(string username)
-        {
-            return _context.Users.Where(e => e.Username == username).Count() > 0;
         }
     }
 }

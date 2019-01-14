@@ -3,14 +3,16 @@ using GiTinder.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GiTinder.Migrations
 {
     [DbContext(typeof(GiTinderContext))]
-    partial class GiTinderContextModelSnapshot : ModelSnapshot
+    [Migration("20190110170518_UserNamePropertyRefactoredToUsername")]
+    partial class UserNamePropertyRefactoredToUsername
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,13 +46,13 @@ namespace GiTinder.Migrations
 
                     b.Property<int>("MaxDistanceInKm");
 
-                    b.Property<string>("Username");
+                    b.Property<string>("Username")
+                        .IsRequired();
 
                     b.HasKey("SettingsId");
 
                     b.HasIndex("Username")
-                        .IsUnique()
-                        .HasFilter("[Username] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Settings");
                 });
@@ -87,7 +89,8 @@ namespace GiTinder.Migrations
                 {
                     b.HasOne("GiTinder.Models.User")
                         .WithOne("UserSettings")
-                        .HasForeignKey("GiTinder.Models.Settings", "Username");
+                        .HasForeignKey("GiTinder.Models.Settings", "Username")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("GiTinder.Models.SettingsLanguage", b =>

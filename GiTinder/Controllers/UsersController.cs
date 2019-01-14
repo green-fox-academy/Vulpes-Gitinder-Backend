@@ -10,7 +10,7 @@ namespace GiTinder.Controllers
 {
     public class UsersController : Controller
     {
-        private GiTinderContext _loginItem;
+        private GiTinderContext  _loginItem;
  
         public UsersController(GiTinderContext loginItem)
         {

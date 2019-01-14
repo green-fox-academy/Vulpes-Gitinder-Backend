@@ -6,14 +6,14 @@ namespace GiTinder.Data
 {
     public class GiTinderContext : DbContext
     {
+    public GiTinderContext(DbContextOptions<GiTinderContext> options)
+        : base(options)
+        { }
+
         public DbSet<User> Users { get; set; }
         public DbSet<Settings> Settings { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<SettingsLanguage> SettingsLanguage { get; set; }
-
-        public GiTinderContext(DbContextOptions<GiTinderContext> options)
-  : base(options)
-        { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

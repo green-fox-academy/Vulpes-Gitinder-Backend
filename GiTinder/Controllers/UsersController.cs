@@ -1,8 +1,10 @@
 ﻿using GiTinder.Data;
 using GiTinder.Models;
+using GiTinder.Models.GitResponses;
 using GiTinder.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GiTinder.Controllers
 {
@@ -11,7 +13,6 @@ namespace GiTinder.Controllers
     {
         private readonly GiTinderContext _context;
         private readonly UserServices _userServices;
-
         public UsersController(GiTinderContext context, UserServices userServices)
         {
             _context = context;
@@ -49,16 +50,25 @@ namespace GiTinder.Controllers
                 _context.Users.Add(newProfile);
                 _context.SaveChanges();
                 responseBody = new TokenResponseBody(token);
-
             }
             return responseBody;
         }
-
 
         private bool UserExists(string username)
         {
             return _context.Users.Where(e => e.Username == username).Count() > 0;
         }
+        [HttpGet("/create-user")]
+        public async Task RequestForUser(string username)
+        {
+            await _userServices.GetGithubProfileAsync(username);
+            return;
+        }
+        [HttpGet("/create-user-repos")]
+        public async Task RequestForUserRepos(string username)
+        {
+           await _userServices.GetGithubProfilesReposAsync(username);
+           return;
+        }
     }
 }
-

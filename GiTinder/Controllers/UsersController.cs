@@ -1,94 +1,62 @@
-﻿using GiTinder.Data;
-using GiTinder.Models;
-using Microsoft.AspNetCore.Http;
+﻿using GiTinder.Services;
 using Microsoft.AspNetCore.Mvc;
-
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System.Linq;
 
 namespace GiTinder.Controllers
 {
-    public class UsersController : Controller
+    [ApiController]
+    public class UsersController : ControllerBase
     {
-        private GiTinderContext  _loginItem;
- 
-        public UsersController(GiTinderContext loginItem)
-        {
-            _loginItem = loginItem;
-        }
+        private readonly GiTinderContext _context;
+        private readonly UserServices _userServices;
 
-        [HttpPost("/login")]
-        public ResponseBody MockLogin([FromBody]LoginItem item)
+        public UsersController(GiTinderContext context, UserServices userServices)
         {
-            ResponseBody responseBody;
-            if (item.Username == null)
+            _context = context;
+            _userServices = userServices;
+        }
+        
+        [HttpPost("/login")]
+        public GeneralApiResponseBody Login([FromBody] LoginRequestBody loginRequestBody)
+        {
+            GeneralApiResponseBody responseBody;
+
+            if (loginRequestBody.Username == null)
             {
                 Response.StatusCode = 400;
-                responseBody = new ErrorResponse("username");
-            }
-            else if (item.AccessToken == null)
+                responseBody = new ErrorResponseBody("username");
+            }                
+            else if (loginRequestBody.AccessToken == null)
             {
-                Response.StatusCode = 402;
-                responseBody = new ErrorResponse("acces_token");
-
+                Response.StatusCode = 400;
+                responseBody = new ErrorResponseBody("access_token");
             }
-            else if (item.Username == "pavel")
+            else if (UserExists(loginRequestBody.Username))
             {
-                responseBody = new ErrorGitinderResponse("exist_token");
+                string newToken = _userServices.CreateGiTinderToken();
+                _context.Find<User>(loginRequestBody.Username).UserToken = newToken;                         
+                _context.SaveChanges();
+                responseBody = new TokenResponseBody(newToken);
             }
             else
             {
-                responseBody = new ErrorGitinderResponse("new_token");
+
+                string token = _userServices.CreateGiTinderToken();
+                var newProfile = new User(loginRequestBody.Username);
+                newProfile.UserToken = token;
+                _context.Users.Add(newProfile);
+                _context.SaveChanges();
+                responseBody = new TokenResponseBody(token);
+
             }
             return responseBody;
         }
 
-        [HttpDelete("/logout")]
-        public ResponseBody MockLogout()
+
+        private bool UserExists(string username)
         {
-            string Token = Request.Headers["X-Gitinder-Token"];
-            ResponseBody responseBody;
-
-            if (Token == null)
-            {
-                Response.StatusCode = 403;
-                responseBody = new ErrorResponse("X-Gititnder-token");
-            }
-            else if (Token == "abc")
-            {
-                responseBody = new GitinderResponse("Logged out successfully!");
-            }
-            else
-            {
-                Response.StatusCode = 403;
-                responseBody = new ErrorGitinderResponse("bad X-Gititnder-token");
-                
-            }
-            return responseBody;
+            return _context.Users.Where(e => e.Username == username).Count() > 0;
         }
-
-        [HttpGet("/profile")]
-        public ResponseBody MockProfile()
-        {
-            string Token = Request.Headers["X-Gitinder-Token"];
-            ResponseBody responseBody;
-
-            if (Token == null)
-            {
-                Response.StatusCode = 403;
-                responseBody = new ErrorGitinderResponse("Unauthorized request!");
-            }
-            else if (Token == "aze")
-            {
-                responseBody = new ProfileResponse();
-            }
-            else
-            {
-                Response.StatusCode = 403;
-                responseBody = new ErrorGitinderResponse("Unauthorized request!");
-            }
-            return responseBody;      
-        }
-
     }
 }
+

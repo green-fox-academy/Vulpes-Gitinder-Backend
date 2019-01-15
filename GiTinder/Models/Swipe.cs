@@ -13,12 +13,16 @@ namespace GiTinder.Models
         [Key]
         [JsonIgnore]
         public int SwipeId { get; set; }
+        [Required]
         [JsonProperty("user_id")]
         public string UserId { get; set; }
+        [Required]
         [JsonProperty("swiped_user_id")]
         public string SwipedUserId { get; set; }
+        [Required]
         [JsonProperty("direction")]
         public SwipeDirection Direction { get; set; }
+        [Required]
         [JsonProperty("timestamp")]
         public string Timestamp { get; set; }
 

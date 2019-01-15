@@ -24,10 +24,10 @@ namespace GiTinder.Tests.Models
         }
 
         [Fact]
-        public void UserWithNullUserTokenIsNotValid()
+        public void UserWithNullUserTokenIsValid()
         {
             var user = UserFactory.CreateUserWithNullUserToken();
-            Assert.True(ValidateModel(user).Count == 1);
+            Assert.True(ValidateModel(user).Count == 0);
         }
 
         private IList<ValidationResult> ValidateModel(object model)

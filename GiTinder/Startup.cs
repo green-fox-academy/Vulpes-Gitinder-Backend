@@ -33,6 +33,7 @@ namespace GiTinder
             {
                 builder.AddUserSecrets<Startup>();
             }
+
             builder.AddEnvironmentVariables();
             configuration = builder.Build();
 

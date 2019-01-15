@@ -1,6 +1,7 @@
 ﻿using GiTinder.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Configuration;
 
 namespace GiTinder.Data
 {
@@ -15,7 +16,7 @@ namespace GiTinder.Data
   : base(options)
         { }
 
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SettingsLanguage>()

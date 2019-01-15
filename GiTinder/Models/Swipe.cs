@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace GiTinder.Models
@@ -14,26 +15,33 @@ namespace GiTinder.Models
         [JsonIgnore]
         public int SwipeId { get; set; }
         [Required]
-        [JsonProperty("user_id")]
-        public string UserId { get; set; }
+        [JsonProperty("swiping_user")]
+        public User SwipingUser { get; set; }
         [Required]
-        [JsonProperty("swiped_user_id")]
-        public string SwipedUserId { get; set; }
+        [JsonProperty("swiped_user")]
+        public User SwipedUser { get; set; }
         [Required]
         [JsonProperty("direction")]
         public SwipeDirection Direction { get; set; }
         [Required]
         [JsonProperty("timestamp")]
-        public string Timestamp { get; set; }
+        public DateTime Timestamp { get; set; }
 
-        public Swipe(string userId, string swipedUserId, SwipeDirection direction)
+        public Swipe(User swipingUser, User swipedUser, SwipeDirection direction)
         {
-            UserId = userId;
-            SwipedUserId = swipedUserId;
+            SwipingUser = swipingUser;
+            SwipedUser = swipedUser;
             SwipeDirection Direction = direction;
-            Timestamp = DateTime.Now.ToString();
+            Timestamp = DateTime.Now;
         }
     }
-    public enum SwipeDirection { Left, Right };
+
+    public enum SwipeDirection
+    {
+        [EnumMember(Value = "left")]
+        Left,
+        [EnumMember(Value = "right")]
+        Right
+    };
     
 }

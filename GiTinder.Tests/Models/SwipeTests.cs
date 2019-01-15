@@ -29,6 +29,13 @@ namespace GiTinder.Tests.Models
             Assert.True(swipe.Timestamp != null);
         }
 
+        [Fact]
+        public void SwipeWithNullDirectionIsNotValid()
+        {
+            var swipe = SwipeFactory.CreateSwipeWithNullDirection();
+            Assert.True(ValidateModel(swipe).Count == 1);
+        }
+
         private IList<ValidationResult> ValidateModel(object model)
         {
             var validationResults = new List<ValidationResult>();

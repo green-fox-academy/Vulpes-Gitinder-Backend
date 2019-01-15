@@ -6,12 +6,11 @@ namespace GiTinder.Tests.Models
     {
         public static Swipe CreateSwipe()
         {
-
             return new Swipe()
             {
                 SwipingUserId = "Filip",
                 SwipedUserId = "O'Potamus",
-                Direction = SwipeDirection.Left
+                Direction = "left"
             };
         }
 
@@ -23,6 +22,13 @@ namespace GiTinder.Tests.Models
         }
 
         public static object CreateSwipeWithNullSwipedUserId()
+        {
+            var swipe = CreateSwipe();
+            swipe.SwipedUserId = null;
+            return swipe;
+        }
+
+        public static object CreateSwipeWithNullDirection()
         {
             var swipe = CreateSwipe();
             swipe.SwipedUserId = null;

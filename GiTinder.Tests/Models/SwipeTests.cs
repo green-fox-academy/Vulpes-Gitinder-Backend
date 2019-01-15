@@ -11,7 +11,7 @@ namespace GiTinder.Tests.Models
         [Fact]
         public void SwipeWithNullUserIdIsNotValid()
         {
-            var swipe = SwipeFactory.CreateSwipeWithNullUserId();
+            var swipe = SwipeFactory.CreateSwipeWithNullSwipingUserId();
             Assert.True(ValidateModel(swipe).Count == 1);
         }
 
@@ -23,10 +23,10 @@ namespace GiTinder.Tests.Models
         }
 
         [Fact]
-        public void SwipeWithNullTimeStampIsNotValid()
+        public void InstantiatingSwipeAssignsAValueToTimestamp()
         {
-            var swipe = SwipeFactory.CreateSwipeWithNullTimestamp();
-            Assert.True(ValidateModel(swipe).Count == 1);
+            var swipe = SwipeFactory.CreateSwipe();
+            Assert.True(swipe.Timestamp != null);
         }
 
         private IList<ValidationResult> ValidateModel(object model)

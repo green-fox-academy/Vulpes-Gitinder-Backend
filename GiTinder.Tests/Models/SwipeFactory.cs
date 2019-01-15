@@ -1,5 +1,4 @@
-﻿using System;
-using GiTinder.Models;
+﻿using GiTinder.Models;
 
 namespace GiTinder.Tests.Models
 {
@@ -7,13 +6,19 @@ namespace GiTinder.Tests.Models
     {
         public static Swipe CreateSwipe()
         {
-            return new Swipe("Michel", "Dugésier", SwipeDirection.Left);
+
+            return new Swipe()
+            {
+                SwipingUserId = "Filip",
+                SwipedUserId = "O'Potamus",
+                Direction = SwipeDirection.Left
+            };
         }
 
-        public static Swipe CreateSwipeWithNullUserId()
+        public static Swipe CreateSwipeWithNullSwipingUserId()
         {
             var swipe = CreateSwipe();
-            swipe.UserId = null;
+            swipe.SwipingUserId = null;
             return swipe;
         }
 
@@ -21,13 +26,6 @@ namespace GiTinder.Tests.Models
         {
             var swipe = CreateSwipe();
             swipe.SwipedUserId = null;
-            return swipe;
-        }
-
-        public static object CreateSwipeWithNullTimestamp()
-        {
-            var swipe = CreateSwipe();
-            swipe.Timestamp = null;
             return swipe;
         }
     }

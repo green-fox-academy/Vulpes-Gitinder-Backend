@@ -42,5 +42,12 @@ namespace GiTinder.Controllers
             }
             return responseBody;
         }
+        [HttpGet("/create-user/{username}")]
+        public async Task RequestForUser(string username)
+        {
+            await _userServices.GetGithubProfileAsync(username);
+            return;
+        }
     }
+
 }

@@ -14,6 +14,7 @@ namespace GiTinder.Data
         public DbSet<Settings> Settings { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<SettingsLanguage> SettingsLanguage { get; set; }
+        public DbSet<Swipe> Swipe { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

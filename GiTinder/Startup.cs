@@ -22,6 +22,22 @@ namespace GiTinder
         {
             _configuration = configuration;
         }
+        public Startup(IHostingEnvironment env, IConfiguration configuration)
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+
+            if (env.IsDevelopment())
+            {
+                builder.AddUserSecrets<Startup>();
+            }
+            builder.AddEnvironmentVariables();
+            configuration = builder.Build();
+
+        }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -41,12 +57,12 @@ namespace GiTinder
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+               
             }
             else
             {
                 app.UseHsts();
-            }
-
+            }        
             //app.UseDefaultFiles();
 
             app.UseHttpsRedirection();

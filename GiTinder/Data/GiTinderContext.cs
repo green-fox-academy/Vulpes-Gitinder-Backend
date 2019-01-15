@@ -15,6 +15,7 @@ namespace GiTinder.Data
   : base(options)
         { }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SettingsLanguage>()

@@ -11,9 +11,6 @@ namespace GiTinder.Models
 {
     public class Swipe
     {
-        [Key]
-        [JsonIgnore]
-        public int SwipeId { get; set; }
         [Required]
         [JsonProperty("swiping_user")]
         public User SwipingUser { get; set; }

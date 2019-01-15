@@ -86,10 +86,10 @@ namespace GiTinder.Tests.Controllers
             response.SetupGet(r => r.Headers).Returns(headerDictionary);
             httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(a => a.Response).Returns(response.Object);
-            usersController.ControllerContext = new ControllerContext()
-            {
-                HttpContext = httpContext.Object
-            };
+            //usersController.ControllerContext = new ControllerContext()
+            //{
+            //    HttpContext = httpContext.Object
+            //};
         }
     }
 }

@@ -12,24 +12,37 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GiTinder.Tests.Models
 {
-    public class SettingsControllerTests
+    public class SettingsControllerShould
     {
-        Mock<GiTinderContext> mockContext;
-        SettingsServices settingsServices;
-        UserServices userServices;
         SettingsController settingsController;
+        SettingsServices settingsServices;
+        Mock<GiTinderContext> mockRepo;
+        UserServices userServices;
 
         HeaderDictionary headerDictionary;
         Mock<HttpResponse> response;
         Mock<HttpContext> httpContext;
-        
-        [Fact]
-        public void UsernameCannotBeNull()
-        {
-            SetUpTestingConditions();
 
+        [Fact]
+        public void UserTokenCannotBeNull()
+        {
+            //SetUpTestingConditions();
+
+            mockRepo = new Mock<GiTinderContext>();
+            settingsServices = new SettingsServices(mockRepo.Object, userServices);
+            userServices = new UserServices(mockRepo.Object);
+            settingsController = new SettingsController(settingsServices, userServices);
+
+            headerDictionary = new HeaderDictionary();
+            response = new Mock<HttpResponse>();
+            response.SetupGet(r => r.Headers).Returns(headerDictionary);
+
+            //var foundSettings = _settingsServices.FindSettingsWithLanguagesByUserToken(usertoken);
+
+            usertoken = null
             ErrorResponseBody result =
-                usersController.Login(LoginRequestBodyFactory.CreateLoginRequestBodyWithNullUsername()) as ErrorResponseBody;
+                settingsController.GetSettings()
+                Login(LoginRequestBodyFactory.CreateLoginRequestBodyWithNullUsername()) as ErrorResponseBody;
             Assert.Equal("error", result.Status);
             Assert.Equal("username is missing!", result.Message);
         }
@@ -82,16 +95,12 @@ namespace GiTinder.Tests.Models
 
         private void SetUpTestingConditions()
         {
-            mockContext = new Mock<GiTinderContext>();
             settingsController = new SettingsController(settingsServices, userServices);
+            settingsServices = new SettingsServices(mockRepo.Object, userServices);
+            mockRepo = new Mock<GiTinderContext>();
+            userServices = new UserServices(mockRepo.Object);
 
-            settingsServices = new SettingsServices(mockContext.Object, userServices);
-
-            userServices = new UserServices(mockContext.Object);
-
-            //usersController = new UsersController(mockRepo.Object, userServices);
-
-
+                                                               
             headerDictionary = new HeaderDictionary();
             response = new Mock<HttpResponse>();
             response.SetupGet(r => r.Headers).Returns(headerDictionary);
@@ -99,12 +108,10 @@ namespace GiTinder.Tests.Models
             httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(a => a.Response).Returns(response.Object);
 
-            settingsController.ControllerContext = new ControllerContext()
-            {
-                HttpContext = httpContext.Object
-            };
+            //settingsController.ControllerContext = new ControllerContext()
+            //{
+            //    HttpContext = httpContext.Object
+            //};
         }
     }
 }
-
-

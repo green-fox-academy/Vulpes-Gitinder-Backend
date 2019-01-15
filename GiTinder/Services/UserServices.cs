@@ -29,6 +29,11 @@ namespace GiTinder.Services
             return token;
         }
 
+        public virtual bool UserExists(string username)
+        {
+            return _context.Users.Where(e => e.Username == username).Count() > 0;
+        }
+
         public bool TokenExists(string usertoken)
         {
             return _context.Users.Any(u => u.UserToken == usertoken);

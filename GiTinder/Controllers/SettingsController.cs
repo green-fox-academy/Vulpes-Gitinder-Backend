@@ -23,7 +23,7 @@ namespace GiTinder.Controllers
         {
             GeneralApiResponseBody responseBody;
             var usertoken = Request.Headers["X-Gitinder-Token"];
-
+            
             if (usertoken == "" || !_userServices.TokenExists(usertoken))
             {
                 responseBody = new ErrorResponseBody("error", "Unauthorized request!");

@@ -30,6 +30,10 @@ namespace GiTinder.Data
                 .HasOne(pt => pt.Language)
                 .WithMany(t => t.SettingsLanguages)
                 .HasForeignKey(pt => pt.LanguageId);
+
+            modelBuilder.Entity<Swipe>()
+                .HasKey(t => new { t.SwipingUser, t.SwipedUser });
+
         }
     }
 }

@@ -12,11 +12,11 @@ namespace GiTinder.Models
     public class Swipe
     {
         [Required]
-        [JsonProperty("swiping_user")]
-        public User SwipingUser { get; set; }
+        [JsonProperty("swiping_user_id")]
+        public string SwipingUserId { get; set; }
         [Required]
-        [JsonProperty("swiped_user")]
-        public User SwipedUser { get; set; }
+        [JsonProperty("swiped_user_id")]
+        public string SwipedUserId { get; set; }
         [Required]
         [JsonProperty("direction")]
         public SwipeDirection Direction { get; set; }
@@ -24,11 +24,8 @@ namespace GiTinder.Models
         [JsonProperty("timestamp")]
         public DateTime Timestamp { get; set; }
 
-        public Swipe(User swipingUser, User swipedUser, SwipeDirection direction)
+        public Swipe()
         {
-            SwipingUser = swipingUser;
-            SwipedUser = swipedUser;
-            SwipeDirection Direction = direction;
             Timestamp = DateTime.Now;
         }
     }

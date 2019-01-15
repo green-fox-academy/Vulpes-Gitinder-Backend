@@ -19,7 +19,7 @@ namespace GiTinder.Controllers
             _context = context;
             _userServices = userServices;
         }
-        
+
         [HttpPost("/login")]
         public GeneralApiResponseBody Login([FromBody] LoginRequestBody loginRequestBody)
         {
@@ -31,9 +31,9 @@ namespace GiTinder.Controllers
             {
                 Response.StatusCode = 400;
                 responseBody =
-                    String.IsNullOrEmpty(username) ? 
+                    String.IsNullOrEmpty(username) ?
                     new ErrorResponseBody("username") : new ErrorResponseBody("access_token");
-            }                
+            }
             else
             {
 
@@ -41,19 +41,6 @@ namespace GiTinder.Controllers
                 responseBody = new TokenResponseBody(_userServices.GetTokenOf(username));
             }
             return responseBody;
-        }
-
-        [HttpGet("/create-user")]
-        public async Task RequestForUser(string username)
-        {
-            await _userServices.GetGithubProfileAsync(username);
-            return;
-        }
-        [HttpGet("/create-user-repos")]
-        public async Task RequestForUserRepos(string username)
-        {
-           await _userServices.GetGithubProfilesReposAsync(username);
-           return;
         }
     }
 }

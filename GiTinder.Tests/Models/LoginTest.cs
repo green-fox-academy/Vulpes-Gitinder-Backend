@@ -20,15 +20,6 @@ namespace GiTinder.Tests.Models
 
         }
 
-        [Fact]
-        public void CheckStatus()
-        {
-            var response = new ErrorResponse("error");
-            GiTinderContext item = new GiTinderContext();
-
-            Assert.Contains("ok", response.Status = "ok");
-
-        }
 
         [Fact]
         public void CheckProfile()

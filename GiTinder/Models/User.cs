@@ -28,6 +28,7 @@ namespace GiTinder.Models
         public User()
         {
         }
+
         public User(string username)
         {
             Username = username;

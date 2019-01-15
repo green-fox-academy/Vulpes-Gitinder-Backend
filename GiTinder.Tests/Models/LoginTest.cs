@@ -24,7 +24,8 @@ namespace GiTinder.Tests.Models
         public void CheckStatus()
         {
             var response = new ErrorResponse("error");
-            GiTinderContext item = new GiTinderContext();
+            // this was making the build not successful
+           // GiTinderContext item = new GiTinderContext();
 
             Assert.Contains("ok", response.Status = "ok");
 

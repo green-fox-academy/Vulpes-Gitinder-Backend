@@ -15,6 +15,9 @@ namespace GiTinder.Models
         public int ReposCount { get; set; }
         [Required]
         public string UserToken { get; set; }
+        [JsonProperty("avatar_url")]
+        public string Avatar { get; set; }
+        public string Repos { get; set; }
 
         public Settings UserSettings { get; set; }
 

@@ -10,6 +10,7 @@ namespace GiTinder.Data
         public DbSet<Settings> Settings { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<SettingsLanguage> SettingsLanguage { get; set; }
+        public DbSet<Match> Matches { get; set; }
 
         public GiTinderContext(DbContextOptions<GiTinderContext> options)
   : base(options)
@@ -29,6 +30,10 @@ namespace GiTinder.Data
                 .HasOne(pt => pt.Language)
                 .WithMany(t => t.SettingsLanguages)
                 .HasForeignKey(pt => pt.LanguageId);
+
+            modelBuilder.Entity<Match>()
+                .HasKey(t => new { t.Username_1, t.Username_2 });
+
         }
     }
 }

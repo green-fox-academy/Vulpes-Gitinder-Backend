@@ -1,0 +1,28 @@
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Threading.Tasks;
+
+namespace GiTinder.Models
+{
+    public class Swipe
+    {
+        [Required]
+        public string SwipingUserId { get; set; }
+        [Required]
+        public string SwipedUserId { get; set; }
+        [Required]
+        public string Direction { get; set; }
+        [Required]
+        public DateTime Timestamp { get; set; }
+
+        public Swipe()
+        {
+            Timestamp = DateTime.Now;
+        }
+    }   
+}

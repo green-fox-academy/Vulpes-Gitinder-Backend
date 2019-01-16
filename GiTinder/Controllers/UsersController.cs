@@ -36,18 +36,10 @@ namespace GiTinder.Controllers
             }
             else
             {
-
                 _userServices.UpdateUser(username);
                 responseBody = new TokenResponseBody(_userServices.GetTokenOf(username));
             }
             return responseBody;
         }
-        [HttpGet("/create-user")]
-        public async Task RequestForUser()
-        {
-            await _userServices.GetGithubProfileAsync("Riceqrisp");
-            return;
-        }
     }
-
 }

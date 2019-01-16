@@ -14,6 +14,7 @@ namespace GiTinder.Data
         public DbSet<Settings> Settings { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<SettingsLanguage> SettingsLanguage { get; set; }
+        public DbSet<Swipe> Swipe { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,6 +30,10 @@ namespace GiTinder.Data
                 .HasOne(pt => pt.Language)
                 .WithMany(t => t.SettingsLanguages)
                 .HasForeignKey(pt => pt.LanguageId);
+
+            modelBuilder.Entity<Swipe>()
+                .HasKey(t => new { t.SwipingUserId, t.SwipedUserId });
+
         }
     }
 }

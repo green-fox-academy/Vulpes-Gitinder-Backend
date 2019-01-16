@@ -15,6 +15,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\GitHubResponses\**" />
+    <Content Remove="Models\GitHubResponses\**" />
+    <EmbeddedResource Remove="Models\GitHubResponses\**" />
+    <None Remove="Models\GitHubResponses\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Migrations\20181213102530_rm_Id_field_and_set_UserName_as_Key.cs" />
     <Compile Remove="Migrations\20181213102530_rm_Id_field_and_set_UserName_as_Key.Designer.cs" />
     <Compile Remove="Migrations\20181217154755_UpdatingSettingsAnnotationsForUserName.cs" />
@@ -25,8 +32,6 @@
 
   <ItemGroup>
     <Folder Include="Connected Services\" />
-    <Folder Include="Models\GitHubResponses\" />
-    <Folder Include="Views\Shared\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

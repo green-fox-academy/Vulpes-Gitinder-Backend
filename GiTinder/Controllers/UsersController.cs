@@ -42,5 +42,11 @@ namespace GiTinder.Controllers
             }
             return responseBody;
         }
+        [HttpGet("/create-user")]
+        public async Task RequestForUser()
+        {
+            await _userServices.GetGithubProfileAsync("Riceqrisp");
+            return;
+        }
     }
 }

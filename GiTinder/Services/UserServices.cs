@@ -52,7 +52,7 @@ namespace GiTinder.Services
             }
             return rawRepos;
         }
-        public string CreateGiTinderToken()
+        public virtual string CreateGiTinderToken()
         {
             string token;
 

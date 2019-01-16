@@ -6,9 +6,11 @@ namespace GiTinder.Data
 {
     public class GiTinderContext : DbContext
     {
-    public GiTinderContext(DbContextOptions<GiTinderContext> options)
+        public GiTinderContext(DbContextOptions<GiTinderContext> options)
         : base(options)
         { }
+
+        public GiTinderContext() { }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Settings> Settings { get; set; }

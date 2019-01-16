@@ -69,7 +69,6 @@ namespace GiTinder.Tests.Controllers
             mockService.Setup(u => u.CreateGiTinderToken()).Returns(Guid.NewGuid().ToString());
             usersController = new UsersController(mockRepo.Object, mockService.Object);
 
-
             TokenResponseBody result = usersController.Login(new LoginRequestBody()
             {
                 Username = "Tomek Stasy",

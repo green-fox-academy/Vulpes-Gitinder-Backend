@@ -20,18 +20,18 @@ namespace GiTinder.Migrations
                     table.PrimaryKey("PK_Languages", x => x.LanguageId);
                 });
 
-            //migrationBuilder.CreateTable(
-            //    name: "Users",
-            //    columns: table => new
-            //    {
-            //        UserName = table.Column<string>(nullable: false),
-            //        ReposCount = table.Column<int>(nullable: false),
-            //        UserToken = table.Column<string>(nullable: false)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_Users", x => x.UserName);
-            //    });
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    UserName = table.Column<string>(nullable: false),
+                    ReposCount = table.Column<int>(nullable: false),
+                    UserToken = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserName);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Settings",

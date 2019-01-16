@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace GiTinder.Tests.Controllers
@@ -25,7 +26,7 @@ namespace GiTinder.Tests.Controllers
             SetUpTestingConditions();
 
             ErrorResponseBody result = 
-                usersController.Login(LoginRequestBodyFactory.CreateLoginRequestBodyWithNullUsername()) as ErrorResponseBody;
+                usersController.Login(LoginRequestBodyFactory.CreateLoginRequestBodyWithNullUsername()).Result as ErrorResponseBody;
             Assert.Equal("error", result.Status);
             Assert.Equal("username is missing!", result.Message);
         }
@@ -36,7 +37,7 @@ namespace GiTinder.Tests.Controllers
             SetUpTestingConditions();
 
             ErrorResponseBody result = 
-                usersController.Login(LoginRequestBodyFactory.CreateLoginRequestBodyWithEmptyUsername()) as ErrorResponseBody;
+                usersController.Login(LoginRequestBodyFactory.CreateLoginRequestBodyWithEmptyUsername()).Result as ErrorResponseBody;
             Assert.Equal("error", result.Status);
             Assert.Equal("username is missing!", result.Message);
         }
@@ -47,12 +48,12 @@ namespace GiTinder.Tests.Controllers
             SetUpTestingConditions();
 
             ErrorResponseBody resultWithNullAccessToken = 
-                usersController.Login(LoginRequestBodyFactory.CreateLoginRequestBodyWithNullAccessToken()) as ErrorResponseBody;
+                usersController.Login(LoginRequestBodyFactory.CreateLoginRequestBodyWithNullAccessToken()).Result as ErrorResponseBody;
             Assert.Equal("error", resultWithNullAccessToken.Status);
             Assert.Equal("access_token is missing!", resultWithNullAccessToken.Message);
 
             ErrorResponseBody resultWithEmptyAccessToken =
-                usersController.Login(LoginRequestBodyFactory.CreateLoginRequestBodyWithEmptyAccessToken()) as ErrorResponseBody;
+                usersController.Login(LoginRequestBodyFactory.CreateLoginRequestBodyWithEmptyAccessToken()).Result as ErrorResponseBody;
             Assert.Equal("error", resultWithEmptyAccessToken.Status);
             Assert.Equal("access_token is missing!", resultWithEmptyAccessToken.Message);
         }
@@ -62,7 +63,9 @@ namespace GiTinder.Tests.Controllers
         {
             mockRepo = new Mock<GiTinderContext>();
             var mockService = new Mock<UserServices>(mockRepo.Object);
+
             mockService.Setup(u => u.UserExists("Tomek Stasy")).Returns(true);
+            mockService.Setup(u => u.LoginRequestIsValid("Tomek Stasy", "VerySecure123")).Returns(Task.FromResult(true));
             mockService.Setup(u => u.CreateGiTinderToken()).Returns(Guid.NewGuid().ToString());
             usersController = new UsersController(mockRepo.Object, mockService.Object);
 
@@ -70,8 +73,8 @@ namespace GiTinder.Tests.Controllers
             TokenResponseBody result = usersController.Login(new LoginRequestBody()
             {
                 Username = "Tomek Stasy",
-                AccessToken = "mock token"
-            }) as TokenResponseBody;
+                AccessToken = "VerySecure123"
+            }).Result as TokenResponseBody;
 
             Assert.IsType<TokenResponseBody>(result);
         }

@@ -1,16 +1,41 @@
 ﻿using GiTinder.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace GiTinder.Data
 {
-    public class GiTinderContext : DbContext 
+    public class GiTinderContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
+        public GiTinderContext(DbContextOptions<GiTinderContext> options)
+        : base(options)
+        { }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public GiTinderContext() { }
+
+        public DbSet<User> Users { get; set; }
+        public DbSet<Settings> Settings { get; set; }
+        public DbSet<Language> Languages { get; set; }
+        public DbSet<SettingsLanguage> SettingsLanguage { get; set; }
+        public DbSet<Swipe> Swipe { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            optionsBuilder.UseMySQL("server=localhost;database=gitinder;user=Jonathan;password=Michel123");
-            base.OnConfiguring(optionsBuilder);
+            modelBuilder.Entity<SettingsLanguage>()
+                .HasKey(t => new { t.SettingsId, t.LanguageId });
+
+            modelBuilder.Entity<SettingsLanguage>()
+                .HasOne(pt => pt.Settings)
+                .WithMany(p => p.SettingsLanguages)
+                .HasForeignKey(pt => pt.SettingsId);
+
+            modelBuilder.Entity<SettingsLanguage>()
+                .HasOne(pt => pt.Language)
+                .WithMany(t => t.SettingsLanguages)
+                .HasForeignKey(pt => pt.LanguageId);
+
+            modelBuilder.Entity<Swipe>()
+                .HasKey(t => new { t.SwipingUserId, t.SwipedUserId });
+
         }
     }
 }

@@ -1,46 +1,49 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using GiTinder.Data;
+using GiTinder.Models;
+using GiTinder.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
-//namespace GiTinder.Controllers
-//{
-//    [Route("api/[controller]")]
-//    [ApiController]
-//    public class SwipesController : ControllerBase
-//    {
-//        // GET: api/Swipes
-//        [HttpGet]
-//        public IEnumerable<string> Get()
-//        {
-//            return new string[] { "value1", "value2" };
-//        }
+namespace GiTinder.Controllers
+{
+    public class SwipesController : ControllerBase
+    {
+        private readonly GiTinderContext _context;
+        private readonly UserServices _userServices;
 
-//        // GET: api/Swipes/5
-//        [HttpGet("{id}", Name = "Get")]
-//        public string Get(int id)
-//        {
-//            return "value";
-//        }
+        public SwipesController(GiTinderContext context, UserServices userServices)
+        {
+            _context = context;
+            _userServices = userServices;
+        }
+        [HttpPut("profiles/{username}/{direction}")]
+        public ObjectResult Swipe([FromQuery] string username, string direction)
 
-//        // POST: api/Swipes
-//        [HttpPost]
-//        public void Post([FromBody] string value)
-//        {
-//        }
+        {
+            System.Diagnostics.Debug.WriteLine(username + direction);
+            System.Diagnostics.Debug.WriteLine("Pokebowl");
+            System.Diagnostics.Trace.WriteLine(username + " " + direction);
+            Debug.Write(username + direction);
 
-//        // PUT: api/Swipes/5
-//        [HttpPut("{id}")]
-//        public void Put(int id, [FromBody] string value)
-//        {
-//        }
+            Console.WriteLine(username + direction);
+            GeneralApiResponseBody responseBody;
+            var usertoken = Request.Headers["X-Gitinder-Token"];
 
-//        // DELETE: api/ApiWithActions/5
-//        [HttpDelete("{id}")]
-//        public void Delete(int id)
-//        {
-//        }
-//    }
-//}
+            if (String.IsNullOrEmpty(usertoken))
+            {
+                responseBody = new ErrorResponseBody("error", "Unauthorized request!");
+                return StatusCode(403, responseBody);
+            }
+            else
+            {
+                responseBody = new OKResponseBody("ok", "success");
+                return StatusCode(200, responseBody);
+            }
+        }
+    }
+}

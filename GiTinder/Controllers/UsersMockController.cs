@@ -17,32 +17,6 @@ namespace GiTinder.Controllers
             _loginItem = loginItem;
         }
 
-        [HttpPost("/login")]
-        public ResponseBody MockLogin([FromBody]LoginItem item)
-        {
-            ResponseBody responseBody;
-            if (item.Username == null)
-            {
-                Response.StatusCode = 400;
-                responseBody = new ErrorResponse("username");
-            }
-            else if (item.AccessToken == null)
-            {
-                Response.StatusCode = 402;
-                responseBody = new ErrorResponse("acces_token");
-
-            }
-            else if (item.Username == "pavel")
-            {
-                responseBody = new ErrorGitinderResponse("exist_token");
-            }
-            else
-            {
-                responseBody = new ErrorGitinderResponse("new_token");
-            }
-            return responseBody;
-        }
-
         [HttpDelete("/logout")]
         public ResponseBody MockLogout()
         {

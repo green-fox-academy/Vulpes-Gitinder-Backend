@@ -22,15 +22,13 @@ namespace GiTinder.Controllers
             _userServices = userServices;
         }
         [HttpPut("profiles/{username}/{direction}")]
-        public ObjectResult Swipe([FromQuery] string username, string direction)
+        public ObjectResult Swipe([FromRoute] string username, string direction)
 
         {
             System.Diagnostics.Debug.WriteLine(username + direction);
-            System.Diagnostics.Debug.WriteLine("Pokebowl");
             System.Diagnostics.Trace.WriteLine(username + " " + direction);
             Debug.Write(username + direction);
-
-            Console.WriteLine(username + direction);
+            
             GeneralApiResponseBody responseBody;
             var usertoken = Request.Headers["X-Gitinder-Token"];
 
@@ -44,6 +42,7 @@ namespace GiTinder.Controllers
                 responseBody = new OKResponseBody("ok", "success");
                 return StatusCode(200, responseBody);
             }
+            
         }
     }
 }

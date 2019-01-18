@@ -75,7 +75,8 @@ namespace GiTinder.Migrations
 
                     b.Property<string>("SwipedUserId");
 
-                    b.Property<int>("Direction");
+                    b.Property<string>("Direction")
+                        .IsRequired();
 
                     b.Property<DateTime>("Timestamp");
 

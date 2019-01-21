@@ -24,7 +24,7 @@ namespace GiTinder.Controllers
             GeneralApiResponseBody responseBody;
             var usertoken = Request.Headers["X-Gitinder-Token"];
 
-            if (usertoken == "" || !_userServices.TokenExists(usertoken))
+            if (string.IsNullOrEmpty(usertoken) || !_userServices.TokenExists(usertoken))
             {
                 Response.StatusCode = 403;
                 responseBody = new ErrorResponseBody("error", "Unauthorized request!");
@@ -32,11 +32,6 @@ namespace GiTinder.Controllers
             }
 
             var foundSettings = _settingsServices.FindSettingsWithLanguagesByUserToken(usertoken);
-
-            //if (!ModelState.IsValid)
-            //{
-            //    return BadRequest(ModelState);
-            //}
 
             responseBody = new SettingsResponse(foundSettings);
             return responseBody;
@@ -49,7 +44,7 @@ namespace GiTinder.Controllers
             GeneralApiResponseBody responseBody;
             var usertoken = Request.Headers["X-Gitinder-Token"];
 
-            if (usertoken == "" || !_userServices.TokenExists(usertoken))
+            if (string.IsNullOrEmpty(usertoken) || !_userServices.TokenExists(usertoken))
             {
                 responseBody = new ErrorResponseBody("error", "Unauthorized request!");
                 return StatusCode(403, responseBody);

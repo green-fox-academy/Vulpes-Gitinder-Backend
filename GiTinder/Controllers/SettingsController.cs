@@ -39,26 +39,27 @@ namespace GiTinder.Controllers
 
         [HttpPut("/settings")]
         //[ValidateAntiForgeryToken]
-        public object PutSettings([FromBody] Settings settings)
+        public GeneralApiResponseBody PutSettings([FromBody] Settings settings)
         {
             GeneralApiResponseBody responseBody;
             var usertoken = Request.Headers["X-Gitinder-Token"];
 
             if (string.IsNullOrEmpty(usertoken) || !_userServices.TokenExists(usertoken))
             {
+                Response.StatusCode = 403;
                 responseBody = new ErrorResponseBody("error", "Unauthorized request!");
-                return StatusCode(403, responseBody);
+                return responseBody;
             }
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
 
             _settingsServices.UpdateAndSaveSettingsFoundByUserToken(settings, usertoken);
-
             responseBody = new OKResponseBody("ok", "success");
-            return Ok(responseBody);
+            Response.StatusCode = 200;
+            return responseBody;
         }
     }
 }

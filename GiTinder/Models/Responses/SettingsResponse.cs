@@ -9,7 +9,10 @@ namespace GiTinder.Models
     {
         [JsonIgnore]
         public Settings settingsForSettingsResponse;
-        
+
+        [JsonIgnore]
+        public string Username { get; set; }
+
         [JsonProperty("enable_notifications")]
         public bool EnableNotification { get; set; }
 

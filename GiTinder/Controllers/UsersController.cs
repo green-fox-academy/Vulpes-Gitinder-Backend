@@ -32,7 +32,8 @@ namespace GiTinder.Controllers
                 Response.StatusCode = 400;
                 responseBody =
                     String.IsNullOrEmpty(username) ?
-                    new ErrorResponseBody("username") : new ErrorResponseBody("access_token");
+                    new ErrorResponseBody("username is missing!") : 
+                    new ErrorResponseBody("access_token is missing!");
             }
             else if(await _userServices.LoginRequestIsValid(username, accessToken))
             {
@@ -40,7 +41,7 @@ namespace GiTinder.Controllers
                 responseBody = new TokenResponseBody(_userServices.GetTokenOf(username));
             } else
             {
-                responseBody = new ErrorResponseBody("correct authorization");
+                responseBody = new ErrorResponseBody("Unauthorized request!");
             }
             return responseBody;
         }

@@ -26,7 +26,7 @@ namespace GiTinder.Controllers
 
             if (usertoken == "" || !_userServices.TokenExists(usertoken))
             {
-                responseBody = new ErrorResponseBody("error", "Unauthorized request!");
+                responseBody = new ErrorResponseBody("Unauthorized request!");
                 return StatusCode(403, responseBody);
             }
 
@@ -49,7 +49,7 @@ namespace GiTinder.Controllers
 
             if (usertoken == "" || !_userServices.TokenExists(usertoken))
             {
-                responseBody = new ErrorResponseBody("error", "Unauthorized request!");
+                responseBody = new ErrorResponseBody("Unauthorized request!");
                 return StatusCode(403, responseBody);
             }
 
@@ -60,7 +60,7 @@ namespace GiTinder.Controllers
 
             _settingsServices.UpdateAndSaveSettingsFoundByUserToken(settings, usertoken);
 
-            responseBody = new OKResponseBody("ok", "success");
+            responseBody = new OKResponseBody("success");
             return Ok(responseBody);
         }
     }

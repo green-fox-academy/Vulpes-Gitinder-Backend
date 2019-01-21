@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Models
 {
-    public class GitinderResponse : ResponseBody
+    public class GitinderResponse : GeneralApiResponseBody
     {
         [JsonProperty("gitinder_token")]
         public string GiTinderToken { get; set; }
@@ -15,7 +15,6 @@ namespace GiTinder.Models
         {
             Status = "ok";
             GiTinderToken = token;
-        }
-       
+        }       
     }
 }

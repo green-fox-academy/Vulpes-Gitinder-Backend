@@ -25,7 +25,7 @@ namespace GiTinder.Services
             return foundSettings;
         }
 
-        public Settings FindSettingsWithLanguagesByUserToken(string usertoken)
+        public virtual Settings FindSettingsWithLanguagesByUserToken(string usertoken)
         {
             var foundUser = _userServices.FindUserByUserToken(usertoken);
             var foundSettings = FindSettingsWithLanguagesByUser(foundUser);

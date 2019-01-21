@@ -108,7 +108,7 @@ namespace GiTinder.Services
             client.DefaultRequestHeaders.Add("User-Agent", "GiTinderApp");
 
         }
-        public bool TokenExists(string usertoken)
+        public virtual bool TokenExists(string usertoken)
         {
             return _context.Users.Any(u => u.UserToken == usertoken);
         }

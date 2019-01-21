@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace GiTinder.Models
 {
-    public class SettingsResponse
+    public class SettingsResponse : GeneralApiResponseBody
     {
         [JsonIgnore]
         public Settings settingsForSettingsResponse;

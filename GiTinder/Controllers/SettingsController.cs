@@ -19,25 +19,27 @@ namespace GiTinder.Controllers
         }
 
         [HttpGet("/settings")]
-        public object GetSettings()
+        public GeneralApiResponseBody GetSettings()
         {
             GeneralApiResponseBody responseBody;
             var usertoken = Request.Headers["X-Gitinder-Token"];
 
             if (usertoken == "" || !_userServices.TokenExists(usertoken))
             {
+                Response.StatusCode = 403;
                 responseBody = new ErrorResponseBody("error", "Unauthorized request!");
-                return StatusCode(403, responseBody);
+                return responseBody;
             }
 
             var foundSettings = _settingsServices.FindSettingsWithLanguagesByUserToken(usertoken);
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
 
-            return new SettingsResponse(foundSettings);
+            responseBody = new SettingsResponse(foundSettings);
+            return responseBody;
         }
 
         [HttpPut("/settings")]

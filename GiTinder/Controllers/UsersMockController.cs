@@ -44,12 +44,7 @@ namespace GiTinder.Controllers
             string Token = Request.Headers["X-Gitinder-Token"];
             GeneralApiResponseBody responseBody;
 
-            if (Token == null)
-            {
-                Response.StatusCode = 403;
-                responseBody = new ErrorResponseBody("Unauthorized request!");
-            }
-            else if (Token == "aze")
+            if (!string.IsNullOrEmpty(Token) && Token == "aze")
             {
                 responseBody = new ProfileResponse();
             }

@@ -46,6 +46,25 @@ namespace GiTinder.Controllers
             return responseBody;
         }
 
+        [HttpGet("/profile")]
+        public object Profile()
+        {
+            GeneralApiResponseBody responseBody;
+            var usertoken = Request.Headers["X-Gitinder-Token"];
+
+            if (string.IsNullOrEmpty(usertoken))
+            {
+                Response.StatusCode = 403;
+                responseBody = new ErrorResponseBody("Unauthorized request!");
+               
+            }
+            else
+            {
+                responseBody = new ProfileResponse();
+            }
+            return responseBody;
+        }
+
     }
 }
 

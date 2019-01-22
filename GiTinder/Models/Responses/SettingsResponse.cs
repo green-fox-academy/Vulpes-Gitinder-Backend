@@ -33,8 +33,16 @@ namespace GiTinder.Models
             MaxDistanceInKm = settingsForSettingsResponse.MaxDistanceInKm;
 
             List<string> preferredLanguagesNames = new List<string>();
-            preferredLanguagesNames = settings.SettingsLanguages.Select(sl => sl.Language.LanguageName).ToList();
+            preferredLanguagesNames = GetPreferredLanguagesNamesStringsList(settings);
             PreferredLanguagesNames = preferredLanguagesNames;
+        }
+
+        public virtual List<string> GetPreferredLanguagesNamesStringsList(Settings settings)
+        {
+            return settings.SettingsLanguages.Select(sl => sl.Language.LanguageName).ToList();
         }
     }
 }
+
+// preferredLanguagesNames = GetPreferredLanguagesNamesStringsList(settings);
+//PreferredLanguagesNames = preferredLanguagesNames;

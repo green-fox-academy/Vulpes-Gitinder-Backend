@@ -62,7 +62,6 @@ namespace GiTinder.Tests.Models
             Assert.Equal(expectedResponseBody.Message, (actualResponse as ErrorResponseBody).Message);
             httpRequest.VerifyGet(r => r.Headers);
             httpContext.VerifyGet(a => a.Request);
-
             userServices.Verify(s => s.TokenExists(""), Times.Never);
             httpResponse.VerifySet(r => r.StatusCode = 403);
         }
@@ -80,8 +79,6 @@ namespace GiTinder.Tests.Models
             //Assert
             Assert.Equal(expectedResponseBody.Status, actualResponse.Status);
             Assert.Equal(expectedResponseBody.Message, (actualResponse as ErrorResponseBody).Message);
-            httpRequest.VerifyGet(r => r.Headers);
-            httpContext.VerifyGet(a => a.Request);
             userServices.Verify(s => s.TokenExists(It.IsAny<string>()), Times.Never);
             httpResponse.VerifySet(r => r.StatusCode = 403);
         }
@@ -101,69 +98,33 @@ namespace GiTinder.Tests.Models
             //Assert
             Assert.Equal(expectedResponseBody.Status, actualResponse.Status);
             Assert.Equal(expectedResponseBody.Message, (actualResponse as ErrorResponseBody).Message);
-            httpRequest.VerifyGet(r => r.Headers);
-            httpContext.VerifyGet(a => a.Request);
             userServices.Verify(s => s.TokenExists("x"), Times.Once());
             httpResponse.VerifySet(r => r.StatusCode = 403);
         }
-
-
-
-
+               
         [Fact]
-        public void ReturnSettingsResponseIfTokenInReqHeaderFoundInGetSettings()
+        public void CallUpdateAndSaveSettingsIfTokenInReqHeaderFoundInPutSettings()
         {
             //Arrange
             ArrangeForSettingsControllerTests();
             headerDictionary.Add("X-Gitinder-Token", "x");
             userServices.Setup(s => s.TokenExists(It.IsAny<string>())).Returns(true);
-            //mockSettings = new Mock<Settings>("Jonathan");
+
             mockSettings = new Mock<Settings>();
-            Mock<SettingsLanguage> mockSettingsLanguages = new Mock<SettingsLanguage>();
+            settingsServices.Setup(s => s.FindSettingsWithLanguagesByUserToken("x")).Returns(mockSettings.Object);
 
-            // mockSettings.Setup(s => s.Username).Returns("Jonathan");
-            mockSettingsResponse = new Mock<SettingsResponse>();
-            //PreferredLanguagesNames preferredLanguagesNames;
-            //preferredLanguagesNames = new List<string>();
-
-            List<string> list = new List<string>();
-
-            //mockSettingsResponse.Setup(s => s.PreferredLanguagesNames).Returns(list);
-            settingsServices.Setup(s => s.FindSettingsWithLanguagesByUserToken(It.IsAny<string>())).Returns(mockSettings.Object);
-            mockSettings.Setup(s => s.SettingsLanguages.Select(sl => sl.Language.LanguageName).ToList()).Returns(list);
-
-            //List<string> preferredLanguagesNames = new List<string>();
-            //preferredLanguagesNames = settings.SettingsLanguages.Select(sl => sl.Language.LanguageName).ToList();
-            //PreferredLanguagesNames = preferredLanguagesNames;
-
-            //mockSettingsResponse.Setup(s => s.Username).Returns("Jonathan");
+            settingsServices.Setup(s => s.UpdateAndSaveSettingsFoundByUserToken(mockSettings.Object, It.IsAny<string>())).Verifiable();
 
             //Act
-            var actualResponse = settingsController.GetSettings();
-            //var expectedResponseBody = new SettingsResponse(mockSettings.Object);
-            //var foundSettings = _settingsServices.FindSettingsWithLanguagesByUserToken(usertoken);
-            //responseBody = new SettingsResponse(foundSettings);
-            //return responseBody;
+            var actualResponse = settingsController.PutSettings(mockSettings.Object);
+            var expectedResponseBody = new OKResponseBody("ok", "success");
 
             //Assert
-            settingsServices.Verify(s => s.FindSettingsWithLanguagesByUserToken("x"), Times.Once());
-            userServices.Verify(s => s.TokenExists("x"), Times.Once());
-            // Assert.Equal(expectedResponseBody.Status, actualResponse.Status);
-            //Assert.Equal(expectedResponseBody.Username, (actualResponse as SettingsResponse).Username);
-            //Assert.Equal(expectedResponseBody.Status, expectedResponseBody.Status);
-            //Assert.Equal(expectedResponseBody.Message, (actualResponse as ErrorResponseBody).Message);
-            //mockSettings.VerifyGet(s => s.Username);
-            //mockSettingsResponse.VerifyGet(s => s.Username);
-            httpRequest.VerifyGet(r => r.Headers);
-            httpContext.VerifyGet(a => a.Request);
-
-            //Assert.True(headerDictionary.ContainsKey("X-Gitinder-Token"));
-            //Assert.False(string.IsNullOrEmpty(httpRequest.Object.Headers["X-Gitinder-Token"]));
+            Assert.Equal(expectedResponseBody.Status, actualResponse.Status);
+            Assert.Equal(expectedResponseBody.Message, (actualResponse as OKResponseBody).Message);
+            settingsServices.Verify(s => s.UpdateAndSaveSettingsFoundByUserToken(mockSettings.Object, It.IsAny<string>()), Times.Once());
+            httpResponse.VerifySet(r => r.StatusCode = 200);
         }
-
-
-
-
 
         [Fact]
         public void ReturnErrorIfTokenInReqHeaderIsEmptyStringInPutSettings()
@@ -172,7 +133,6 @@ namespace GiTinder.Tests.Models
             ArrangeForSettingsControllerTests();
             headerDictionary.Add("X-Gitinder-Token", "");
             mockSettings = new Mock<Settings>();
-            // mockSettings.Setup(s => s.Username).Returns("Jonathan");
 
             //Act
             var actualResponse = settingsController.PutSettings(mockSettings.Object);
@@ -183,7 +143,6 @@ namespace GiTinder.Tests.Models
             Assert.Equal(expectedResponseBody.Message, (actualResponse as ErrorResponseBody).Message);
             httpRequest.VerifyGet(r => r.Headers);
             httpContext.VerifyGet(a => a.Request);
-
             userServices.Verify(s => s.TokenExists(""), Times.Never);
             httpResponse.VerifySet(r => r.StatusCode = 403);
         }
@@ -202,8 +161,6 @@ namespace GiTinder.Tests.Models
             //Assert
             Assert.Equal(expectedResponseBody.Status, actualResponse.Status);
             Assert.Equal(expectedResponseBody.Message, (actualResponse as ErrorResponseBody).Message);
-            httpRequest.VerifyGet(r => r.Headers);
-            httpContext.VerifyGet(a => a.Request);
             userServices.Verify(s => s.TokenExists(It.IsAny<string>()), Times.Never);
             httpResponse.VerifySet(r => r.StatusCode = 403);
         }
@@ -224,8 +181,6 @@ namespace GiTinder.Tests.Models
             //Assert
             Assert.Equal(expectedResponseBody.Status, actualResponse.Status);
             Assert.Equal(expectedResponseBody.Message, (actualResponse as ErrorResponseBody).Message);
-            httpRequest.VerifyGet(r => r.Headers);
-            httpContext.VerifyGet(a => a.Request);
             userServices.Verify(s => s.TokenExists("x"), Times.Once());
             httpResponse.VerifySet(r => r.StatusCode = 403);
         }

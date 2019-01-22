@@ -3,6 +3,7 @@ using GiTinder.Models;
 using GiTinder.Models.GitHubResponses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -120,7 +121,7 @@ namespace GiTinder.Services
 
         public User FindUserByUserToken(string usertoken)
         {
-            User foundUser = _context.Users.Where(u => u.UserToken == usertoken).FirstOrDefault();
+            var foundUser = _context.Users.Where(u => u.UserToken == usertoken).FirstOrDefault();
             return foundUser;
         }
 

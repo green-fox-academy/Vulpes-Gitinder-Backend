@@ -29,19 +29,24 @@ namespace GiTinder.Services
             return _context.Settings.Where(s => s.SettingsId == settingsId).FirstOrDefault();
         }
 
-        public virtual Settings FindSettingsWithLanguagesByUserToken(string usertoken)
-        {
-            var foundUser = _userServices.FindUserByUserToken(usertoken);
-            return FindSettingsWithLanguagesByUser(foundUser);
-        }
-
+        ///
         public Settings FindSettingsWithLanguagesByUser(User user)
         {
-            return _context.Settings
-                .Include(e => e.SettingsLanguages)
-                .ThenInclude(l => l.Language)
-                .Where(s => s.Username == user.Username)
-                .FirstOrDefault();
+            var foundSettings = _context.Settings.Include(e => e.SettingsLanguages).ThenInclude(l => l.Language).Where(s => s.Username == user.Username).FirstOrDefault();
+            return foundSettings;
+        }
+
+        public User FindUserByUserToken(string usertoken)
+        {
+            var foundUser = _context.Users.Where(u => u.UserToken == usertoken).FirstOrDefault();
+            return foundUser;
+        }
+
+        public virtual Settings FindSettingsWithLanguagesByUserToken(string usertoken)
+        {
+            var foundUser = FindUserByUserToken(usertoken);
+            var foundSettings = FindSettingsWithLanguagesByUser(foundUser);
+            return foundSettings;
         }
 
         public Language FindLanguageByLanguageName(string languageName)
@@ -63,13 +68,14 @@ namespace GiTinder.Services
 
         public void UpdateSettings(Settings oldsettings, Settings newsettings)
         {
+            var usertoken = _userServices.GetTokenOf(oldsettings.Username);
             //var foundUser = _userServices.FindUserByUserToken(usertoken);
             oldsettings.Username = newsettings.Username;
             oldsettings.EnableNotification = newsettings.EnableNotification;
             oldsettings.EnableBackgroundSync = newsettings.EnableBackgroundSync;
             oldsettings.MaxDistanceInKm = newsettings.MaxDistanceInKm;
             _context.Settings.Update(oldsettings);
-            var usertoken = _userServices.GetTokenOf(oldsettings.Username);
+
             UpdateSettingsLanguageList(newsettings, usertoken);
         }
 

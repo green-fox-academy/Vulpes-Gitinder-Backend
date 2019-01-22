@@ -7,16 +7,16 @@ namespace GiTinder.Models
         [JsonProperty("message")]
         public string Message { get; set; }
 
-        public ErrorResponseBody(string missingParameter)
+        public ErrorResponseBody(string errorMessage)
         {
             Status = "error";
-            Message = missingParameter + " is missing!";
+            Message = errorMessage;
         }
 
-        public ErrorResponseBody(string status, string message)
+        public ErrorResponseBody(string status, string errorMessage)
         {
             Status = status;
-            Message = message;
+            Message = errorMessage;
         }
     }
 }

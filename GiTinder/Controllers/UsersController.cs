@@ -19,7 +19,7 @@ namespace GiTinder.Controllers
             _context = context;
             _userServices = userServices;
         }
-    
+
         [HttpPost("/login")]
         public async Task<GeneralApiResponseBody> Login([FromBody] LoginRequestBody loginRequestBody)
         {
@@ -32,15 +32,17 @@ namespace GiTinder.Controllers
                 Response.StatusCode = 400;
                 responseBody =
                     String.IsNullOrEmpty(username) ?
-                    new ErrorResponseBody("username") : new ErrorResponseBody("access_token");
+                    new ErrorResponseBody("username is missing!") :
+                    new ErrorResponseBody("access_token is missing!");
             }
-            else if(await _userServices.LoginRequestIsValid(username, accessToken))
+            else if (await _userServices.LoginRequestIsValid(username, accessToken))
             {
                 _userServices.UpdateUser(username);
                 responseBody = new TokenResponseBody(_userServices.GetTokenOf(username));
-            } else
+            }
+            else
             {
-                responseBody = new ErrorResponseBody("correct authorization");
+                responseBody = new ErrorResponseBody("Unauthorized request!");
             }
             return responseBody;
         }

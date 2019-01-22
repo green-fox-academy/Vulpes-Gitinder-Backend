@@ -24,5 +24,11 @@ namespace GiTinder.Models
         {
             Timestamp = DateTime.Now;
         }
+        public Swipe(string SwipingUserId, string SwipedUserId,string Direction)
+        {
+            this.SwipingUserId = SwipingUserId;
+            this.SwipedUserId = SwipedUserId;
+            this.Direction = Direction;
+        }
     }   
 }

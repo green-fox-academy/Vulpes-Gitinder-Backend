@@ -46,7 +46,7 @@ namespace GiTinder.Controllers
             return responseBody;
         }
 
-        [HttpGet("/profile")]
+        [HttpGet("/proffile")]
         public object Profile()
         {
             GeneralApiResponseBody responseBody;
@@ -55,14 +55,17 @@ namespace GiTinder.Controllers
             if (string.IsNullOrEmpty(usertoken))
             {
                 Response.StatusCode = 403;
-                responseBody = new ErrorResponseBody("Unauthorized request!");
-               
+                responseBody = new ErrorResponseBody("Unauthorized request!");              
             }
-            else
+            var responseProfile = _userServices.FindUserByUserToken(usertoken);
+            if (_userServices.TokenExists(usertoken))
             {
-                responseBody = new ProfileResponse();
+                return responseProfile;
             }
-            return responseBody;
+            return null;
+            //_userServices.GetProfileOf(database)
+           // responseBody = new ProfileResponse();
+           // return responseBody;
         }
 
     }

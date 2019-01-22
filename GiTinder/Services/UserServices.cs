@@ -122,7 +122,6 @@ namespace GiTinder.Services
         {
             User foundUser = _context.Users.Where(u => u.UserToken == usertoken).FirstOrDefault();
             return foundUser;
-
         }
 
         public virtual async Task<bool> LoginRequestIsValid(string username, string gitHubToken)
@@ -137,7 +136,7 @@ namespace GiTinder.Services
             {
                 profileLoggingIn = await gitHubProfileResponse.Content.ReadAsAsync<GitHubProfile>();
             }
-             
+
             return username.Equals(profileLoggingIn.Login);
         }
     }

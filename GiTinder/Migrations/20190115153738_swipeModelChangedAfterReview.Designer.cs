@@ -4,14 +4,16 @@ using GiTinder.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GiTinder.Migrations
 {
     [DbContext(typeof(GiTinderContext))]
-    partial class GiTinderContextModelSnapshot : ModelSnapshot
+    [Migration("20190115153738_swipeModelChangedAfterReview")]
+    partial class swipeModelChangedAfterReview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,19 +33,6 @@ namespace GiTinder.Migrations
                     b.HasKey("LanguageId");
 
                     b.ToTable("Languages");
-                });
-
-            modelBuilder.Entity("GiTinder.Models.Match", b =>
-                {
-                    b.Property<string>("Username_1");
-
-                    b.Property<string>("Username_2");
-
-                    b.Property<DateTime>("Timestamp");
-
-                    b.HasKey("Username_1", "Username_2");
-
-                    b.ToTable("Matches");
                 });
 
             modelBuilder.Entity("GiTinder.Models.Settings", b =>
@@ -88,8 +77,7 @@ namespace GiTinder.Migrations
 
                     b.Property<string>("SwipedUserId");
 
-                    b.Property<string>("Direction")
-                        .IsRequired();
+                    b.Property<int>("Direction");
 
                     b.Property<DateTime>("Timestamp");
 

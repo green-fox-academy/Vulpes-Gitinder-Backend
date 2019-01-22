@@ -11,9 +11,9 @@ namespace GiTinder.Models
         [JsonProperty("message")]
         public string Message { get; set; }
 
-        public OKResponseBody(string status, string message)
+        public OKResponseBody(string message)
         {
-            Status = status;
+            Status = "ok";
             Message = message;
         }
     }

@@ -3,11 +3,19 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+<<<<<<< HEAD
     <UserSecretsId>64695f8e-5ee6-4a11-b76e-1d297ad5b819</UserSecretsId>
+=======
+    <UserSecretsId>2f357da0-7fdd-4449-8959-d35a415c6e3c</UserSecretsId>
+>>>>>>> 78139706e305e548578182a508e42d27638a2e25
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <WarningLevel>1</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>0</WarningLevel>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Connected Services\" />
     <Folder Include="Models\GitHubResponses\" />
     <Folder Include="Views\Shared\" />
     <Folder Include="wwwroot\" />
@@ -38,7 +47,15 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.13" />
+<<<<<<< HEAD
 
+=======
+    <PackageReference Include="WindowsAzure.Storage" Version="9.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
+>>>>>>> 78139706e305e548578182a508e42d27638a2e25
   </ItemGroup>
 
 </Project>

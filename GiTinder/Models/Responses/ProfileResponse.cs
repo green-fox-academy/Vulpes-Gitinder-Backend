@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Models
 {
-    public class ProfileResponse : ResponseBody
+    public class ProfileResponse : GeneralApiResponseBody
+
     {
         [JsonProperty("username")]
         public string Username { get; set; }

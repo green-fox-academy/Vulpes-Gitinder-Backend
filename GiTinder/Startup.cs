@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -24,37 +24,16 @@ namespace GiTinder
         {
             _configuration = configuration;
         }
-        public Startup(IHostingEnvironment env)
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-
-            //var config = builder.Build();
-
-            //var constr = _configuration.GetConnectionString(@"Server = (localdb)\mssqllocaldb; Database = MyDatabase; Trusted_Connection = True;");
-
-            _configuration = builder.Build();
-            Console.WriteLine(env.EnvironmentName);
-
-        }
-
-
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string getEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            services.AddDbContext<GiTinderContext>(options => options.UseSqlServer(getEnv));
-            //services.AddDbContext<GiTinderContext>();
+            services.AddDbContext<GiTinderContext>(options => options.UseSqlServer(_configuration.GetConnectionString("GiTinderContextMSSqlDb")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-            services.AddTransient<SettingsServices>();
             services.AddTransient<UserServices>();
+            services.AddTransient<SettingsServices>();
 
         }
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -71,6 +50,11 @@ namespace GiTinder
 
             app.UseHttpsRedirection();
             app.UseMvc();
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetService<GiTinderContext>();
+                context.Database.Migrate();
+            }
         }
     }
 }

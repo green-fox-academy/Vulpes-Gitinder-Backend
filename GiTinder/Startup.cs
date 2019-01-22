@@ -1,5 +1,6 @@
 ﻿﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using GiTinder.Data;
@@ -17,25 +18,26 @@ namespace GiTinder
     public class Startup
     {
         private IConfiguration _configuration;
+        private string connectionString;    
 
         public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
         }
-        public Startup(IHostingEnvironment env, IConfiguration configuration)
+        public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
 
-            if (env.IsDevelopment())
-            {
-                builder.AddUserSecrets<Startup>();
-            }
+            //var config = builder.Build();
 
-            builder.AddEnvironmentVariables();
-            configuration = builder.Build();
+            //var constr = _configuration.GetConnectionString(@"Server = (localdb)\mssqllocaldb; Database = MyDatabase; Trusted_Connection = True;");
+
+            _configuration = builder.Build();
+            Console.WriteLine(env.EnvironmentName);
 
         }
 
@@ -43,8 +45,9 @@ namespace GiTinder
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<GiTinderContext>(options => options.UseSqlServer(_configuration.GetConnectionString("GiTinderContextMSSqlDb")));
-
+            string getEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            services.AddDbContext<GiTinderContext>(options => options.UseSqlServer(getEnv));
+            //services.AddDbContext<GiTinderContext>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddTransient<SettingsServices>();

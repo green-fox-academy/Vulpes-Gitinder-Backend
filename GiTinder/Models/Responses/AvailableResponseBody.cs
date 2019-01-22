@@ -6,13 +6,20 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Models.Responses
 {
-    public class AvailableResponseBody
+    public class AvailableResponseBody : GeneralApiResponseBody
     {
         [JsonProperty("profiles")]
-        public List<Profile> Profiles { get; set; }
+        public List<ProfileResponse> Profiles { get; set; }
         [JsonProperty("count")]
         public int Count { get; set; }
         [JsonProperty("all")]
         public int All { get; set; }
+
+        public AvailableResponseBody(List<ProfileResponse> profiles, int count, int all)
+        {
+            Profiles = profiles;
+            Count = count;
+            All = all;
+        }
     }
 }

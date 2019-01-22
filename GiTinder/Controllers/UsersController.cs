@@ -32,11 +32,7 @@ namespace GiTinder.Controllers
                 Response.StatusCode = 400;
                 responseBody =
                     String.IsNullOrEmpty(username) ?
-<<<<<<< HEAD
                     new ErrorResponseBody("username is missing!") :
-=======
-                    new ErrorResponseBody("username is missing!") : 
->>>>>>> 78139706e305e548578182a508e42d27638a2e25
                     new ErrorResponseBody("access_token is missing!");
             }
             else if (await _userServices.LoginRequestIsValid(username, accessToken))

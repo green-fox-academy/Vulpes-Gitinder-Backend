@@ -20,7 +20,7 @@ namespace GiTinder.Controllers
         {
             _context = context;
             _userServices = userServices;
-            
+
         }
         [HttpPut("profiles/{username}/{direction}")]
         public ObjectResult Swipe([FromRoute] string username, string direction)
@@ -29,9 +29,10 @@ namespace GiTinder.Controllers
             System.Diagnostics.Debug.WriteLine(username + direction);
             System.Diagnostics.Trace.WriteLine(username + " " + direction);
             Debug.Write(username + direction);
-            
+
             GeneralApiResponseBody responseBody;
             var usertoken = Request.Headers["X-Gitinder-Token"];
+            var Swipe = new Swipe(usertoken, username, direction);
 
             if (String.IsNullOrEmpty(usertoken))
             {
@@ -40,18 +41,26 @@ namespace GiTinder.Controllers
             }
             else
             {
-                responseBody = new OKResponseBody("ok", "success");
+                responseBody = new OKResponseBody("success");
                 return StatusCode(200, responseBody);
-                if(direction == "right")
-                {
-                   //save swipe with both user ids as a match.
-                }
-                else
-                {
-                    //give show next user
-                }
-                
             }
+        }
+        [HttpPut("/matches")]
+        public ObjectResult Matches([FromRoute] string username)
+        {
+            GeneralApiResponseBody responseBody;
+            var usertoken = Request.Headers["X-Gitinder-Token"];
+            if (String.IsNullOrEmpty(usertoken))
+            {
+                responseBody = new ErrorResponseBody("error", "Unauthorized request!");
+                return StatusCode(403, responseBody);
+            }
+            else
+            {
+                responseBody = new OKResponseBody("success");
+                return StatusCode(200, responseBody);
+            }
+        }
         }
     }
 }

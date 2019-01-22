@@ -24,9 +24,9 @@ namespace GiTinder.Models
 
         public Settings UserSettings { get; set; }
 
-        //public User()
-        //{
-        //}
+        public User()
+        {
+        }
 
         public User(string username)
         {

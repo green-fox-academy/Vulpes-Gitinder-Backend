@@ -43,6 +43,3 @@ namespace GiTinder.Models
         }
     }
 }
-
-// preferredLanguagesNames = GetPreferredLanguagesNamesStringsList(settings);
-//PreferredLanguagesNames = preferredLanguagesNames;

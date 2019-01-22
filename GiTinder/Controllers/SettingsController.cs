@@ -27,7 +27,7 @@ namespace GiTinder.Controllers
             if (string.IsNullOrEmpty(usertoken) || !_userServices.TokenExists(usertoken))
             {
                 Response.StatusCode = 403;
-                responseBody = new ErrorResponseBody("error", "Unauthorized request!");
+                responseBody = new ErrorResponseBody("Unauthorized request!");
                 return responseBody;
             }
 
@@ -47,7 +47,7 @@ namespace GiTinder.Controllers
             if (string.IsNullOrEmpty(usertoken) || !_userServices.TokenExists(usertoken))
             {
                 Response.StatusCode = 403;
-                responseBody = new ErrorResponseBody("error", "Unauthorized request!");
+                responseBody = new ErrorResponseBody("Unauthorized request!");
                 return responseBody;
             }
 
@@ -57,7 +57,7 @@ namespace GiTinder.Controllers
             //}
 
             _settingsServices.UpdateAndSaveSettingsFoundByUserToken(settings, usertoken);
-            responseBody = new OKResponseBody("ok", "success");
+            responseBody = new OKResponseBody("success");
             Response.StatusCode = 200;
             return responseBody;
         }

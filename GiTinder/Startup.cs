@@ -44,6 +44,11 @@ namespace GiTinder
 
             app.UseHttpsRedirection();
             app.UseMvc();
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetService<GiTinderContext>();
+                context.Database.Migrate();
+            }
         }
     }
 }

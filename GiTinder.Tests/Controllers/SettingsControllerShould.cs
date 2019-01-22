@@ -55,7 +55,7 @@ namespace GiTinder.Tests.Models
 
             //Act
             var actualResponse = settingsController.GetSettings();
-            var expectedResponseBody = new ErrorResponseBody("error", "Unauthorized request!");
+            var expectedResponseBody = new ErrorResponseBody("Unauthorized request!");
 
             //Assert
             Assert.Equal(expectedResponseBody.Status, actualResponse.Status);
@@ -74,7 +74,7 @@ namespace GiTinder.Tests.Models
 
             //Act
             var actualResponse = settingsController.GetSettings();
-            var expectedResponseBody = new ErrorResponseBody("error", "Unauthorized request!");
+            var expectedResponseBody = new ErrorResponseBody("Unauthorized request!");
 
             //Assert
             Assert.Equal(expectedResponseBody.Status, actualResponse.Status);
@@ -93,7 +93,7 @@ namespace GiTinder.Tests.Models
 
             //Act
             var actualResponse = settingsController.GetSettings();
-            var expectedResponseBody = new ErrorResponseBody("error", "Unauthorized request!");
+            var expectedResponseBody = new ErrorResponseBody("Unauthorized request!");
 
             //Assert
             Assert.Equal(expectedResponseBody.Status, actualResponse.Status);
@@ -117,7 +117,7 @@ namespace GiTinder.Tests.Models
 
             //Act
             var actualResponse = settingsController.PutSettings(mockSettings.Object);
-            var expectedResponseBody = new OKResponseBody("ok", "success");
+            var expectedResponseBody = new OKResponseBody("success");
 
             //Assert
             Assert.Equal(expectedResponseBody.Status, actualResponse.Status);
@@ -136,7 +136,7 @@ namespace GiTinder.Tests.Models
 
             //Act
             var actualResponse = settingsController.PutSettings(mockSettings.Object);
-            var expectedResponseBody = new ErrorResponseBody("error", "Unauthorized request!");
+            var expectedResponseBody = new ErrorResponseBody("Unauthorized request!");
 
             //Assert
             Assert.Equal(expectedResponseBody.Status, actualResponse.Status);
@@ -156,7 +156,7 @@ namespace GiTinder.Tests.Models
 
             //Act
             var actualResponse = settingsController.PutSettings(mockSettings.Object);
-            var expectedResponseBody = new ErrorResponseBody("error", "Unauthorized request!");
+            var expectedResponseBody = new ErrorResponseBody("Unauthorized request!");
 
             //Assert
             Assert.Equal(expectedResponseBody.Status, actualResponse.Status);
@@ -176,7 +176,7 @@ namespace GiTinder.Tests.Models
 
             //Act
             var actualResponse = settingsController.PutSettings(mockSettings.Object);
-            var expectedResponseBody = new ErrorResponseBody("error", "Unauthorized request!");
+            var expectedResponseBody = new ErrorResponseBody("Unauthorized request!");
 
             //Assert
             Assert.Equal(expectedResponseBody.Status, actualResponse.Status);

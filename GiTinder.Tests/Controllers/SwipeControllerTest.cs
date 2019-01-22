@@ -1,5 +1,6 @@
 ﻿using GiTinder.Controllers;
 using GiTinder.Data;
+using GiTinder.Models;
 using GiTinder.Services;
 using Microsoft.AspNetCore.Http;
 using Moq;
@@ -16,7 +17,14 @@ namespace GiTinder.Tests.Controllers
     Mock<HttpResponse> response;
     Mock<HttpContext> httpContext;
 
-    class SwipeControllerTest
+    public class SwipeControllerTest
     {
+        public static LoginRequestBody CreateLoginRequestBodyWithNullUsername()
+        {
+            return new LoginRequestBody()
+            {
+                Username = null,
+                AccessToken = "mock token"
+            };
+        }
     }
-}

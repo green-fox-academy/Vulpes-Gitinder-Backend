@@ -20,6 +20,7 @@ namespace GiTinder.Controllers
         {
             _context = context;
             _userServices = userServices;
+            
         }
         [HttpPut("profiles/{username}/{direction}")]
         public ObjectResult Swipe([FromRoute] string username, string direction)
@@ -41,8 +42,16 @@ namespace GiTinder.Controllers
             {
                 responseBody = new OKResponseBody("ok", "success");
                 return StatusCode(200, responseBody);
+                if(direction == "right")
+                {
+                   //save swipe with both user ids as a match.
+                }
+                else
+                {
+                    //give show next user
+                }
+                
             }
-            
         }
     }
 }

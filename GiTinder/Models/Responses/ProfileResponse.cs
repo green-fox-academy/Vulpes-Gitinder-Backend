@@ -15,11 +15,15 @@ namespace GiTinder.Models
         [JsonProperty("avatar_url")]
         public string Url { get; set; }
 
-        public ProfileResponse(string userName, string uRl)
+        [JsonProperty("repos")]
+        public string Repos { get; set; }
+
+        public ProfileResponse(string userName, string uRl, string rePos)
         {
             Status = "ok";
             Username = userName;
             Url = uRl;
+            Repos = rePos;
           
 
         }

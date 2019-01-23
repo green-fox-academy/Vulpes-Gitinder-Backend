@@ -38,23 +38,23 @@ namespace GiTinder.Controllers
             return responseBody;
         }
 
-        //[HttpGet("/profile")]
-        //public GeneralApiResponseBody MockProfile()
-        //{
-        //    string Token = Request.Headers["X-Gitinder-Token"];
-        //    GeneralApiResponseBody responseBody;
+        [HttpGet("/mprofile")]
+        public GeneralApiResponseBody MockProfile()
+        {
+            string Token = Request.Headers["X-Gitinder-Token"];
+            GeneralApiResponseBody responseBody;
 
-        //    if (!string.IsNullOrEmpty(Token) && Token == "aze")
-        //    {
-        //        responseBody = new ProfileResponse();
-        //    }
-        //    else
-        //    {
-        //        Response.StatusCode = 403;
-        //        responseBody = new ErrorResponseBody("Unauthorized request!");
-        //    }
-        //    return responseBody;
-        //}
+            if (!string.IsNullOrEmpty(Token) && Token == "aze")
+            {
+                responseBody = new ProfileResponse("Pablos", "https://avatars0.githubusercontent.com/u/5855091?s=40&v=4", "https://github.com/adamgyulavari/gf-chatapp");
+            }
+            else
+            {
+                Response.StatusCode = 403;
+                responseBody = new ErrorResponseBody("Unauthorized request!");
+            }
+            return responseBody;
+        }
 
     }
 }

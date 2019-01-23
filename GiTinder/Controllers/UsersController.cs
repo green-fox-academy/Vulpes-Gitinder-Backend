@@ -46,7 +46,7 @@ namespace GiTinder.Controllers
             return responseBody;
         }
 
-        [HttpGet("/proffile")]
+        [HttpGet("/profile")]
         public object Profile()
         {
             GeneralApiResponseBody responseBody;
@@ -63,9 +63,7 @@ namespace GiTinder.Controllers
                 return responseProfile;
             }
             return null;
-            //_userServices.GetProfileOf(database)
-           // responseBody = new ProfileResponse();
-           // return responseBody;
+           
         }
 
     }

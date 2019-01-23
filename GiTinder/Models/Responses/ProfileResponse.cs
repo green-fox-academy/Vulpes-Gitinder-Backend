@@ -11,22 +11,13 @@ namespace GiTinder.Models
     {
         [JsonProperty("username")]
         public string Username { get; set; }
-        [JsonProperty("repos")]
-        public int ReposCout { get; set; }
-        [JsonProperty("usertoken")]
-        public string UserToken { get; set; }
-        [JsonProperty("avatar")]
-        public string Avatar { get; set; }
-        [JsonProperty("repos")]
-        public int Repos { get; set; }
 
        
-        public ProfileResponse(string username)
+       
+        public ProfileResponse(string userName)
         {
-            Username = username;
-         
-           
-
+            Status = "ok";
+            Username = userName;
           
 
         }

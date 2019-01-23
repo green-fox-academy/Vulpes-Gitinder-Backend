@@ -56,12 +56,17 @@ namespace GiTinder.Controllers
             if (string.IsNullOrEmpty(usertoken))
             {
                 Response.StatusCode = 403;
+                responseBody = new ErrorResponseBody("Unauthorized request!");
             }
             if (_userServices.TokenExists(usertoken))
             {
-                return responseProfile;
+                responseBody = new ProfileResponse(responseProfile.Username);
             }
-            return responseBody = new ErrorResponseBody("Unauthorized request!");
+            else
+            {
+                responseBody = new ErrorResponseBody("Unauthorized request!");
+            }
+            return responseBody;
 
         }
 

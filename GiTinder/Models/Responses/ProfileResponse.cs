@@ -11,20 +11,23 @@ namespace GiTinder.Models
     {
         [JsonProperty("username")]
         public string Username { get; set; }
-        [JsonProperty("url")]
+        [JsonProperty("repos")]
+        public int ReposCout { get; set; }
+        [JsonProperty("usertoken")]
+        public string UserToken { get; set; }
+        [JsonProperty("avatar")]
         public string Avatar { get; set; }
         [JsonProperty("repos")]
-        public string Repos { get; set; }
-        [JsonProperty("languages")]
-        public string Languages { get; set; }
+        public int Repos { get; set; }
 
-
-        public ProfileResponse()
+       
+        public ProfileResponse(string username)
         {
-            Username = "aze";
-            Avatar = "https://avatars1.githubusercontent.com/u/5855091?s=400&v=4";
-            Repos = "string";
-            Languages = "eng";
+            Username = username;
+         
+           
+
+          
 
         }
     }

@@ -124,7 +124,6 @@ namespace GiTinder.Services
             return foundUser;
 
         }
-
         public virtual async Task<bool> LoginRequestIsValid(string username, string gitHubToken)
         {
             HeadersSettingForGitHubApi();

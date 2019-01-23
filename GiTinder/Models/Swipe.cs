@@ -8,8 +8,8 @@ using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace GiTinder.Models
-{
-    public class Swipe
+{   [JsonObject]
+    public class Swipe : GeneralApiResponseBody
     {
         [Required]
         public string SwipingUserId { get; set; }

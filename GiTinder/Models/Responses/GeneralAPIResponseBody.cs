@@ -1,5 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace GiTinder.Models
 {
@@ -7,10 +6,5 @@ namespace GiTinder.Models
     {
         [JsonProperty("status", Order = -2)]
         public string Status { get; set; }
-
-        public static implicit operator GeneralApiResponseBody(Swipe v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

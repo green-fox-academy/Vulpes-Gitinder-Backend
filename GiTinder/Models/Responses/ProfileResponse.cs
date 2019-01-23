@@ -21,6 +21,9 @@ namespace GiTinder.Models
         [JsonProperty("languages")]
         public string Languages { get; set; }
 
+        [JsonProperty("snippets")]
+        public string Snippets { get; set; }
+
         public ProfileResponse(string userName, string uRl, string rePos)
         {
             Status = "ok";
@@ -28,7 +31,7 @@ namespace GiTinder.Models
             Url = uRl;
             Repos = rePos;
             Languages = "Java";
-
+            Snippets = "https://github.com/adamgyulavari/gf-chatapp";
         }
     }
 }

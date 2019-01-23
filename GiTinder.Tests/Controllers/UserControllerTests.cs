@@ -1,6 +1,7 @@
 ﻿using GiTinder.Controllers;
 using GiTinder.Data;
 using GiTinder.Models;
+using GiTinder.Models.Responses;
 using GiTinder.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,7 @@ namespace GiTinder.Tests.Controllers
         UsersController usersController;
         HeaderDictionary headerDictionary;
         Mock<HttpResponse> response;
+        Mock<HttpRequest> httpRequest;
         Mock<HttpContext> httpContext;
 
         [Fact]
@@ -78,6 +80,23 @@ namespace GiTinder.Tests.Controllers
             Assert.IsType<TokenResponseBody>(result);
         }
 
+        [Fact]
+        public void CheckingAvailableProfilesWithNoTokenReturnsAnErrorResponse()
+        {
+            SetUpTestingConditions();
+            ErrorResponseBody result = usersController.ShowAvailableProfiles() as ErrorResponseBody;
+            Assert.Equal("error", result.Status);
+        }
+
+        [Fact]
+        public void CheckingAvailableProfilesWithTokenReturnsAvailableResponseBody()
+        {
+            SetUpTestingConditions();
+            headerDictionary.Add("X-Gitinder-Token", "this is a mock token");
+            GeneralApiResponseBody result = usersController.ShowAvailableProfiles();
+            Assert.IsType<AvailableResponseBody>(result);
+        }
+
         private void SetUpTestingConditions()
         {
             mockRepo = new Mock<GiTinderContext>();
@@ -85,8 +104,10 @@ namespace GiTinder.Tests.Controllers
             usersController = new UsersController(mockRepo.Object, userServices);
             headerDictionary = new HeaderDictionary();
             response = new Mock<HttpResponse>();
-            response.SetupGet(r => r.Headers).Returns(headerDictionary);
             httpContext = new Mock<HttpContext>();
+            httpRequest = new Mock<HttpRequest>();
+            httpRequest.SetupGet(r => r.Headers).Returns(headerDictionary);
+            httpContext.SetupGet(a => a.Request).Returns(httpRequest.Object);
             httpContext.SetupGet(a => a.Response).Returns(response.Object);
             usersController.ControllerContext = new ControllerContext()
             {

@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace GiTinder.Tests.Models
 {
-    public class SettingsControllerShould
+    public class SettingsControllerTest
     {
         Mock<GiTinderContext> mockRepo;
         Mock<UserServices> userServices;
@@ -23,7 +23,7 @@ namespace GiTinder.Tests.Models
         Mock<HttpResponse> httpResponse;
         HeaderDictionary headerDictionary;
         Mock<HttpContext> httpContext;
-        Mock<Settings> mockSettings;
+        
         Mock<SettingsResponse> mockSettingsResponse;
 
         private void ArrangeForSettingsControllerTests()
@@ -110,19 +110,19 @@ namespace GiTinder.Tests.Models
             headerDictionary.Add("X-Gitinder-Token", "x");
             userServices.Setup(s => s.TokenExists(It.IsAny<string>())).Returns(true);
 
-            mockSettings = new Mock<Settings>();
-            settingsServices.Setup(s => s.FindSettingsWithLanguagesByUserToken("x")).Returns(mockSettings.Object);
+            Settings settings = SettingsFactory.CreateSettingsWithValidUserName();
+            settingsServices.Setup(s => s.FindSettingsWithLanguagesByUserToken("x")).Returns(settings);
 
-            settingsServices.Setup(s => s.UpdateAndSaveSettingsFoundByUserToken(mockSettings.Object, It.IsAny<string>())).Verifiable();
+            settingsServices.Setup(s => s.UpdateAndSaveSettingsFoundByUserToken(settings, It.IsAny<string>())).Verifiable();
 
             //Act
-            var actualResponse = settingsController.PutSettings(mockSettings.Object);
+            var actualResponse = settingsController.PutSettings(settings);
             var expectedResponseBody = new OKResponseBody("success");
 
             //Assert
             Assert.Equal(expectedResponseBody.Status, actualResponse.Status);
             Assert.Equal(expectedResponseBody.Message, (actualResponse as OKResponseBody).Message);
-            settingsServices.Verify(s => s.UpdateAndSaveSettingsFoundByUserToken(mockSettings.Object, It.IsAny<string>()), Times.Once());
+            settingsServices.Verify(s => s.UpdateAndSaveSettingsFoundByUserToken(settings, It.IsAny<string>()), Times.Once());
             httpResponse.VerifySet(r => r.StatusCode = 200);
         }
 
@@ -132,10 +132,10 @@ namespace GiTinder.Tests.Models
             //Arrange
             ArrangeForSettingsControllerTests();
             headerDictionary.Add("X-Gitinder-Token", "");
-            mockSettings = new Mock<Settings>();
+            Settings settings = SettingsFactory.CreateSettingsWithValidUserName();
 
             //Act
-            var actualResponse = settingsController.PutSettings(mockSettings.Object);
+            var actualResponse = settingsController.PutSettings(settings);
             var expectedResponseBody = new ErrorResponseBody("Unauthorized request!");
 
             //Assert
@@ -152,10 +152,10 @@ namespace GiTinder.Tests.Models
         {
             //Arrange
             ArrangeForSettingsControllerTests();
-            mockSettings = new Mock<Settings>();
+            Settings settings = SettingsFactory.CreateSettingsWithValidUserName();
 
             //Act
-            var actualResponse = settingsController.PutSettings(mockSettings.Object);
+            var actualResponse = settingsController.PutSettings(settings);
             var expectedResponseBody = new ErrorResponseBody("Unauthorized request!");
 
             //Assert
@@ -172,10 +172,10 @@ namespace GiTinder.Tests.Models
             ArrangeForSettingsControllerTests();
             headerDictionary.Add("X-Gitinder-Token", "x");
             userServices.Setup(s => s.TokenExists(It.IsAny<string>())).Returns(false);
-            mockSettings = new Mock<Settings>();
+            Settings settings = SettingsFactory.CreateSettingsWithValidUserName();
 
             //Act
-            var actualResponse = settingsController.PutSettings(mockSettings.Object);
+            var actualResponse = settingsController.PutSettings(settings);
             var expectedResponseBody = new ErrorResponseBody("Unauthorized request!");
 
             //Assert

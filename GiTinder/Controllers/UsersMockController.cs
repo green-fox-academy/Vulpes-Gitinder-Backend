@@ -46,7 +46,7 @@ namespace GiTinder.Controllers
 
             if (!string.IsNullOrEmpty(Token) && Token == "aze")
             {
-                responseBody = new ProfileResponse("Pablos", "https://avatars0.githubusercontent.com/u/5855091?s=40&v=4", "https://github.com/adamgyulavari/gf-chatapp");
+                responseBody = new ProfileResponse("Aze", "https://avatars0.githubusercontent.com/u/5855091?s=40&v=4", "https://github.com/adamgyulavari/gf-chatapp");
             }
             else
             {

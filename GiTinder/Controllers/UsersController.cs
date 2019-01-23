@@ -60,7 +60,7 @@ namespace GiTinder.Controllers
             }
             if (_userServices.TokenExists(usertoken))
             {
-                responseBody = new ProfileResponse(responseProfile.Username, responseProfile.Avatar);
+                responseBody = new ProfileResponse(responseProfile.Username, responseProfile.Avatar,responseProfile.Repos);
             }
             else
             {

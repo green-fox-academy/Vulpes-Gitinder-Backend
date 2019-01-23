@@ -23,68 +23,11 @@ namespace GiTinder.Tests.Controllers
         Mock<HttpContext> httpContext;
 
         [Fact]
-        public void UsernameCannotBeNull()
-        {
-            SetUpTestingConditions();
-
-            ErrorResponseBody result = 
-                usersController.Login(LoginRequestBodyFactory.CreateLoginRequestBodyWithNullUsername()).Result as ErrorResponseBody;
-            Assert.Equal("error", result.Status);
-            Assert.Equal("username is missing!", result.Message);
-        }
-
-        [Fact]
-        public void UsernameCannotBeEmpty()
-        {
-            SetUpTestingConditions();
-
-            ErrorResponseBody result = 
-                usersController.Login(LoginRequestBodyFactory.CreateLoginRequestBodyWithEmptyUsername()).Result as ErrorResponseBody;
-            Assert.Equal("error", result.Status);
-            Assert.Equal("username is missing!", result.Message);
-        }
-
-        [Fact]
-        public void AccessTokenCannotBeNullOrEmpty()
-        {
-            SetUpTestingConditions();
-
-            ErrorResponseBody resultWithNullAccessToken = 
-                usersController.Login(LoginRequestBodyFactory.CreateLoginRequestBodyWithNullAccessToken()).Result as ErrorResponseBody;
-            Assert.Equal("error", resultWithNullAccessToken.Status);
-            Assert.Equal("access_token is missing!", resultWithNullAccessToken.Message);
-
-            ErrorResponseBody resultWithEmptyAccessToken =
-                usersController.Login(LoginRequestBodyFactory.CreateLoginRequestBodyWithEmptyAccessToken()).Result as ErrorResponseBody;
-            Assert.Equal("error", resultWithEmptyAccessToken.Status);
-            Assert.Equal("access_token is missing!", resultWithEmptyAccessToken.Message);
-        }
-
-        [Fact]
-        public void LoginWithValidRequestBodyReturnsTokenResponseBody()
-        {
-            mockRepo = new Mock<GiTinderContext>();
-            var mockService = new Mock<UserServices>(mockRepo.Object);
-
-            mockService.Setup(u => u.UserExists("Tomek Stasy")).Returns(true);
-            mockService.Setup(u => u.LoginRequestIsValid("Tomek Stasy", "VerySecure123")).Returns(Task.FromResult(true));
-            mockService.Setup(u => u.CreateGiTinderToken()).Returns(Guid.NewGuid().ToString());
-            usersController = new UsersController(mockRepo.Object, mockService.Object);
-
-            TokenResponseBody result = usersController.Login(new LoginRequestBody()
-            {
-                Username = "Tomek Stasy",
-                AccessToken = "VerySecure123"
-            }).Result as TokenResponseBody;
-
-            Assert.IsType<TokenResponseBody>(result);
-        }
-
-        [Fact]
         public void CheckingAvailableProfilesWithNoTokenReturnsAnErrorResponse()
         {
             SetUpTestingConditions();
             ErrorResponseBody result = usersController.ShowAvailableProfiles() as ErrorResponseBody;
+            response.VerifySet(r => r.StatusCode = 403);
             Assert.Equal("error", result.Status);
         }
 

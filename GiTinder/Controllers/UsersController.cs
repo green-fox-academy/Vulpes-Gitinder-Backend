@@ -21,28 +21,21 @@ namespace GiTinder.Controllers
             _context = context;
             _userServices = userServices;
         }
+               
 
-        [HttpPost("/login")]
-        public async Task<GeneralApiResponseBody> Login([FromBody] LoginRequestBody loginRequestBody)
+        [HttpGet("/profile")]
+        public GeneralApiResponseBody MockProfile()
         {
+            string Token = Request.Headers["X-Gitinder-Token"];
             GeneralApiResponseBody responseBody;
-            var username = loginRequestBody.Username;
-            var accessToken = loginRequestBody.AccessToken;
 
-            if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(accessToken))
+            if (!string.IsNullOrEmpty(Token) && Token == "aze")
             {
-                Response.StatusCode = 400;
-                responseBody =
-                    String.IsNullOrEmpty(username) ?
-                    new ErrorResponseBody("username is missing!") : 
-                    new ErrorResponseBody("access_token is missing!");
+                responseBody = new ProfileResponse();
             }
-            else if(await _userServices.LoginRequestIsValid(username, accessToken))
+            else
             {
-                _userServices.UpdateUser(username);
-                responseBody = new TokenResponseBody(_userServices.GetTokenOf(username));
-            } else
-            {
+                Response.StatusCode = 403;
                 responseBody = new ErrorResponseBody("Unauthorized request!");
             }
             return responseBody;
@@ -52,10 +45,11 @@ namespace GiTinder.Controllers
         public GeneralApiResponseBody ShowAvailableProfiles()
         {
             GeneralApiResponseBody responseBody;
+            string token = Request.Headers["X-Gitinder-Token"];
 
-            if (!Request.Headers.ContainsKey("X-Gitinder-Token") ||
-                string.IsNullOrEmpty(Request.Headers["X-Gitinder-Token"]))
+            if (string.IsNullOrEmpty(token))
             {
+                Response.StatusCode = 403;
                 responseBody = new ErrorResponseBody("Unauthorized request!");
             }
             else

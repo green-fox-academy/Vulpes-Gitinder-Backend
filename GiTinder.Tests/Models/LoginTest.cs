@@ -1,11 +1,5 @@
-﻿using GiTinder.Controllers;
-using GiTinder.Data;
-using GiTinder.Models;
+﻿using GiTinder.Models;
 using GiTinder.Models.Responses;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
 using Xunit;
 
 namespace GiTinder.Tests.Models

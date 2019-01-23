@@ -75,7 +75,6 @@ namespace GiTinder.Controllers
         {
             var usertoken = Request.Headers["X-Gitinder-Token"];
             GeneralApiResponseBody responseBody;
-            //var responseProfile = _userServices.FindUserByUserToken(usertoken);
 
             if (string.IsNullOrEmpty(usertoken))
             {

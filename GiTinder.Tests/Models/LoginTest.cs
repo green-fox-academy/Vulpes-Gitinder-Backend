@@ -23,7 +23,7 @@ namespace GiTinder.Tests.Models
         [Fact]
         public void CheckStatus()
         {
-            var response = new ErrorResponse("error");
+            var response = new ErrorResponseBody("error");
             // this was making the build not successful
            // GiTinderContext item = new GiTinderContext();
 

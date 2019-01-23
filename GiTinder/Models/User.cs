@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
 namespace GiTinder.Models
-{ 
+{
     public class User
     {
         [Key]
@@ -38,7 +38,7 @@ namespace GiTinder.Models
             this.Username = Username;
             this.UserToken = UserToken;
             this.ReposCount = ReposCount;
-            Settings defaultSettings = new Settings(Username, true, true, 10);
+            Settings defaultSettings = new Settings(Username);
         }
     }
 }

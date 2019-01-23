@@ -18,13 +18,16 @@ namespace GiTinder.Models
         [JsonProperty("repos")]
         public string Repos { get; set; }
 
+        [JsonProperty("languages")]
+        public string Languages { get; set; }
+
         public ProfileResponse(string userName, string uRl, string rePos)
         {
             Status = "ok";
             Username = userName;
             Url = uRl;
             Repos = rePos;
-          
+            Languages = "Java";
 
         }
     }

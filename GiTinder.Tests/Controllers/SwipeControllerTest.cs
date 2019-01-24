@@ -27,12 +27,23 @@ namespace GiTinder.Tests.Controllers
             mockRepo = new Mock<GiTinderContext>();
             userServices = new UserServices(mockRepo.Object);
             var request = new Mock<HttpRequest>();
+            headerDictionary = new HeaderDictionary();
+            request.SetupGet(r => r.Headers).Returns(headerDictionary);
             //headerDictionary.Add("X-Gitinder-Token", "");
+
+
             SwipesController one = new SwipesController(mockRepo.Object,userServices);
-            ObjectResult actual =  one.Swipe("test", "right");
+            httpContext = new Mock<HttpContext>();
+            httpContext.SetupGet(a => a.Request).Returns(request.Object);
+            one.ControllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext.Object
+            };
+
+            ObjectResult actual = one.Swipe("test", "right");
             ObjectResult expected = one.Swipe("test", "right");
             
-
+            
             ErrorResponseBody first = (ErrorResponseBody) actual.Value;
             ErrorResponseBody notFailed = (ErrorResponseBody)actual.Value;
             Assert.Equal(notFailed, first);

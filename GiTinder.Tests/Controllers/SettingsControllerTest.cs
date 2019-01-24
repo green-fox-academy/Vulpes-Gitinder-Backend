@@ -10,6 +10,7 @@ using GiTinder.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using GiTinder.Models.Responses;
 
 namespace GiTinder.Tests.Models
 {
@@ -22,9 +23,7 @@ namespace GiTinder.Tests.Models
         Mock<HttpRequest> httpRequest;
         Mock<HttpResponse> httpResponse;
         HeaderDictionary headerDictionary;
-        Mock<HttpContext> httpContext;
-        
-        Mock<SettingsResponse> mockSettingsResponse;
+        Mock<HttpContext> httpContext;    
 
         private void ArrangeForSettingsControllerTests()
         {

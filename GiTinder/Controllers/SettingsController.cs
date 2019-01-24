@@ -1,5 +1,6 @@
 ﻿using GiTinder.Data;
 using GiTinder.Models;
+using GiTinder.Models.Responses;
 using GiTinder.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

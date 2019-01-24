@@ -26,5 +26,13 @@ namespace GiTinder.Models
             Languages = "eng";
 
         }
+
+        public ProfileResponse(string username, string avatar, string repos, string languages)
+        {
+            Username = username;
+            Avatar = avatar;
+            Repos = repos;
+            Languages = languages;
+        }
     }
 }

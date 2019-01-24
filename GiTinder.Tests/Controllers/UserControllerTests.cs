@@ -20,6 +20,8 @@ namespace GiTinder.Tests.Controllers
         Mock<HttpResponse> response;
         Mock<HttpContext> httpContext;
 
+        public object SimpleRepository { get; private set; }
+
         [Fact]
         public void UsernameCannotBeNull()
         {

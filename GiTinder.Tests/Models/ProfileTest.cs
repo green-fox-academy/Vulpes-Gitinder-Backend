@@ -19,7 +19,6 @@ namespace GiTinder.Tests.Models
         public void IsTokenWithSpecificStringValue()
         {
             var usertoken = ProfileFactory.CreateTokenWithSpecificValue();
-            //Assert.True(ValidateModel(usertoken).Equals("aaaaa"));
             Assert.True(usertoken.UserToken == "verySecure");
         }
         [Fact]

@@ -10,19 +10,17 @@ namespace GiTinder.Models
     public class Profile
     {
         [Key]
-        [Required]
-        [MinLength(1)]      
-        [JsonProperty("usertoken")]
+        //[Required]
+        [MinLength(1)]
+        [JsonProperty]
         public string UserToken { get; set; }
 
-        public Profile()
-        {
-
-        }
-
+ 
         public Profile(string usertoken)
         {
             this.UserToken = usertoken;
+          
         }
+
     }
 }

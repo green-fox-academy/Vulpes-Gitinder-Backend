@@ -9,10 +9,7 @@ namespace GiTinder.Tests.Models
     {
         private static Profile CreateToken()
         {
-            return new Profile("abc123")
-            {
-                //UserToken = "abc123"
-            };
+            return new Profile("abc123");       
         }
         public static Profile CreateTokenWithNullValue()
         {
@@ -23,7 +20,7 @@ namespace GiTinder.Tests.Models
         public static Profile CreateTokenWithSpecificValue()
         {
             var usertoken = CreateToken();
-            //usertoken.UserToken = "abc123";
+            usertoken.UserToken = "verySecure";
             return usertoken;
         }
     }

@@ -10,16 +10,29 @@ namespace GiTinder.Tests.Models
     public class ProfileTest
     {
         [Fact]
-        public void IsItTokenNull()
+        public void IsTokenNull()
         {
             var usertoken = ProfileFactory.CreateTokenWithNullValue();
-            Assert.False(ValidateModel(usertoken).Count == 0);
+            Assert.True(ValidateModel(usertoken).Count == 0);
+        }
+        [Fact]
+        public void IsTokenWithSpecificStringValue()
+        {
+            var usertoken = ProfileFactory.CreateTokenWithSpecificValue();
+            //Assert.True(ValidateModel(usertoken).Equals("aaaaa"));
+            Assert.True(usertoken.UserToken == "verySecure");
         }
         [Fact]
         public void CanSetTokenWithString()
         {
             var usertoken = new Profile("abc123");
             Assert.Equal("abc123",usertoken.UserToken);
+        }
+        [Fact]
+        public void CanSetTokenWithSpecificString()
+        {
+            Profile token = new Profile("abc123");
+            Assert.True(token.UserToken == "abc123");
         }
 
 

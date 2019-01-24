@@ -18,19 +18,20 @@ namespace GiTinder.Tests.Models
         Mock<GiTinderContext> mockRepo;
         Mock<UserServices> userServices;
         Mock<SettingsServices> settingsServices;
+        Mock<LanguageServices> languageServices;
         SettingsController settingsController;
         Mock<HttpRequest> httpRequest;
         Mock<HttpResponse> httpResponse;
         HeaderDictionary headerDictionary;
         Mock<HttpContext> httpContext;
-        
         Mock<SettingsResponse> mockSettingsResponse;
 
         private void ArrangeForSettingsControllerTests()
         {
             mockRepo = new Mock<GiTinderContext>();
             userServices = new Mock<UserServices>(mockRepo.Object);
-            settingsServices = new Mock<SettingsServices>(mockRepo.Object, userServices.Object);
+            languageServices = new Mock<LanguageServices>(mockRepo.Object);
+            settingsServices = new Mock<SettingsServices>(mockRepo.Object, userServices.Object, languageServices.Object);
             settingsController = new SettingsController(settingsServices.Object, userServices.Object);
             httpRequest = new Mock<HttpRequest>();
             httpResponse = new Mock<HttpResponse>();
@@ -101,7 +102,7 @@ namespace GiTinder.Tests.Models
             userServices.Verify(s => s.TokenExists("x"), Times.Once());
             httpResponse.VerifySet(r => r.StatusCode = 403);
         }
-               
+
         [Fact]
         public void CallUpdateAndSaveSettingsIfTokenInReqHeaderFoundInPutSettings()
         {

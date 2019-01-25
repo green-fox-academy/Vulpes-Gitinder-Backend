@@ -21,50 +21,60 @@ namespace GiTinder.Tests.Controllers
         Mock<HttpResponse> response;
         Mock<HttpContext> httpContext;
 
+
         [Fact]
-        public void UsernameCannotBeNull()
+        public void UsertokenNotPresent()
         {
+            ArrangingMockEnviorment();
+
+            SwipesController swipesController = new SwipesController(mockRepo.Object, userServices);
+            swipesController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext.Object
+            };
+
+            var result = swipesController.Swipe("test", "right");
+            var actual = result.Value as ErrorResponseBody;
+            
+        
+            Assert.Equal("Unauthorized request!", actual.Message);
+            Assert.Equal("error", actual.Status);
+            Assert.Equal(403, result.StatusCode);
+
+        }
+        [Fact]
+        public void UsertokenPresent()
+        {
+            ArrangingMockEnviorment();
+            headerDictionary.Add("X-Gitinder-Token", "123verycool");
+            SwipesController swipesController = new SwipesController(mockRepo.Object, userServices);
+            swipesController.ControllerContext = new ControllerContext()
+            {
+                HttpContext = httpContext.Object
+            };
+
+            var result = swipesController.Swipe("test", "right");
+            var actual = result.Value as OKResponseBody;
+
+            Assert.Equal("success", actual.Message);
+            Assert.Equal("ok", actual.Status);
+            Assert.Equal(200, result.StatusCode);
+        }
+
+
+        private void ArrangingMockEnviorment()
+        {
+
             mockRepo = new Mock<GiTinderContext>();
             userServices = new UserServices(mockRepo.Object);
             var request = new Mock<HttpRequest>();
             headerDictionary = new HeaderDictionary();
-            request.SetupGet(r => r.Headers).Returns(headerDictionary);
-            //headerDictionary.Add("X-Gitinder-Token", "");
-
-
-            SwipesController one = new SwipesController(mockRepo.Object,userServices);
+            response = new Mock<HttpResponse>();
+            
             httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(a => a.Request).Returns(request.Object);
-            one.ControllerContext = new ControllerContext()
-            {
-                HttpContext = httpContext.Object
-            };
-
-            ObjectResult actual = one.Swipe("test", "right");
-            ObjectResult expected = one.Swipe("test", "right");
-            
-            
-            ErrorResponseBody first = (ErrorResponseBody) actual.Value;
-            ErrorResponseBody notFailed = (ErrorResponseBody)actual.Value;
-            Assert.Equal(notFailed, first);
-        }
-
-        
-        private void SetUpTestingConditions()
-        {
-            mockRepo = new Mock<GiTinderContext>();
-            userServices = new UserServices(mockRepo.Object);
-            usersController = new UsersController(mockRepo.Object, userServices);
-            headerDictionary = new HeaderDictionary();
-            response = new Mock<HttpResponse>();
-            response.SetupGet(r => r.Headers).Returns(headerDictionary);
-            httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(a => a.Response).Returns(response.Object);
-            usersController.ControllerContext = new ControllerContext()
-            
-            {
-                HttpContext = httpContext.Object
-            };
+            request.SetupGet(r => r.Headers).Returns(headerDictionary);
         }
     }
 }

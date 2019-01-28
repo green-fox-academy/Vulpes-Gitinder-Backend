@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using GiTinder.Models.GitHubResponses;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,16 +17,14 @@ namespace GiTinder.Models
         [JsonProperty("avatar_url")]
         public string Url { get; set; }
 
-        [JsonProperty("languages")]
-        public string Languages { get; set; }
-
-        [JsonProperty("snippets")]
-        public string Snippets { get; set; }
-
         [JsonProperty("repos")]
         public string Repos { get; set; }
-     
-        
+
+        [JsonProperty("languages")]
+        public List<string> Languages { get; set; }
+
+        [JsonProperty("snippets")]
+        public List<string> Snippets { get; set; }
 
         public ProfileResponse(string username, string url, string repos)
         {
@@ -33,9 +32,12 @@ namespace GiTinder.Models
             Username = username;
             Url = url;
             Repos = repos;
-            Languages = "Java";
-            Snippets = "https://github.com/adamgyulavari/gf-chatapp";
+            Languages = new List<string> { "Java" };
+            Snippets = new List<string> { "https://github.com/adamgyulavari/gf-chatapp", "https://github.com/adamgyulavari/gf-chatapp" };
         }
+
     }
+  
+    
 }
 

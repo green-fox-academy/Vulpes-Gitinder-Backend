@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using GiTinder.Models.GitHubResponses;
 
 namespace GiTinder.Models
 { 

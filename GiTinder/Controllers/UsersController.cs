@@ -4,6 +4,7 @@ using GiTinder.Models.GitHubResponses;
 using GiTinder.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,11 +15,13 @@ namespace GiTinder.Controllers
     {
         private readonly GiTinderContext _context;
         private readonly UserServices _userServices;
-        
+
+
         public UsersController(GiTinderContext context, UserServices userServices)
         {
             _context = context;
             _userServices = userServices;
+
         }
 
         [HttpPost("/login")]
@@ -52,9 +55,10 @@ namespace GiTinder.Controllers
         {
             var usertoken = Request.Headers["X-Gitinder-Token"];
             GeneralApiResponseBody responseBody;
-     
+
             var responseProfile = _userServices.FindUserByUserToken(usertoken);
-            
+             
+
             if (string.IsNullOrEmpty(usertoken))
             {
                 Response.StatusCode = 403;
@@ -62,7 +66,7 @@ namespace GiTinder.Controllers
             }
             else if (_userServices.TokenExists(usertoken))
             {
-                
+                _userServices.GetGithubProfilesReposAsync(responseProfile.Username).Result.ToString();
                 responseBody = new ProfileResponse(responseProfile.Username, responseProfile.Avatar, responseProfile.Repos);
             }
             else

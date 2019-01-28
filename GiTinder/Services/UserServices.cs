@@ -53,6 +53,7 @@ namespace GiTinder.Services
             }
             return rawRepos;
         }
+
         public virtual string CreateGiTinderToken()
         {
             string token;
@@ -100,11 +101,13 @@ namespace GiTinder.Services
                 _context.SaveChanges();
             }
         }
+   
 
         public virtual void UpdateUser(string username)
         {
             if (UserExists(username))
             {
+                GetGithubProfilesReposAsync(username);
                 UpdateToken(username);
             }
             else

@@ -1,6 +1,7 @@
 ﻿using GiTinder.Controllers;
 using GiTinder.Data;
 using GiTinder.Models;
+using GiTinder.Models.Responses;
 using GiTinder.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,8 +36,8 @@ namespace GiTinder.Tests.Controllers
 
             var result = swipesController.Swipe("test", "right");
             var actual = result.Value as ErrorResponseBody;
-            
-        
+
+
             Assert.Equal("Unauthorized request!", actual.Message);
             Assert.Equal("error", actual.Status);
             Assert.Equal(403, result.StatusCode);
@@ -60,7 +61,14 @@ namespace GiTinder.Tests.Controllers
             Assert.Equal("ok", actual.Status);
             Assert.Equal(200, result.StatusCode);
         }
+        [Fact]
+        public void UsertokenPresentMatches()
+        {
+            ArrangingMockEnviorment();
+            headerDictionary.Add("X-Gitinder-Token", "anytoken");
+            SwipesController swipesMatchEndpoint = new SwipesController(mockRepo.Object,userServices);
 
+        }
 
         private void ArrangingMockEnviorment()
         {

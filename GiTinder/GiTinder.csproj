@@ -26,7 +26,6 @@
   <ItemGroup>
     <Folder Include="Connected Services\" />
     <Folder Include="Models\GitHubResponses\" />
-    <Folder Include="Views\Shared\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

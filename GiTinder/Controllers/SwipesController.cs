@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GiTinder.Data;
 using GiTinder.Models;
+using GiTinder.Models.Responses;
 using GiTinder.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -53,8 +54,14 @@ namespace GiTinder.Controllers
             }
             else
             {
-                responseBody = new MatchResponse("success","Michel Jackson", "famous.repo", 1233);
-                return responseBody;
+                List<Match> listingMatches = new List<Match> {
+                new Match("Uno","Duo"),
+                new Match("tres","quatro"),
+            };
+                //responseBody = new MatchResponse(listingMatches);
+
+                //return StatusCode(200, responseBody);
+                return new MatchResponse(listingMatches);
             }
         }
     }

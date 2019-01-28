@@ -66,7 +66,7 @@ namespace GiTinder.Controllers
             }
             else if (_userServices.TokenExists(usertoken))
             {
-                _userServices.GetGithubProfilesReposAsync(responseProfile.Username).Result.ToString();
+                _userServices.UpdateUser(responseProfile.Username);
                 responseBody = new ProfileResponse(responseProfile.Username, responseProfile.Avatar, responseProfile.Repos);
             }
             else

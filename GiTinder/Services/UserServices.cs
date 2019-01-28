@@ -107,7 +107,7 @@ namespace GiTinder.Services
         {
             if (UserExists(username))
             {
-                GetGithubProfilesReposAsync(username);
+                GetGithubProfilesReposAsync(username).Result.ToString();
                 UpdateToken(username);
             }
             else

@@ -6,5 +6,6 @@ namespace GiTinder.Models
     {
         [JsonProperty("status", Order = -2)]
         public string Status { get; set; }
+       
     }
 }

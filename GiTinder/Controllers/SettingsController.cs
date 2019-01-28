@@ -36,7 +36,6 @@ namespace GiTinder.Controllers
             {
                 return BadRequest(ModelState);
             }
-
             return new SettingsResponse(foundSettings);
         }
 

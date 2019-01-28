@@ -42,10 +42,8 @@ namespace GiTinder.Controllers
             }
         }
         [HttpGet("/matches")]
-        public ObjectResult Matches()
+        public Object Matches()
         {
-            List<MatchResponse> Matches = new List<MatchResponse>();
-
             GeneralApiResponseBody responseBody;
             var usertoken = Request.Headers["X-Gitinder-Token"];
             if (String.IsNullOrEmpty(usertoken))
@@ -55,9 +53,8 @@ namespace GiTinder.Controllers
             }
             else
             {
-                responseBody = new OKResponseBody("success");
-                return StatusCode(200, responseBody);
-                new MatchResponse("Michel Jackson", "Michelavatar", 65412);
+                responseBody = new MatchResponse("success","Michel Jackson", "famous.repo", 1233);
+                return responseBody;
             }
         }
     }

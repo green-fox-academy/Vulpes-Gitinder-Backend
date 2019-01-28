@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Models
 {
-    public class MatchResponse
+    public class MatchResponse : OKResponseBody
     {
         [JsonProperty]
         public string  Username { get; set; }
@@ -14,13 +14,13 @@ namespace GiTinder.Models
         public string AvatarUrl { get; set; }
         [JsonProperty]
         public int Time { get; set; }
+        [JsonProperty]
+        public List<string> Messages { get; set; }
 
-        public MatchResponse()
+        public MatchResponse(string message,string username, string avatar, int time) : base (message)
         {
-
-        }
-        public MatchResponse(string username, string avatar, int time)
-        {
+            Status = "ok";
+            Message = message;
             Username = username;
             AvatarUrl = avatar;
             Time = time;

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace GiTinder.Models
+namespace GiTinder.Models.Responses
 {
     public class ErrorResponseBody : GeneralApiResponseBody
     {

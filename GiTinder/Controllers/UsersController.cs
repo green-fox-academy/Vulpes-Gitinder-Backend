@@ -18,13 +18,14 @@ namespace GiTinder.Controllers
         {
             _context = context;
             _userServices = userServices;
-        }
 
+        }
         [HttpPost("/login")]
         public async Task<GeneralApiResponseBody> Login([FromBody] LoginRequestBody loginRequestBody)
         {
             GeneralApiResponseBody responseBody;
             var username = loginRequestBody.Username;
+
             var accessToken = loginRequestBody.AccessToken;
 
             if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(accessToken))

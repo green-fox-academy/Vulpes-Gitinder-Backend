@@ -16,7 +16,6 @@ namespace GiTinder.Controllers
         private readonly GiTinderContext _context;
         private readonly UserServices _userServices;
 
-
         public SwipesController(GiTinderContext context, UserServices userServices)
         {
             _context = context;
@@ -27,10 +26,6 @@ namespace GiTinder.Controllers
         public ObjectResult Swipe([FromRoute] string username, string direction)
 
         {
-            //System.Diagnostics.Debug.WriteLine(username + direction);
-            //System.Diagnostics.Trace.WriteLine(username + " " + direction);
-            //Debug.Write(username + direction);
-
             GeneralApiResponseBody responseBody;
             var usertoken = Request.Headers["X-Gitinder-Token"];
             var Swipe = new Swipe(usertoken, username, direction);
@@ -46,9 +41,11 @@ namespace GiTinder.Controllers
                 return StatusCode(200, responseBody);
             }
         }
-        [HttpPut("/matches")]
-        public ObjectResult Matches([FromBody] string username)
+        [HttpGet("/matches")]
+        public ObjectResult Matches()
         {
+            List<MatchResponse> Matches = new List<MatchResponse>();
+
             GeneralApiResponseBody responseBody;
             var usertoken = Request.Headers["X-Gitinder-Token"];
             if (String.IsNullOrEmpty(usertoken))
@@ -60,6 +57,7 @@ namespace GiTinder.Controllers
             {
                 responseBody = new OKResponseBody("success");
                 return StatusCode(200, responseBody);
+                new MatchResponse("Michel Jackson", "Michelavatar", 65412);
             }
         }
     }

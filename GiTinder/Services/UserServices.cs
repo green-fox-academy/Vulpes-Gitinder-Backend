@@ -16,6 +16,7 @@ namespace GiTinder.Services
         private readonly GiTinderContext _context;
         public const string ApiUrl = "https://api.github.com/";
         private HttpClient client = new HttpClient();
+        
 
         public UserServices(GiTinderContext context)
         {
@@ -23,6 +24,7 @@ namespace GiTinder.Services
         }
         public async Task<User> GetGithubProfileAsync(string username)
         {
+            
             HeadersSettingForGitHubApi();
             User rawUser = null;
             HttpResponseMessage responseUser = await client.GetAsync(ApiUrl + username);
@@ -106,7 +108,6 @@ namespace GiTinder.Services
         public void HeadersSettingForGitHubApi()
         {
             client.DefaultRequestHeaders.Add("User-Agent", "GiTinderApp");
-
         }
         public bool TokenExists(string usertoken)
         {

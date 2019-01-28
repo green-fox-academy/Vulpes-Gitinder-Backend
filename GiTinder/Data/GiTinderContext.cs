@@ -12,7 +12,7 @@ namespace GiTinder.Data
         public GiTinderContext(DbContextOptions<GiTinderContext> options)
         : base(options)
         { }
-
+     
         public GiTinderContext() { }
 
         public DbSet<User> Users { get; set; }
@@ -43,6 +43,7 @@ namespace GiTinder.Data
 
             modelBuilder.Entity<Match>()
                 .HasKey(t => new { t.Username_1, t.Username_2 });
+
         }
     }
 }

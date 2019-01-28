@@ -14,6 +14,7 @@ namespace GiTinder.Controllers
     {
         private readonly GiTinderContext _context;
         private readonly UserServices _userServices;
+        
         public UsersController(GiTinderContext context, UserServices userServices)
         {
             _context = context;
@@ -51,16 +52,18 @@ namespace GiTinder.Controllers
         {
             var usertoken = Request.Headers["X-Gitinder-Token"];
             GeneralApiResponseBody responseBody;
+     
             var responseProfile = _userServices.FindUserByUserToken(usertoken);
-
+            
             if (string.IsNullOrEmpty(usertoken))
             {
                 Response.StatusCode = 403;
-                responseBody = new ErrorResponseBody("Unauthorized request!");
+                responseBody = new ErrorResponseBody("usertoken is missing!");
             }
-            if (_userServices.TokenExists(usertoken))
+            else if (_userServices.TokenExists(usertoken))
             {
-                responseBody = new ProfileResponse(responseProfile.Username, responseProfile.Avatar,responseProfile.Repos);
+                
+                responseBody = new ProfileResponse(responseProfile.Username, responseProfile.Avatar, responseProfile.Repos);
             }
             else
             {
@@ -75,6 +78,7 @@ namespace GiTinder.Controllers
         {
             var usertoken = Request.Headers["X-Gitinder-Token"];
             GeneralApiResponseBody responseBody;
+            var responseUser = _userServices.FindUserByUserToken(usertoken);
 
             if (string.IsNullOrEmpty(usertoken))
             {
@@ -84,6 +88,7 @@ namespace GiTinder.Controllers
             else if (_userServices.TokenExists(usertoken))
             {
                 responseBody = new OKResponseBody("Logged out successfully!");
+                _userServices.RemoveToken(usertoken, responseUser.Username);
             }
             else
             {

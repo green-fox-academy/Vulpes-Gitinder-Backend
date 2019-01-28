@@ -3,6 +3,7 @@ using GiTinder.Models;
 using GiTinder.Models.GitHubResponses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -84,6 +85,20 @@ namespace GiTinder.Services
             };
             _context.Users.Add(newProfile);
             _context.SaveChanges();
+        }
+
+        internal object FindToken(StringValues usertoken)
+        {
+            return _context.Users.Single(a => a.UserToken == usertoken);
+        }
+       
+        public virtual void RemoveToken(string usertoken, string username)
+        {
+            if (TokenExists(usertoken))
+            {
+                _context.Find<User>(username).UserToken = "";
+                _context.SaveChanges();
+            }
         }
 
         public virtual void UpdateUser(string username)

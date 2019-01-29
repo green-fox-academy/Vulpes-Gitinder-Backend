@@ -109,12 +109,18 @@ namespace GiTinder.Services
             if (UserExists(username))
             {
                 GetGithubProfilesReposAsync(username).Result.ToString();
+                //SplitReposToList(username);
                 UpdateToken(username);
             }
             else
             {
                 CreateNewUser(username);
             }
+        }
+
+        public static List<string> SplitReposToList(string repos)
+        {
+            return repos.Split(';').ToList();
         }
 
         public virtual string GetTokenOf(string username)

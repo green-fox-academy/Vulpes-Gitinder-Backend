@@ -50,9 +50,9 @@ namespace GiTinder.Controllers
         }
 
         [HttpDelete("/logout")]
-        public object Logout()
+        public async Task<GeneralApiResponseBody> Logout()
         {
-            var usertoken = Request.Headers["X-Gitinder-Token"];
+            var usertoken = (Request.Headers["X-Gitinder-Token"]);
             GeneralApiResponseBody responseBody;
             var responseUser = _userServices.FindUserByUserToken(usertoken);
 

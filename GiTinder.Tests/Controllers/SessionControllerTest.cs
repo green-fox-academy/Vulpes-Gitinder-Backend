@@ -80,6 +80,14 @@ namespace GiTinder.Tests.Controllers
             Assert.IsType<TokenResponseBody>(result);
         }
 
+        [Fact]
+        public void UsertokenCannotBeNull()
+        {
+            SetUpTestingConditions();
+            var actual = sessionController.Logout().Result as ErrorResponseBody;
+            Assert.Equal("Unauthorized request!", actual.Message);
+        }
+
         private void SetUpTestingConditions()
         {
             mockRepo = new Mock<GiTinderContext>();

@@ -1,4 +1,5 @@
 ﻿using GiTinder.Models.GitHubResponses;
+using GiTinder.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace GiTinder.Models
     public class ProfileResponse : GeneralApiResponseBody
 
     {
+
         [JsonProperty("username")]
         public string Username { get; set; }
 
@@ -18,7 +20,7 @@ namespace GiTinder.Models
         public string Avatar { get; set; }
 
         [JsonProperty("repos")]
-        public string Repos { get; set; }
+        public List<string> Repos { get; set; }
 
         [JsonProperty("languages")]
         public List<string> Languages { get; set; }
@@ -31,7 +33,7 @@ namespace GiTinder.Models
             Status = "ok";
             Username = username;
             Avatar = avatar;
-            Repos = repos;
+            Repos = UserServices.SplitReposToList(repos);
             Languages = new List<string> { "Java" };
             Snippets = new List<string> { "https://github.com/adamgyulavari/gf-chatapp", "https://github.com/adamgyulavari/gf-chatapp" };
         }
@@ -40,7 +42,7 @@ namespace GiTinder.Models
         {
             Username = username;
             Avatar = avatar;
-            Repos = repos;
+            Repos = UserServices.SplitReposToList(repos);
             Languages = new List<string> { };
         }
 

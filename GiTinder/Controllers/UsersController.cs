@@ -73,7 +73,8 @@ namespace GiTinder.Controllers
             else if (_userServices.TokenExists(usertoken))
             {
                 _userServices.UpdateUser(responseProfile.Username);
-                responseBody = new ProfileResponse(responseProfile.Username, responseProfile.Avatar, responseProfile.Repos);
+                
+                responseBody = new ProfileResponse(responseProfile.Username, responseProfile.Avatar, responseProfile.Repos.ToString());
             }
             else
             {

@@ -16,10 +16,13 @@ namespace GiTinder.Controllers
     {
         private readonly GiTinderContext _context;
         private readonly UserServices _userServices;
-        public UsersController(GiTinderContext context, UserServices userServices)
+        private readonly ProfileService _profileService;
+
+        public UsersController(GiTinderContext context, UserServices userServices, ProfileService profileService)
         {
             _context = context;
             _userServices = userServices;
+            _profileService = profileService;
         }
 
 
@@ -71,5 +74,53 @@ namespace GiTinder.Controllers
             }
             return responseBody;
         }
+        [HttpGet("/return20Profiles")]
+        public void whatevah()
+        {
+            _profileService.testOnReturn();
+        }
+        //[HttpPut("/createUsers")]
+        //public void creatingUsers()
+        //{
+        //   User one = new User("one","abc",2);
+        //   User two = new User("two","abc",2);
+        //   User three = new User("three","abc",2);
+        //   User four = new User("four", "abc", 2);
+        //   User five = new User("five", "abc", 2);
+        //   User six = new User("sada", "abc", 2);
+        //   User seven = new User("taso", "abc", 2);
+        //   User eight = new User("thsadsree", "abc",2);
+        //   User nine = new User("asdadqw", "abc", 2);
+        //   User ten = new User("asdadqwsadawd", "abc", 2);
+
+        //    _context.Users.Add(one);
+        //    _context.Users.Add(two);
+        //    _context.Users.Add(three);
+        //    _context.Users.Add(four);
+        //    _context.Users.Add(five);
+        //    _context.Users.Add(six);
+        //    _context.Users.Add(seven);
+        //    _context.Users.Add(eight);
+        //    _context.Users.Add(nine);
+        //    _context.Users.Add(ten);
+        //    _context.Users.Add(new User("sda", "tokenator", 34));
+        //    _context.Users.Add(new User("sdasda", "tokenator", 34));
+        //    _context.Users.Add(new User("sdakuit", "tokenator", 34));
+        //    _context.Users.Add(new User("sdakwbwbw", "tokenator", 34));
+        //    _context.Users.Add(new User("sdawebrt", "tokenator", 34));
+        //    _context.Users.Add(new User("sdavevtw", "tokenator", 34));
+        //    _context.Users.Add(new User("sdavert", "tokenator", 34));
+        //    _context.Users.Add(new User("sdavertew", "tokenator", 34));
+        //    _context.Users.Add(new User("swqqtw", "tokenator", 34));
+        //    _context.Users.Add(new User("scrq34wetw", "tokenator", 34));
+        //    _context.Users.Add(new User("sdac34etw", "tokenator", 34));
+        //    _context.Users.Add(new User("sdaraeyyjw", "tokenator", 34));
+        //    _context.Users.Add(new User("sdvetqeretw", "tokenator", 34));
+        //    _context.Users.Add(new User("skiuk", "tokenator", 34));
+        //    _context.Users.Add(new User("sdwerq3etw", "tokenator", 34));
+        //    _context.Users.Add(new User("sd", "tokenator", 34));
+
+        //    _context.SaveChanges();
+        //}
     }
 }

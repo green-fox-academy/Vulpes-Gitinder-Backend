@@ -93,7 +93,7 @@ namespace GiTinder.Services
         public virtual async Task<bool> UpdateUser(string username)
         {
             if (UserExists(username))
-            {            
+            {
                 UpdateToken(username);
             }
             else

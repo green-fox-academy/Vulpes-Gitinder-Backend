@@ -1,16 +1,12 @@
 ﻿using GiTinder.Controllers;
 using GiTinder.Data;
-using GiTinder.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Moq;
-using Xunit;
 using GiTinder.Models;
+using GiTinder.Models.Responses;
+using GiTinder.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using GiTinder.Models.Responses;
+using Moq;
+using Xunit;
 
 namespace GiTinder.Tests.Models
 {
@@ -19,6 +15,7 @@ namespace GiTinder.Tests.Models
         Mock<GiTinderContext> mockRepo;
         Mock<UserServices> userServices;
         Mock<SettingsServices> settingsServices;
+        Mock<LanguageServices> languageServices;
         SettingsController settingsController;
         Mock<HttpRequest> httpRequest;
         Mock<HttpResponse> httpResponse;
@@ -29,7 +26,8 @@ namespace GiTinder.Tests.Models
         {
             mockRepo = new Mock<GiTinderContext>();
             userServices = new Mock<UserServices>(mockRepo.Object);
-            settingsServices = new Mock<SettingsServices>(mockRepo.Object, userServices.Object);
+            languageServices = new Mock<LanguageServices>(mockRepo.Object);
+            settingsServices = new Mock<SettingsServices>(mockRepo.Object, userServices.Object, languageServices.Object);
             settingsController = new SettingsController(settingsServices.Object, userServices.Object);
             httpRequest = new Mock<HttpRequest>();
             httpResponse = new Mock<HttpResponse>();
@@ -100,7 +98,7 @@ namespace GiTinder.Tests.Models
             userServices.Verify(s => s.TokenExists("x"), Times.Once());
             httpResponse.VerifySet(r => r.StatusCode = 403);
         }
-               
+
         [Fact]
         public void CallUpdateAndSaveSettingsIfTokenInReqHeaderFoundInPutSettings()
         {

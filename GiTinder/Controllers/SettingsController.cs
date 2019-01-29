@@ -1,5 +1,6 @@
 ﻿using GiTinder.Data;
 using GiTinder.Models;
+using GiTinder.Models.Responses;
 using GiTinder.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,49 +20,47 @@ namespace GiTinder.Controllers
         }
 
         [HttpGet("/settings")]
-        public object GetSettings()
+        public GeneralApiResponseBody GetSettings()
         {
             GeneralApiResponseBody responseBody;
             var usertoken = Request.Headers["X-Gitinder-Token"];
 
-            if (usertoken == "" || !_userServices.TokenExists(usertoken))
+            if (string.IsNullOrEmpty(usertoken) || !_userServices.TokenExists(usertoken))
             {
+                Response.StatusCode = 403;
                 responseBody = new ErrorResponseBody("Unauthorized request!");
-                return StatusCode(403, responseBody);
+                return responseBody;
             }
 
             var foundSettings = _settingsServices.FindSettingsWithLanguagesByUserToken(usertoken);
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            return new SettingsResponse(foundSettings);
+            responseBody = new SettingsResponse(foundSettings);
+            return responseBody;
         }
 
         [HttpPut("/settings")]
         //[ValidateAntiForgeryToken]
-        public object PutSettings([FromBody] Settings settings)
+        public GeneralApiResponseBody PutSettings([FromBody] Settings settings)
         {
             GeneralApiResponseBody responseBody;
             var usertoken = Request.Headers["X-Gitinder-Token"];
 
-            if (usertoken == "" || !_userServices.TokenExists(usertoken))
+            if (string.IsNullOrEmpty(usertoken) || !_userServices.TokenExists(usertoken))
             {
+                Response.StatusCode = 403;
                 responseBody = new ErrorResponseBody("Unauthorized request!");
-                return StatusCode(403, responseBody);
+                return responseBody;
             }
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
 
             _settingsServices.UpdateAndSaveSettingsFoundByUserToken(settings, usertoken);
-
             responseBody = new OKResponseBody("success");
-            return Ok(responseBody);
+            Response.StatusCode = 200;
+            return responseBody;
         }
     }
 }

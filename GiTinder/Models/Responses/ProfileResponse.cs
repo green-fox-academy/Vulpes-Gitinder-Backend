@@ -15,7 +15,7 @@ namespace GiTinder.Models
         public string Username { get; set; }
 
         [JsonProperty("avatar_url")]
-        public string Url { get; set; }
+        public string Avatar { get; set; }
 
         [JsonProperty("repos")]
         public string Repos { get; set; }
@@ -30,14 +30,21 @@ namespace GiTinder.Models
         {
             Status = "ok";
             Username = username;
-            Url = url;
+            Avatar = url;
             Repos = repos;
             Languages = new List<string> { "Java" };
             Snippets = new List<string> { "https://github.com/adamgyulavari/gf-chatapp", "https://github.com/adamgyulavari/gf-chatapp" };
+        }
+
+        public ProfileResponse(string username, string avatar, string repos, string languages)
+        {
+            Username = username;
+            Avatar = avatar;
+            Repos = repos;
+            Languages = new List<string> { };
         }
 
     }
   
     
 }
-

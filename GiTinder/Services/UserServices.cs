@@ -3,6 +3,7 @@ using GiTinder.Models;
 using GiTinder.Models.GitHubResponses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
@@ -126,7 +127,7 @@ namespace GiTinder.Services
             client.DefaultRequestHeaders.Add("User-Agent", "GiTinderApp");
 
         }
-        public bool TokenExists(string usertoken)
+        public virtual bool TokenExists(string usertoken)
         {
             return _context.Users.Any(u => u.UserToken == usertoken);
         }
@@ -138,9 +139,8 @@ namespace GiTinder.Services
 
         public User FindUserByUserToken(string usertoken)
         {
-            User foundUser = _context.Users.Where(u => u.UserToken == usertoken).FirstOrDefault();
+            var foundUser = _context.Users.Where(u => u.UserToken == usertoken).FirstOrDefault();
             return foundUser;
-
         }
 
         public virtual async Task<bool> LoginRequestIsValid(string username, string gitHubToken)
@@ -155,7 +155,7 @@ namespace GiTinder.Services
             {
                 profileLoggingIn = await gitHubProfileResponse.Content.ReadAsAsync<GitHubProfile>();
             }
-             
+
             return username.Equals(profileLoggingIn.Login);
         }
     }

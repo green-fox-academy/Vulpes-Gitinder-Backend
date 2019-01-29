@@ -16,5 +16,9 @@ namespace GiTinder.Models
             Status = "ok";
             Message = message;
         }
+        public OKResponseBody()
+        {
+
+        }
     }
 }

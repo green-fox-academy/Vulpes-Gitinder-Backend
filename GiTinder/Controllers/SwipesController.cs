@@ -38,7 +38,9 @@ namespace GiTinder.Controllers
             }
             else
             {
-                responseBody = new OKResponseBody("success");
+                //responseBody = new OKResponseBody("success");
+                //return StatusCode(200, responseBody);
+                responseBody = new MatchResponse("one", "user", "awesome.url", 1233);
                 return StatusCode(200, responseBody);
             }
         }
@@ -54,14 +56,16 @@ namespace GiTinder.Controllers
             }
             else
             {
-                List<Match> listingMatches = new List<Match> {
+                List<Match> matches = new List<Match> {
                 new Match("Uno","Duo"),
                 new Match("tres","quatro"),
             };
                 //responseBody = new MatchResponse(listingMatches);
 
                 //return StatusCode(200, responseBody);
-                return new MatchResponse(listingMatches);
+                //return new MatchResponse(matches);
+                //return new Match(matches);
+                return new PorEjemplo(matches);
             }
         }
     }

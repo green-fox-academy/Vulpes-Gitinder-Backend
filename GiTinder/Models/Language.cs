@@ -6,6 +6,16 @@ namespace GiTinder.Models
 {
     public class Language
     {
+        public Language()
+        {
+
+        }
+
+        public Language(string language)
+        {
+            LanguageName = language;
+        }
+
         [Key]
         public int LanguageId { get; set; }
 

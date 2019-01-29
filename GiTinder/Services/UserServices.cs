@@ -1,5 +1,6 @@
 using GiTinder.Data;
 using GiTinder.Models;
+using GiTinder.Models.Connections;
 using GiTinder.Models.GitHubResponses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -85,18 +86,67 @@ namespace GiTinder.Services
             };
             _context.Users.Add(newProfile);
             _context.SaveChanges();
+
+
         }
 
-        public virtual void UpdateUser(string username)
+        public virtual async Task<bool> UpdateUser(string username)
         {
             if (UserExists(username))
-            {
+            {            
                 UpdateToken(username);
             }
             else
             {
-                CreateNewUser(username);
+                await UpdateLanguagesTableAndUserLanguageTable(username);
+                CreateNewUser(username);              
             }
+            return true;
+        }
+
+        private async Task<bool> UpdateLanguagesTableAndUserLanguageTable(string username)
+        {
+            List<UserRepos> userRepos = await GetGithubProfilesReposAsync(username);
+            foreach (UserRepos userRepo in userRepos)
+            {
+                string languageName = userRepo.Language;
+                if (!string.IsNullOrEmpty(languageName))
+                { 
+                    if (LanguageDoesntExist(languageName))
+                    {
+                        int newLangageId = CreateLanguageAndReturnItsId(languageName);
+                        CreateUserLanguage(username, newLangageId);
+                    }
+                    else
+                    {
+                        int languageId = _context.Languages.Where(l => l.LanguageName == languageName).FirstOrDefault().LanguageId;
+                        if (UserLanguageDoesntExist(username, languageId))
+                        {
+                            CreateUserLanguage(username, languageId);
+                        }
+                    }                    
+                }
+            }
+            return true;
+        }
+
+        private bool UserLanguageDoesntExist(string username, int language)
+        {
+            return !_context.UserLanguage.Any(uL => uL.Username == username && uL.LanguageId == language);
+        }
+
+        private void CreateUserLanguage(string username, int languageId)
+        {
+            _context.UserLanguage.Add(new UserLanguage(username, languageId));
+            _context.SaveChanges();
+        }
+
+        private int CreateLanguageAndReturnItsId(string languageName)
+        {
+            var newLanguage = new Language(languageName);
+            _context.Languages.Add(newLanguage);
+            _context.SaveChanges();
+            return newLanguage.LanguageId;
         }
 
         public virtual string GetTokenOf(string username)
@@ -107,11 +157,16 @@ namespace GiTinder.Services
         public void HeadersSettingForGitHubApi()
         {
             client.DefaultRequestHeaders.Add("User-Agent", "GiTinderApp");
-
         }
+
         public virtual bool TokenExists(string usertoken)
         {
             return _context.Users.Any(u => u.UserToken == usertoken);
+        }
+
+        public virtual bool LanguageDoesntExist(string languageName)
+        {
+            return !_context.Languages.Any(l => l.LanguageName == languageName);
         }
 
         public bool UserTokenCorrespondsToUsername(string username, string usertoken)

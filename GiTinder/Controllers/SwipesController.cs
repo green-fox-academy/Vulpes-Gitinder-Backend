@@ -56,16 +56,11 @@ namespace GiTinder.Controllers
             }
             else
             {
-                List<Match> matches = new List<Match> {
-                new Match("Uno","Duo"),
-                new Match("tres","quatro"),
+                List<MatchResponseBody> matches = new List<MatchResponseBody> {
+                new MatchResponseBody("Uno_user","fan_tastic.url",1230),
+                new MatchResponseBody("theCat","is.me",1235),
             };
-                //responseBody = new MatchResponse(listingMatches);
-
-                //return StatusCode(200, responseBody);
-                //return new MatchResponse(matches);
-                //return new Match(matches);
-                return new PorEjemplo(matches);
+                return new MatchesResponseBody(matches);
             }
         }
     }

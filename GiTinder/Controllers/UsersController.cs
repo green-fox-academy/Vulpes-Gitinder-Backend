@@ -83,30 +83,7 @@ namespace GiTinder.Controllers
 
         }
 
-        [HttpDelete("/logout")]
-        public object Logout()
-        {
-            var usertoken = Request.Headers["X-Gitinder-Token"];
-            GeneralApiResponseBody responseBody;
-            var responseUser = _userServices.FindUserByUserToken(usertoken);
-
-            if (string.IsNullOrEmpty(usertoken))
-            {
-                Response.StatusCode = 403;
-                responseBody = new ErrorResponseBody("Unauthorized request!");
-            }
-            else if (_userServices.TokenExists(usertoken))
-            {
-                responseBody = new OKResponseBody("Logged out successfully!");
-                _userServices.RemoveToken(usertoken, responseUser.Username);
-            }
-            else
-            {
-                Response.StatusCode = 403;
-                responseBody = new ErrorResponseBody("Unauthorized request!");
-            }
-            return responseBody;
-        }
+       
 
 
     }

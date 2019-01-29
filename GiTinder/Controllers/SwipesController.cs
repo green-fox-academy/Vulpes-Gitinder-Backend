@@ -38,8 +38,6 @@ namespace GiTinder.Controllers
             }
             else
             {
-                //responseBody = new OKResponseBody("success");
-                //return StatusCode(200, responseBody);
                 responseBody = new MatchResponse("one", "user", "awesome.url", 1233);
                 return StatusCode(200, responseBody);
             }

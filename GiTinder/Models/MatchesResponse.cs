@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Models
 {
-    public class PorEjemplo
+    public class MatchesResponseBody
     {
-        public List<Match> matches { get; set; }
-        public PorEjemplo(List<Match> matchesList)
+        public List<MatchResponseBody> matches { get; set; }
+        public MatchesResponseBody(List<MatchResponseBody> matchesList)
         {
             matches = matchesList;
         }

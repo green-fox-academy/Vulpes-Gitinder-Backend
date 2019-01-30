@@ -54,7 +54,6 @@ namespace GiTinder.Controllers
         {
             var usertoken = (Request.Headers["X-Gitinder-Token"]);
             GeneralApiResponseBody responseBody;
-            var responseUser = _userServices.FindUserByUserToken(usertoken);
 
             if (string.IsNullOrEmpty(usertoken))
             {
@@ -63,6 +62,7 @@ namespace GiTinder.Controllers
             }
             else if (_userServices.TokenExists(usertoken))
             {
+                var responseUser = _userServices.FindUserByUserToken(usertoken);
                 responseBody = new OKResponseBody("Logged out successfully!");
                 _userServices.RemoveToken(usertoken, responseUser.Username);
             }

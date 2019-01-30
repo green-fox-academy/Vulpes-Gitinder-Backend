@@ -12,7 +12,6 @@ namespace GiTinder.Models
     public class ProfileResponse : GeneralApiResponseBody
 
     {
-
         [JsonProperty("username")]
         public string Username { get; set; }
 
@@ -20,33 +19,49 @@ namespace GiTinder.Models
         public string Avatar { get; set; }
 
         [JsonProperty("repos")]
-        public List<string> Repos { get; set; }
+        public List<string> ReposList { get; set; }
 
         [JsonProperty("languages")]
-        public List<string> Languages { get; set; }
+        public List<string> UserLanguageNamesList { get; set; }
 
         [JsonProperty("snippets")]
         public List<string> Snippets { get; set; }
 
-        public ProfileResponse(string username, string avatar, string repos)
+        public ProfileResponse(string username, string avatar, List<string> reposList)
         {
             Status = "ok";
             Username = username;
             Avatar = avatar;
-            Repos = UserServices.SplitReposToList(repos);
-            Languages = new List<string> { "Java" };
+            ReposList = reposList;
+            UserLanguageNamesList = new List<string> { "Java" };
             Snippets = new List<string> { "https://github.com/adamgyulavari/gf-chatapp", "https://github.com/adamgyulavari/gf-chatapp" };
         }
 
-        public ProfileResponse(string username, string avatar, string repos, string languages)
+        public ProfileResponse(string username, string avatar, List<string> reposList, List<string> userLanguageNamesList)
         {
             Username = username;
             Avatar = avatar;
-            Repos = UserServices.SplitReposToList(repos);
+            ReposList = reposList;
+            UserLanguageNamesList = userLanguageNamesList;
+        }
+
+        public ProfileResponse(User user)
+        {
+            Username = user.Username;
+            Avatar = user.Avatar;
+            ReposList = user.ReposList;
+
+
+            List<string> Languages = user.UserSettings.SettingsLanguages.Select(sl => sl.Language.LanguageName).ToList();
+            //Languages.
+            // Include(l => l.Language).Select(sl => sl.Language.LanguageName).ToList();
+            //Select(l => l.LanguageName == user.Username).
+
             Languages = new List<string> { };
+
         }
 
     }
-  
-    
+
+
 }

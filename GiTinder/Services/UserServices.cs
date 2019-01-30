@@ -1,6 +1,7 @@
 using GiTinder.Data;
 using GiTinder.Models;
 using GiTinder.Models.GitHubResponses;
+using GiTinder.Models.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -93,7 +94,7 @@ namespace GiTinder.Services
         {
             return _context.Users.Single(a => a.UserToken == usertoken);
         }
-       
+
         public virtual void RemoveToken(string usertoken, string username)
         {
             if (TokenExists(usertoken))
@@ -102,25 +103,19 @@ namespace GiTinder.Services
                 _context.SaveChanges();
             }
         }
-   
+
 
         public virtual void UpdateUser(string username)
         {
             if (UserExists(username))
             {
                 GetGithubProfilesReposAsync(username).Result.ToString();
-                //SplitReposToList(username);
                 UpdateToken(username);
             }
             else
             {
                 CreateNewUser(username);
             }
-        }
-
-        public static List<string> SplitReposToList(string repos)
-        {
-            return repos.Split(';').ToList();
         }
 
         public virtual string GetTokenOf(string username)
@@ -163,6 +158,59 @@ namespace GiTinder.Services
             }
 
             return username.Equals(profileLoggingIn.Login);
+        }
+
+        public List<ProfileResponse> GetListOfProfileResponsesPage1()
+        {
+            //List<User> allUsers = _context.Users.OrderBy(x => x.Username).Take(20).ToList();
+            //List<ProfileResponse> listOfProfileResponsesPage1 = _context;
+
+            List<ProfileResponse> firstTwenty = _context.Users
+                            .Select(user => new ProfileResponse(user))
+                            .Take(20)
+                            .ToList();
+
+            return firstTwenty;
+        }
+
+        public int GetAllUsersCount()
+        {
+            return _context.Users.ToList().Count();
+        }
+
+        public List<ProfileResponse> GetAllProfiles()
+        {
+            var listOfProfileResponses = _context.Users
+                            .Select(user => new ProfileResponse(user))
+                            .ToList();
+            return listOfProfileResponses;
+        }
+
+
+        //userServices.getAllProfiles()
+        //getAllProfiles()
+        //return new ProfilesResponse(context.Users.All
+        //                         .Select(user => new Profile(user))
+        //                         .ToList())
+
+        public AvailableResponseBody GetAvailableResponseBodyForPage1()
+        {
+            var listOfProfileResponsesPage1 = GetListOfProfileResponsesPage1();
+
+            int countOfProfilesOnPage1;
+            int allUsersCount = GetAllUsersCount();
+
+            if (allUsersCount < 20)
+            {
+                countOfProfilesOnPage1 = allUsersCount;
+            }
+            else
+            {
+                countOfProfilesOnPage1 = 20;
+            }
+
+            var responseBody = new AvailableResponseBody(listOfProfileResponsesPage1, countOfProfilesOnPage1, allUsersCount);
+            return responseBody;
         }
     }
 }

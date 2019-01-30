@@ -22,22 +22,28 @@ namespace GiTinder.Services
         //    var random20 = _context.Users.OfType<DataRow>().Shuffle(new Random()).Take(20);
 
         //}
-        public List<User> Return20RandomProfiles(string username)
+        public List<User> ReturnNProfilesRandomly(string username, int numberOfProfiles)
         {
             //assigning found user to exclude from database
             var foundUser = _context.Users.Where(u => u.Username == username).FirstOrDefault();
 
             return (from Users in _context.Users
                     where Users.Username != foundUser.Username
-                    select Users).OrderBy(x => x.Username).Take(20).ToList();
+                    select Users).OrderBy(x => Guid.NewGuid()).Take(numberOfProfiles).ToList(); 
         }
         public void testOnReturn()
         {
-            var test = Return20RandomProfiles("two");
-            test.ToArray();
-            
-            Debug.Write(test);
+            var test = ReturnNProfilesRandomly("two",5);
+
+            string combindedTest= string.Join(";",test);
+
+            Debug.Write(combindedTest);
         }
+        public void RandomizeSample()
+        {
+
+        }
+
     }
 
 }

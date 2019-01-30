@@ -44,7 +44,9 @@ namespace GiTinder.Models
         {
             get
             {
-                return UserLanguages.Select(sl => sl.Language.LanguageName).ToList();
+                return UserLanguages
+                    .Select(ul => ul.Language.LanguageName)
+                    .ToList();
             }
         }
 

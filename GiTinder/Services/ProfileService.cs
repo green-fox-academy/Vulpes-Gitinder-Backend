@@ -25,25 +25,19 @@ namespace GiTinder.Services
         public List<User> ReturnNProfilesRandomly(string username, int numberOfProfiles)
         {
             //assigning found user to exclude from database
-            var foundUser = _context.Users.Where(u => u.Username == username).FirstOrDefault();
+            //var foundUser = _context.Users.Where(u => u.Username == username).FirstOrDefault();
 
             return (from Users in _context.Users
-                    where Users.Username != foundUser.Username
+                    where Users.Username != username
                     select Users).OrderBy(x => Guid.NewGuid()).Take(numberOfProfiles).ToList(); 
         }
         public void testOnReturn()
         {
-            var test = ReturnNProfilesRandomly("two",5);
-
+            var test = ReturnNProfilesRandomly("two",25);
+            
             string combindedTest= string.Join(";",test);
 
             Debug.Write(combindedTest);
         }
-        public void RandomizeSample()
-        {
-
-        }
-
     }
-
 }

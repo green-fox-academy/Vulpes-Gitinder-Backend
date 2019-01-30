@@ -2,6 +2,7 @@ using GiTinder.Data;
 using GiTinder.Models;
 using GiTinder.Models.Connections;
 using GiTinder.Models.GitHubResponses;
+using GiTinder.Models.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -116,7 +117,7 @@ namespace GiTinder.Services
 
             CreateMissingLanguages(repoLanguagesNames);
 
-            List<int> languageIdInRepo = repoLanguagesNames.ConvertAll(rLN => GetLanguageId(rLN));            
+            List<int> languageIdInRepo = repoLanguagesNames.ConvertAll(rLN => GetLanguageId(rLN));
             if (currentUser.UserLanguages == null)
             {
                 languageIdInRepo.ForEach(rLI => CreateUserLanguage(username, rLI));
@@ -207,6 +208,59 @@ namespace GiTinder.Services
             }
 
             return username.Equals(profileLoggingIn.Login);
+        }
+
+        public List<ProfileResponse> GetListOfProfileResponsesPage1()
+        {
+            //List<User> allUsers = _context.Users.OrderBy(x => x.Username).Take(20).ToList();
+            //List<ProfileResponse> listOfProfileResponsesPage1 = _context;
+
+            List<ProfileResponse> firstTwenty = _context.Users
+                            .Select(user => new ProfileResponse(user))
+                            .Take(20)
+                            .ToList();
+
+            return firstTwenty;
+        }
+
+        public int GetAllUsersCount()
+        {
+            return _context.Users.ToList().Count();
+        }
+
+        public List<ProfileResponse> GetAllProfiles()
+        {
+            var listOfProfileResponses = _context.Users
+                            .Select(user => new ProfileResponse(user))
+                            .ToList();
+            return listOfProfileResponses;
+        }
+
+
+        //userServices.getAllProfiles()
+        //getAllProfiles()
+        //return new ProfilesResponse(context.Users.All
+        //                         .Select(user => new Profile(user))
+        //                         .ToList())
+
+        public AvailableResponseBody GetAvailableResponseBodyForPage1()
+        {
+            var listOfProfileResponsesPage1 = GetListOfProfileResponsesPage1();
+
+            int countOfProfilesOnPage1;
+            int allUsersCount = GetAllUsersCount();
+
+            if (allUsersCount < 20)
+            {
+                countOfProfilesOnPage1 = allUsersCount;
+            }
+            else
+            {
+                countOfProfilesOnPage1 = 20;
+            }
+
+            var responseBody = new AvailableResponseBody(listOfProfileResponsesPage1, countOfProfilesOnPage1, allUsersCount);
+            return responseBody;
         }
     }
 }

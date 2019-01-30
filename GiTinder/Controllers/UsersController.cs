@@ -79,21 +79,6 @@ namespace GiTinder.Controllers
         {
             _profileService.testOnReturn();
         }
-        //[HttpPut("/createUsers")]
-        //public void creatingUsers()
-        //{
-        //   User one = new User("one","abc",2);
-        //   User two = new User("two","abc",2);
-        //   User three = new User("three","abc",2);
-        //   User four = new User("four", "abc", 2);
-        //   User five = new User("five", "abc", 2);
-        //   User six = new User("sada", "abc", 2);
-        //   User seven = new User("taso", "abc", 2);
-        //   User eight = new User("thsadsree", "abc",2);
-        //   User nine = new User("asdadqw", "abc", 2);
-        //   User ten = new User("asdadqwsadawd", "abc", 2);
-        //    _context.SaveChanges();
-        //}
     }
 }
 

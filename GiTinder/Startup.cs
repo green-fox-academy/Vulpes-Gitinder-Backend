@@ -10,26 +10,28 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace GiTinder
 {
     public class Startup
     {
-        private IConfiguration _configuration;
+        public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
         {
-            _configuration = configuration;
+            Configuration = configuration;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-        
-            services.AddDbContext<GiTinderContext>(options => options.UseSqlServer(_configuration.GetConnectionString("GiTinderContextMSSqlDb")));
+            services.AddDbContext<GiTinderContext>(options => options.UseSqlServer(Configuration.GetConnectionString("GiTinderContextMSSqlDb")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddTransient<UserServices>();
             services.AddTransient<SettingsServices>();
+            services.AddTransient<LanguageServices>();
             services.AddTransient<ProfileService>();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

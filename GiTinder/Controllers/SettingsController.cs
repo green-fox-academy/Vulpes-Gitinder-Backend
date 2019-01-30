@@ -4,6 +4,7 @@ using GiTinder.Models.Responses;
 using GiTinder.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System.Linq;
 
 namespace GiTinder.Controllers
@@ -29,12 +30,16 @@ namespace GiTinder.Controllers
             {
                 Response.StatusCode = 403;
                 responseBody = new ErrorResponseBody("Unauthorized request!");
+                Log.Information("Info_1 from inside the if statement of GetSettings() method of SettingsController:" +
+                    " New ErrorResponseBody: {@ErrorResponseBody} was created", responseBody);
                 return responseBody;
             }
 
             var foundSettings = _settingsServices.FindSettingsWithLanguagesByUserToken(usertoken);
 
             responseBody = new SettingsResponse(foundSettings);
+            Log.Information("Info_2 from GetSettings() method of SettingsController:" +
+                " New SettingsResponse: {@SettingsResponse} was created from foundSettings {@Settings}", responseBody, foundSettings);
             return responseBody;
         }
 
@@ -49,6 +54,8 @@ namespace GiTinder.Controllers
             {
                 Response.StatusCode = 403;
                 responseBody = new ErrorResponseBody("Unauthorized request!");
+                Log.Information("Info_1 from inside the if statement of PutSettings() method of SettingsController:" +
+                    " New ErrorResponseBody: {@ErrorResponseBody} was created", responseBody);
                 return responseBody;
             }
 
@@ -60,6 +67,9 @@ namespace GiTinder.Controllers
             _settingsServices.UpdateAndSaveSettingsFoundByUserToken(settings, usertoken);
             responseBody = new OKResponseBody("success");
             Response.StatusCode = 200;
+            Log.Information("Info_2 from PutSettings() method of SettingsController:" +
+               " Settings: {@settings}. " +
+               "ResponseBody returned: {@responseBody}", settings, responseBody);
             return responseBody;
         }
     }

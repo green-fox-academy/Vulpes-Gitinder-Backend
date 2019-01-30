@@ -32,8 +32,7 @@ namespace GiTinder.Models
                 return SplitReposToList(Repos);
             }
         }
-
-
+        
         [JsonIgnore]
         public List<UserLanguages> UserLanguage { get; set; }
 

@@ -50,18 +50,7 @@ namespace GiTinder.Models
             Username = user.Username;
             Avatar = user.Avatar;
             ReposList = user.ReposList;
-
-
             List<string> Languages = user.UserSettings.SettingsLanguages.Select(sl => sl.Language.LanguageName).ToList();
-            //Languages.
-            // Include(l => l.Language).Select(sl => sl.Language.LanguageName).ToList();
-            //Select(l => l.LanguageName == user.Username).
-
-            Languages = new List<string> { };
-
         }
-
     }
-
-
 }

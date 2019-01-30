@@ -44,7 +44,7 @@ namespace GiTinder.Controllers
                 string tomekImage = "https://cdn.smyk.com/media/catalog/product/cache/1/image/750x750/2091d5c437d0f7138d5a951d6205592d/4/4/443630.jpg";
                 string filipImage = "https://i1.rgstatic.net/ii/profile.image/273702084411403-1442267070442_Q512/John_Siame.jpg";
 
-                List<ProfileResponse> firstPageWithProfiles = new List<ProfileResponse>();
+                //List<ProfileResponse> firstPageWithProfiles = new List<ProfileResponse>();
                 //{
                 //    new ProfileResponse("Michel Jobless", michelImage, "my-fav-html-tags", "php"),
                 //    new ProfileResponse("Adam Sterdam", adamImage, "javananas v4.2", "Java"),
@@ -53,9 +53,8 @@ namespace GiTinder.Controllers
                 //    new ProfileResponse("Filip-The-Chemist", filipImage, "blue-meth-for-dummies", "C"),
 
                 //};
-                
-                responseBody = _userServices.GetAvailableResponseBodyForPage1();
 
+                responseBody = _userServices.GetAvailableResponseBodyForPage1();
             }
             return responseBody;
         }
@@ -66,7 +65,8 @@ namespace GiTinder.Controllers
             var usertoken = Request.Headers["X-Gitinder-Token"];
             GeneralApiResponseBody responseBody;
 
-            var responseProfile = _userServices.FindUserByUserToken(usertoken);
+            //var responseProfile = _userServices.FindUserByUserToken(usertoken);
+            var user = _userServices.FindUserByUserToken(usertoken);
 
 
             if (string.IsNullOrEmpty(usertoken))
@@ -76,9 +76,11 @@ namespace GiTinder.Controllers
             }
             else if (_userServices.TokenExists(usertoken))
             {
-                _userServices.UpdateUser(responseProfile.Username);
+                //_userServices.UpdateUser(responseProfile.Username);
+                _userServices.UpdateUser(user.Username);
 
-                responseBody = new ProfileResponse(responseProfile.Username, responseProfile.Avatar, responseProfile.Repos.ToString());
+                //responseBody = new ProfileResponse(responseProfile.Username, responseProfile.Avatar, responseProfile.Repos.ToString());
+                responseBody = new ProfileResponse(user);
             }
             else
             {

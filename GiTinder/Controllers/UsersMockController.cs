@@ -3,7 +3,7 @@ using GiTinder.Models;
 using GiTinder.Models.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Collections.Generic;
 
 namespace GiTinder.Controllers
 {
@@ -47,7 +47,9 @@ namespace GiTinder.Controllers
 
             if (!string.IsNullOrEmpty(Token) && Token == "aze")
             {
-                responseBody = new ProfileResponse("Aze", "https://avatars0.githubusercontent.com/u/5855091?s=40&v=4", "https://avatars0.githubusercontent.com/u/5855091?s=40&v=4", "java");
+                // responseBody = new ProfileResponse("Aze", "https://avatars0.githubusercontent.com/u/5855091?s=40&v=4", "https://avatars0.githubusercontent.com/u/5855091?s=40&v=4", "java");
+                List<string> reposList = new List<string> { "https://avatars0.githubusercontent.com/u/5855091?s=40&v=4", "https://avatars0.githubusercontent.com/u/5855091?s=40&v=5" };
+                responseBody = new ProfileResponse("Aze", "https://avatars0.githubusercontent.com/u/5855091?s=40&v=4", reposList);
             }
             else
             {

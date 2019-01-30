@@ -2,12 +2,12 @@
 
 namespace GiTinder.Migrations
 {
-    public partial class UserLanguageModel : Migration
+    public partial class UserLanguageConnection : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "UserLanguage",
+                name: "UserLanguages",
                 columns: table => new
                 {
                     Username = table.Column<string>(nullable: false),
@@ -15,15 +15,15 @@ namespace GiTinder.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserLanguage", x => new { x.Username, x.LanguageId });
+                    table.PrimaryKey("PK_UserLanguages", x => new { x.Username, x.LanguageId });
                     table.ForeignKey(
-                        name: "FK_UserLanguage_Languages_LanguageId",
+                        name: "FK_UserLanguages_Languages_LanguageId",
                         column: x => x.LanguageId,
                         principalTable: "Languages",
                         principalColumn: "LanguageId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserLanguage_Users_Username",
+                        name: "FK_UserLanguages_Users_Username",
                         column: x => x.Username,
                         principalTable: "Users",
                         principalColumn: "Username",
@@ -31,15 +31,15 @@ namespace GiTinder.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserLanguage_LanguageId",
-                table: "UserLanguage",
+                name: "IX_UserLanguages_LanguageId",
+                table: "UserLanguages",
                 column: "LanguageId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "UserLanguage");
+                name: "UserLanguages");
         }
     }
 }

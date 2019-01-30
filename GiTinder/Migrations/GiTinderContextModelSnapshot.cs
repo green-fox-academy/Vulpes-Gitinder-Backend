@@ -19,7 +19,7 @@ namespace GiTinder.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("GiTinder.Models.Connections.UserLanguage", b =>
+            modelBuilder.Entity("GiTinder.Models.Connections.UserLanguages", b =>
                 {
                     b.Property<string>("Username");
 
@@ -29,7 +29,7 @@ namespace GiTinder.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.ToTable("UserLanguage");
+                    b.ToTable("UserLanguages");
                 });
 
             modelBuilder.Entity("GiTinder.Models.Language", b =>
@@ -129,15 +129,15 @@ namespace GiTinder.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("GiTinder.Models.Connections.UserLanguage", b =>
+            modelBuilder.Entity("GiTinder.Models.Connections.UserLanguages", b =>
                 {
                     b.HasOne("GiTinder.Models.Language", "Language")
-                        .WithMany()
+                        .WithMany("UserLanguages")
                         .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GiTinder.Models.User", "User")
-                        .WithMany()
+                        .WithMany("UserLanguages")
                         .HasForeignKey("Username")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

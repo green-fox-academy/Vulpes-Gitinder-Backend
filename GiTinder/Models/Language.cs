@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using GiTinder.Models.Connections;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -25,6 +26,8 @@ namespace GiTinder.Models
 
         [JsonIgnore]
         public List<SettingsLanguage> SettingsLanguages { get; set; }
+        [JsonIgnore]
+        public List<UserLanguages> UserLanguages { get; set; }
 
     }
 }

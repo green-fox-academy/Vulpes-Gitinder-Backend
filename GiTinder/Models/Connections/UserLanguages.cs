@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Models.Connections
 {
-    public class UserLanguage
+    public class UserLanguages
     {
         [Required]
         public string Username { get; set; }
@@ -19,7 +19,7 @@ namespace GiTinder.Models.Connections
         public int LanguageId { get; set; }
         public Language Language { get; set; }
 
-        public UserLanguage(string username, int languageId)
+        public UserLanguages(string username, int languageId)
         {
             Username = username;
             LanguageId = languageId;

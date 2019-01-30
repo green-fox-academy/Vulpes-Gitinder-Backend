@@ -98,50 +98,63 @@ namespace GiTinder.Services
             }
             else
             {
+                CreateNewUser(username);
                 await UpdateLanguagesTableAndUserLanguageTable(username);
-                CreateNewUser(username);              
             }
             return true;
         }
 
         private async Task<bool> UpdateLanguagesTableAndUserLanguageTable(string username)
         {
+            var currentUser = _context.Users.Find(username);
             List<UserRepos> userRepos = await GetGithubProfilesReposAsync(username);
-            foreach (UserRepos userRepo in userRepos)
+            List<string> repoLanguagesNames = userRepos
+                .Where(rL => !string.IsNullOrEmpty(rL.Language))
+                .Select(rL => rL.Language)
+                .Distinct()
+                .ToList();
+
+            CreateMissingLanguages(repoLanguagesNames);
+
+            List<int> languageIdInRepo = repoLanguagesNames.ConvertAll(rLN => GetLanguageId(rLN));            
+            if (currentUser.UserLanguages == null)
             {
-                string languageName = userRepo.Language;
-                if (!string.IsNullOrEmpty(languageName))
-                { 
-                    if (LanguageDoesntExist(languageName))
-                    {
-                        int newLangageId = CreateLanguageAndReturnItsId(languageName);
-                        CreateUserLanguage(username, newLangageId);
-                    }
-                    else
-                    {
-                        int languageId = _context.Languages.Where(l => l.LanguageName == languageName).FirstOrDefault().LanguageId;
-                        if (UserLanguageDoesntExist(username, languageId))
-                        {
-                            CreateUserLanguage(username, languageId);
-                        }
-                    }                    
-                }
+                languageIdInRepo.ForEach(rLI => CreateUserLanguage(username, rLI));
+            }
+
+            else
+            {
+                List<Language> currentLanguages = currentUser.UserLanguages.Select(ul => ul.Language).ToList();
+                List<int> currentLanguageId = currentLanguages.ConvertAll(oUL => GetLanguageId(oUL.LanguageName));
+                languageIdInRepo.Except(currentLanguageId).ToList().ForEach(rLI => CreateUserLanguage(username, rLI));
             }
             return true;
         }
 
-        private bool UserLanguageDoesntExist(string username, int language)
+        private void CreateMissingLanguages(List<string> languagesNames)
         {
-            return !_context.UserLanguage.Any(uL => uL.Username == username && uL.LanguageId == language);
+            List<string> currentLanguagesNames = _context.Languages.Where(l => languagesNames.Contains(l.LanguageName)).Select(l => l.LanguageName).ToList();
+            List<string> newLanguagesNames = languagesNames.Except(currentLanguagesNames).ToList();
+            newLanguagesNames.ForEach(nLN => CreateLanguage(nLN));
+        }
+
+        private int GetLanguageId(string languageName)
+        {
+            return _context.Languages.Where(l => l.LanguageName == languageName).FirstOrDefault().LanguageId;
+        }
+
+        private bool UserLanguageExists(string username, int language)
+        {
+            return _context.UserLanguages.Any(uL => uL.Username == username && uL.LanguageId == language);
         }
 
         private void CreateUserLanguage(string username, int languageId)
         {
-            _context.UserLanguage.Add(new UserLanguage(username, languageId));
+            _context.UserLanguages.Add(new UserLanguages(username, languageId));
             _context.SaveChanges();
         }
 
-        private int CreateLanguageAndReturnItsId(string languageName)
+        private int CreateLanguage(string languageName)
         {
             var newLanguage = new Language(languageName);
             _context.Languages.Add(newLanguage);
@@ -164,9 +177,9 @@ namespace GiTinder.Services
             return _context.Users.Any(u => u.UserToken == usertoken);
         }
 
-        public virtual bool LanguageDoesntExist(string languageName)
+        public virtual bool LanguageExists(string languageName)
         {
-            return !_context.Languages.Any(l => l.LanguageName == languageName);
+            return _context.Languages.Any(l => l.LanguageName == languageName);
         }
 
         public bool UserTokenCorrespondsToUsername(string username, string usertoken)

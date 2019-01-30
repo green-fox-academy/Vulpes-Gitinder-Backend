@@ -19,7 +19,7 @@ namespace GiTinder.Data
         public DbSet<SettingsLanguage> SettingsLanguage { get; set; }
         public DbSet<Swipe> Swipe { get; set; }
         public DbSet<Match> Matches { get; set; }
-        public DbSet<UserLanguage> UserLanguage { get; set; }
+        public DbSet<UserLanguages> UserLanguages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,8 +36,18 @@ namespace GiTinder.Data
                 .WithMany(t => t.SettingsLanguages)
                 .HasForeignKey(pt => pt.LanguageId);
 
-            modelBuilder.Entity<UserLanguage>()
+            modelBuilder.Entity<UserLanguages>()
                  .HasKey(t => new { t.Username, t.LanguageId });
+
+            modelBuilder.Entity<UserLanguages>()
+                .HasOne(uL => uL.User)
+                .WithMany(u => u.UserLanguages)
+                .HasForeignKey(uL => uL.Username);
+
+            modelBuilder.Entity<UserLanguages>()
+                .HasOne(uL => uL.Language)
+                .WithMany(l => l.UserLanguages)
+                .HasForeignKey(uL => uL.LanguageId);
 
             modelBuilder.Entity<Swipe>()
                 .HasKey(t => new { t.SwipingUserId, t.SwipedUserId });

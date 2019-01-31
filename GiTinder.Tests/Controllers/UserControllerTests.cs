@@ -15,7 +15,7 @@ namespace GiTinder.Tests.Controllers
     public class UsersControllerTests
     {
         Mock<GiTinderContext> mockRepo;
-        UserServices userServices;
+        Mock<UserServices> userServices;
         UsersController usersController;
         HeaderDictionary headerDictionary;
         Mock<HttpResponse> response;
@@ -35,16 +35,21 @@ namespace GiTinder.Tests.Controllers
         public void CheckingAvailableProfilesWithTokenReturnsAvailableResponseBody()
         {
             SetUpTestingConditions();
+            Mock<AvailableResponseBody> availableResponseBody = new Mock<AvailableResponseBody>();
             headerDictionary.Add("X-Gitinder-Token", "this is a mock token");
+            userServices.Setup(s => s.GetAvailableResponseBodyForPage1()).Verifiable();
+
             GeneralApiResponseBody result = usersController.ShowAvailableProfiles();
-            Assert.IsType<AvailableResponseBody>(result);
+
+            userServices.Verify(s => s.GetAvailableResponseBodyForPage1(), Times.Once());
         }
 
         private void SetUpTestingConditions()
         {
             mockRepo = new Mock<GiTinderContext>();
-            userServices = new UserServices(mockRepo.Object);
-            usersController = new UsersController(mockRepo.Object, userServices);
+
+            userServices = new Mock<UserServices>(mockRepo.Object);
+            usersController = new UsersController(mockRepo.Object, userServices.Object);
             headerDictionary = new HeaderDictionary();
             response = new Mock<HttpResponse>();
             httpContext = new Mock<HttpContext>();

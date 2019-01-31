@@ -1,38 +1,60 @@
-﻿using Newtonsoft.Json;
+﻿using GiTinder.Models.GitHubResponses;
+using GiTinder.Services;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace GiTinder.Models
 {
     public class ProfileResponse : GeneralApiResponseBody
+
     {
         [JsonProperty("username")]
         public string Username { get; set; }
-        [JsonProperty("url")]
-        public string Avatar { get; set; }
-        [JsonProperty("repos")]
-        public string Repos { get; set; }
-        [JsonProperty("languages")]
-        public string Languages { get; set; }
 
+        [JsonProperty("avatar_url")]
+        public string Avatar { get; set; }
+
+        [JsonProperty("repos")]
+        public List<string> ReposList { get; set; }
+
+        [JsonProperty("languages")]
+        public List<string> UserLanguageNamesList { get; set; }
+
+        [JsonProperty("snippets")]
+        public List<string> Snippets { get; set; }
 
         public ProfileResponse()
         {
-            Username = "aze";
-            Avatar = "https://avatars1.githubusercontent.com/u/5855091?s=400&v=4";
-            Repos = "string";
-            Languages = "eng";
-
         }
 
-        public ProfileResponse(string username, string avatar, string repos, string languages)
+        public ProfileResponse(string username, string avatar, List<string> reposList)
+        {
+            Status = "ok";
+            Username = username;
+            Avatar = avatar;
+            ReposList = reposList;
+            UserLanguageNamesList = new List<string> { "Java" };
+            Snippets = new List<string> { "https://github.com/adamgyulavari/gf-chatapp", "https://github.com/adamgyulavari/gf-chatapp" };
+        }
+
+        public ProfileResponse(string username, string avatar, List<string> reposList, List<string> userLanguageNamesList)
         {
             Username = username;
             Avatar = avatar;
-            Repos = repos;
-            Languages = languages;
+            ReposList = reposList;
+            UserLanguageNamesList = userLanguageNamesList;
+        }
+
+        public ProfileResponse(User user)
+        {
+            Username = user.Username;
+            Avatar = user.Avatar;
+            ReposList = user.ReposList;
+            UserLanguageNamesList = user.UserLanguageNamesList;
         }
     }
 }

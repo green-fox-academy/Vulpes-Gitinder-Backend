@@ -128,6 +128,9 @@ namespace GiTinder.Services
                 List<int> currentLanguageId = currentLanguages.ConvertAll(oUL => GetLanguageId(oUL.LanguageName));
                 languageIdInRepo.Except(currentLanguageId).ToList().ForEach(rLI => CreateUserLanguage(username, rLI));
             }
+
+            currentUser.UserLanguages = _context.UserLanguages.Where(uL => uL.Username == currentUser.Username).ToList();
+
             return true;
         }
 
@@ -154,12 +157,11 @@ namespace GiTinder.Services
             _context.SaveChanges();
         }
 
-        private int CreateLanguage(string languageName)
+        private void CreateLanguage(string languageName)
         {
             var newLanguage = new Language(languageName);
             _context.Languages.Add(newLanguage);
             _context.SaveChanges();
-            return newLanguage.LanguageId;
         }
 
         public virtual string GetTokenOf(string username)

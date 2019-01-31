@@ -16,9 +16,9 @@ namespace GiTinder.Controllers
     {
         private readonly GiTinderContext _context;
         private readonly UserServices _userServices;
-        private readonly GetProfilesForUser _profileService;
+        private readonly ProfileServices _profileService;
 
-        public UsersController(GiTinderContext context, UserServices userServices, GetProfilesForUser profileService)
+        public UsersController(GiTinderContext context, UserServices userServices, ProfileServices profileService)
         {
             _context = context;
             _userServices = userServices;

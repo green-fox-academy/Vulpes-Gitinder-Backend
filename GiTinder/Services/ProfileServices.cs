@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Services
 {
-    public class GetProfilesForUser
+    public class ProfileServices
     {
         private GiTinderContext _context;
 
-        public GetProfilesForUser(GiTinderContext context)
+        public ProfileServices(GiTinderContext context)
         {
             _context = context;
         }
-        public List<User> ReturnNProfilesRandomly(string username, int numberOfProfiles)
+        public List<User> GetProfilesForUser(string username, int numberOfProfiles)
         {
             return (from Users in _context.Users
                     where Users.Username != username
@@ -25,7 +25,7 @@ namespace GiTinder.Services
         }
         public void testOnReturn()
         {
-            var test = ReturnNProfilesRandomly("two",25);
+            var test = GetProfilesForUser("two",25);
         }
     }
 }

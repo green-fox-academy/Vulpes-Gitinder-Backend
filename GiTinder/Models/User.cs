@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using GiTinder.Models.Connections;
 
 namespace GiTinder.Models
 {
@@ -23,6 +24,9 @@ namespace GiTinder.Models
         public string Repos { get; set; }
 
         public Settings UserSettings { get; set; }
+
+        [JsonIgnore]
+        public List<UserLanguages> UserLanguages { get; set; }
 
         public User()
         {

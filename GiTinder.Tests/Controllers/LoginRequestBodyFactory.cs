@@ -42,5 +42,14 @@ namespace GiTinder.Tests.Controllers
                 AccessToken = ""
             };
         }
+
+        public static LoginRequestBody CreateValidLoginRequest()
+        {
+            return new LoginRequestBody()
+            {
+                Username = "Tomek Stasy",
+                AccessToken = "VerySecure123"
+            };
+        }
     }
 }

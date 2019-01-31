@@ -21,6 +21,8 @@
     <Compile Remove="Migrations\20181217154755_UpdatingSettingsAnnotationsForUserName.Designer.cs" />
     <Compile Remove="Migrations\20190110111219_MigrationTest2.cs" />
     <Compile Remove="Migrations\20190110111219_MigrationTest2.Designer.cs" />
+    <Compile Remove="Migrations\20190130142009_UserLanguageConnection.cs" />
+    <Compile Remove="Migrations\20190130142009_UserLanguageConnection.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

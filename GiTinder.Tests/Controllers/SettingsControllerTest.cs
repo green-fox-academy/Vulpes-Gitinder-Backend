@@ -1,16 +1,12 @@
 ﻿using GiTinder.Controllers;
 using GiTinder.Data;
-using GiTinder.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Moq;
-using Xunit;
 using GiTinder.Models;
+using GiTinder.Models.Responses;
+using GiTinder.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using GiTinder.Models.Responses;
+using Moq;
+using Xunit;
 
 namespace GiTinder.Tests.Models
 {
@@ -24,8 +20,7 @@ namespace GiTinder.Tests.Models
         Mock<HttpRequest> httpRequest;
         Mock<HttpResponse> httpResponse;
         HeaderDictionary headerDictionary;
-        Mock<HttpContext> httpContext;
-        Mock<SettingsResponse> mockSettingsResponse;
+        Mock<HttpContext> httpContext;    
 
         private void ArrangeForSettingsControllerTests()
         {

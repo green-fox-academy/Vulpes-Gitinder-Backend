@@ -212,11 +212,11 @@ namespace GiTinder.Services
 
         public List<ProfileResponse> GetListOfProfileResponsesPage1()
         {
-            List<ProfileResponse> firstTwenty = _context.Users
+            List<ProfileResponse> firstTwenty = _context.Users                
+                 .Take(20)
                  .Include(e => e.UserLanguages)
                  .ThenInclude(l => l.Language)
                  .Select(user => new ProfileResponse(user))
-                 .Take(20)
                  .ToList();
 
             return firstTwenty;

@@ -18,6 +18,7 @@ namespace GiTinder.Services
         private readonly GiTinderContext _context;
         public const string ApiUrl = "https://api.github.com/";
         private HttpClient client = new HttpClient();
+        
 
         public UserServices(GiTinderContext context)
         {
@@ -25,6 +26,7 @@ namespace GiTinder.Services
         }
         public async Task<User> GetGithubProfileAsync(string username)
         {
+            
             HeadersSettingForGitHubApi();
             User rawUser = null;
             HttpResponseMessage responseUser = await client.GetAsync(ApiUrl + username);
@@ -191,7 +193,6 @@ namespace GiTinder.Services
             var foundUser = _context.Users.Where(u => u.UserToken == usertoken).FirstOrDefault();
             return foundUser;
         }
-
         public virtual async Task<bool> LoginRequestIsValid(string username, string gitHubToken)
         {
             HeadersSettingForGitHubApi();

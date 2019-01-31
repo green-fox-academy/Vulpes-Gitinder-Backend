@@ -10,5 +10,7 @@ namespace GiTinder.Models.GitHubResponses
     {
         [JsonProperty("html_url")]
         public string Url { get; set; }
+        [JsonProperty("language")]
+        public string Language { get; set; }
     }
 }

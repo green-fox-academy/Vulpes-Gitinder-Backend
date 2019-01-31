@@ -39,7 +39,7 @@ namespace GiTinder.Controllers
             }
             else if (await _userServices.LoginRequestIsValid(username, accessToken))
             {
-                _userServices.UpdateUser(username);
+                await _userServices.UpdateUser(username);
                 responseBody = new TokenResponseBody(_userServices.GetTokenOf(username));
             }
             else

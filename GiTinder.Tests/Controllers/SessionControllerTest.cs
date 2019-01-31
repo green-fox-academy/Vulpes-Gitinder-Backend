@@ -71,11 +71,8 @@ namespace GiTinder.Tests.Controllers
             mockService.Setup(u => u.CreateGiTinderToken()).Returns(Guid.NewGuid().ToString());
             sessionController = new SessionController(mockRepo.Object, mockService.Object);
 
-            TokenResponseBody result = sessionController.Login(new LoginRequestBody()
-            {
-                Username = "Tomek Stasy",
-                AccessToken = "VerySecure123"
-            }).Result as TokenResponseBody;
+            TokenResponseBody result = 
+                sessionController.Login(LoginRequestBodyFactory.CreateValidLoginRequest()).Result as TokenResponseBody;
 
             Assert.IsType<TokenResponseBody>(result);
         }

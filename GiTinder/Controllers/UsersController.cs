@@ -67,7 +67,3 @@ namespace GiTinder.Controllers
         }
     }
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 160422e9c28e0d6cb02a75c240e4721446f83f34

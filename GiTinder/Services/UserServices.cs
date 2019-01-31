@@ -212,13 +212,12 @@ namespace GiTinder.Services
 
         public List<ProfileResponse> GetListOfProfileResponsesPage1()
         {
-            //List<User> allUsers = _context.Users.OrderBy(x => x.Username).Take(20).ToList();
-            //List<ProfileResponse> listOfProfileResponsesPage1 = _context;
-
             List<ProfileResponse> firstTwenty = _context.Users
-                            .Select(user => new ProfileResponse(user))
-                            .Take(20)
-                            .ToList();
+                 .Include(e => e.UserLanguages)
+                 .ThenInclude(l => l.Language)
+                 .Select(user => new ProfileResponse(user))
+                 .Take(20)
+                 .ToList();
 
             return firstTwenty;
         }
@@ -236,14 +235,7 @@ namespace GiTinder.Services
             return listOfProfileResponses;
         }
 
-
-        //userServices.getAllProfiles()
-        //getAllProfiles()
-        //return new ProfilesResponse(context.Users.All
-        //                         .Select(user => new Profile(user))
-        //                         .ToList())
-
-        public AvailableResponseBody GetAvailableResponseBodyForPage1()
+        public virtual AvailableResponseBody GetAvailableResponseBodyForPage1()
         {
             var listOfProfileResponsesPage1 = GetListOfProfileResponsesPage1();
 

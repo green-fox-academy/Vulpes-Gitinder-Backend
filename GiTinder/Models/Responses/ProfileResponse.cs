@@ -54,10 +54,7 @@ namespace GiTinder.Models
             Username = user.Username;
             Avatar = user.Avatar;
             ReposList = user.ReposList;
-            //if the following line is used instead of the next line: UserLanguageNamesList = user.UserLanguageNamesList; then NullReferenceExeption is avoided
-            //UserLanguageNamesList = UserLanguageNamesList;
             UserLanguageNamesList = user.UserLanguageNamesList;
-            //List<string> Languages = user.UserSettings.SettingsLanguages.Select(sl => sl.Language.LanguageName).ToList();
         }
     }
 }

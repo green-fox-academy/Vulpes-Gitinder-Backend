@@ -23,8 +23,6 @@
     <Compile Remove="Migrations\20190110111219_MigrationTest2.Designer.cs" />
     <Compile Remove="Migrations\20190130142009_UserLanguageConnection.cs" />
     <Compile Remove="Migrations\20190130142009_UserLanguageConnection.Designer.cs" />
-    <Compile Remove="Migrations\20190130210624_TestFilip1.cs" />
-    <Compile Remove="Migrations\20190130210624_TestFilip1.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Services
 {
-    public class ProfileService
+    public class GetProfilesForUser
     {
         private GiTinderContext _context;
 
-        public ProfileService(GiTinderContext context)
+        public GetProfilesForUser(GiTinderContext context)
         {
             _context = context;
         }

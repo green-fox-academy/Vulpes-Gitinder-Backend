@@ -16,10 +16,13 @@ namespace GiTinder.Controllers
     {
         private readonly GiTinderContext _context;
         private readonly UserServices _userServices;
-        public UsersController(GiTinderContext context, UserServices userServices)
+        private readonly ProfileServices _profileService;
+
+        public UsersController(GiTinderContext context, UserServices userServices, ProfileServices profileService)
         {
             _context = context;
             _userServices = userServices;
+            _profileService = profileService;
         }
 
         [HttpGet("/profile")]
@@ -57,5 +60,14 @@ namespace GiTinder.Controllers
             }
             return responseBody;
         }
+        [HttpGet("/return20Profiles")]
+        public void whatevah()
+        {
+            _profileService.testOnReturn();
+        }
     }
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 160422e9c28e0d6cb02a75c240e4721446f83f34

@@ -32,26 +32,38 @@ namespace GiTinder
             services.AddTransient<UserServices>();
             services.AddTransient<SettingsServices>();
             services.AddTransient<LanguageServices>();
-            services.AddTransient<ProfileService>();
+            services.AddTransient<GetProfilesForUser>();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
             }
             else
             {
                 app.UseHsts();
+                app.UseExceptionHandler("/Home/Error");
             }
             app.UseHttpsRedirection();
             app.UseMvc();
+            app.UseStaticFiles();
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetService<GiTinderContext>();
                 context.Database.Migrate();
             }
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }

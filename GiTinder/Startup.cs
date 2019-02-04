@@ -40,6 +40,7 @@ namespace GiTinder
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseMiddleware<GiTinderMiddleware>();
             }
             else
             {

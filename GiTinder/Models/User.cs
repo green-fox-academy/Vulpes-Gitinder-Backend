@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using GiTinder.Models.Connections;
+using GiTinder.Models.GitHubResponses;
 
 namespace GiTinder.Models
 {
@@ -44,5 +45,15 @@ namespace GiTinder.Models
             this.ReposCount = ReposCount;
             Settings defaultSettings = new Settings(Username);
         }
+        //public void SaveRepoUrlsAsString(List<UserRepos> rawRepos)
+        //{
+        //    string Urls = null;
+        //    for (int i = 0; i < rawRepos.Count; i++)
+        //    {
+        //        Urls = rawRepos[i].Url + ";" + Urls;
+        //    }
+           
+            
+        //}
     }
 }

@@ -46,12 +46,12 @@ namespace GiTinder.Services
             if (responseRepos.IsSuccessStatusCode)
             {
                 rawRepos = await responseRepos.Content.ReadAsAsync<List<UserRepos>>();
-                string Urls = null;
-                for (int i = 0; i < rawRepos.Count; i++)
-                {
-                    Urls = rawRepos[i].Url + ";" + Urls;
-                }
-                _context.Users.Find(username).Repos = Urls;
+                //SaveRepoUrlsAsString(rawRepos);
+                //for (int i = 0; i < rawRepos.Count; i++)
+                //{
+                //    Urls = rawRepos[i].Url + ";" + Urls;
+                //}
+
                 _context.SaveChanges();
             }
             return rawRepos;

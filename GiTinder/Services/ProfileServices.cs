@@ -21,11 +21,11 @@ namespace GiTinder.Services
         {
             return (from Users in _context.Users
                     where Users.Username != username
-                    select Users).OrderBy(x => Guid.NewGuid()).Take(numberOfProfiles).ToList(); 
+                    select Users).OrderBy(x => Guid.NewGuid()).Take(numberOfProfiles).ToList();
         }
         public void testOnReturn()
         {
-            var test = GetProfilesForUser("two",25);
+            var test = GetProfilesForUser("two", 25);
         }
     }
 }

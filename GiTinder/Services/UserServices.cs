@@ -16,7 +16,7 @@ namespace GiTinder.Services
     public class UserServices
     {
         private readonly GiTinderContext _context;
-        public const string ApiUrl = "https://api.github.com/";
+        private const string ApiUrl = "https://api.github.com/";
         private HttpClient client = new HttpClient();
         
 
@@ -46,13 +46,6 @@ namespace GiTinder.Services
             if (responseRepos.IsSuccessStatusCode)
             {
                 rawRepos = await responseRepos.Content.ReadAsAsync<List<UserRepos>>();
-                //SaveRepoUrlsAsString(rawRepos);
-                //for (int i = 0; i < rawRepos.Count; i++)
-                //{
-                //    Urls = rawRepos[i].Url + ";" + Urls;
-                //}
-
-                _context.SaveChanges();
             }
             return rawRepos;
         }

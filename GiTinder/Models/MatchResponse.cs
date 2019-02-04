@@ -19,8 +19,6 @@ namespace GiTinder.Models
 
         public MatchResponse(string message,string username, string avatar, int time) : base(message)
         {
-            Status = "ok";
-            message = message;
             Username = username;
             AvatarUrl = avatar;
             Time = time;

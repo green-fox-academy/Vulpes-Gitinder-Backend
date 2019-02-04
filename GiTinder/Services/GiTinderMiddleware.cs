@@ -42,7 +42,6 @@ namespace GiTinder.Services
                 else
                 {
 
-
                     User currentUser = userServices.FindUserByUserToken(Token);
                     Debug.Write(currentUser.Username);
                     //Session.SetString("username", currentUser.Username);

@@ -55,8 +55,16 @@ namespace GiTinder.Models
             Username = username;
         }
 
+        public User()
+        {
+        }
+
         public static List<string> SplitReposToList(string repos)
         {
+            if (repos == null)
+            {
+                return new List<string>();
+            }
             char[] charsToTrim = { ' ', '\'', '\"' };
             return repos.Split(';').Select(p => p.Trim(charsToTrim)).ToList();
         }

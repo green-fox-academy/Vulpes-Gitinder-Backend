@@ -23,21 +23,8 @@ namespace GiTinder.Controllers
         [HttpGet("/settings")]
         public GeneralApiResponseBody GetSettings()
         {
-            GeneralApiResponseBody responseBody;
-            var usertoken = Request.Headers["X-Gitinder-Token"];
-
-            if (string.IsNullOrEmpty(usertoken) || !_userServices.TokenExists(usertoken))
-            {
-                Response.StatusCode = 403;
-                responseBody = new ErrorResponseBody("Unauthorized request!");
-                Log.Information("Info_1 from inside the if statement of GetSettings() method of SettingsController:" +
-                    " New ErrorResponseBody: {@ErrorResponseBody} was created", responseBody);
-                return responseBody;
-            }
-
-            var foundSettings = _settingsServices.FindSettingsWithLanguagesByUserToken(usertoken);
-
-            responseBody = new SettingsResponse(foundSettings);
+            var foundSettings = _settingsServices.FindSettingsWithLanguagesByUserToken(getCurrentUser().UserToken);
+            var responseBody = new SettingsResponse(foundSettings);
             Log.Information("Info_2 from GetSettings() method of SettingsController:" +
                 " New SettingsResponse: {@SettingsResponse} was created from foundSettings {@Settings}", responseBody, foundSettings);
             return responseBody;

@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Controllers
 {
-    [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseController
     {
         private readonly GiTinderContext _context;
         private readonly UserServices _userServices;
@@ -23,13 +22,6 @@ namespace GiTinder.Controllers
             _context = context;
             _userServices = userServices;
             _profileService = profileService;
-        }
-
-
-        [HttpGet("/profile")]
-        public GeneralApiResponseBody MockProfile()
-        {
-            return new ProfileResponse();
         }
 
         [HttpGet("/available/{page?}")]
@@ -51,6 +43,14 @@ namespace GiTinder.Controllers
                     new ProfileResponse("Filip-The-Chemist", filipImage, "blue-meth-for-dummies", "C"),
                 };
             return new AvailableResponseBody(profiles, 5, 5);
+        }
+
+        [HttpGet("/profile")]
+        public GeneralApiResponseBody GetProfile()
+        {
+            var responseProfile = getCurrentUser(); 
+            return new ProfileResponse(responseProfile.Username, responseProfile.Avatar, responseProfile.Repos.ToString());
+
         }
     }
 }

@@ -16,6 +16,15 @@ namespace GiTinder.Tests.Controllers
             };
         }
 
+        public static LoginRequestBody CreateLogoutRequestBodyWithNullUsertoken()
+        {
+            return new LoginRequestBody()
+            {
+                Username = "",
+                AccessToken = "X-Gitinder-Token"
+            };
+        }
+
         public static LoginRequestBody CreateLoginRequestBodyWithEmptyUsername()
         {
             return new LoginRequestBody()

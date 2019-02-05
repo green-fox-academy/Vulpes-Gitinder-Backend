@@ -5,6 +5,7 @@ using GiTinder.Models.GitHubResponses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +50,7 @@ namespace GiTinder.Services
             }
             return rawRepos;
         }
+
         public virtual string CreateGiTinderToken()
         {
             string token;
@@ -89,6 +91,8 @@ namespace GiTinder.Services
         {
             if (UserExists(username))
             {
+                GetGithubProfilesReposAsync(username).Result.ToString();
+                //SplitReposToList(username);
                 UpdateToken(username);
             }
             else
@@ -98,7 +102,12 @@ namespace GiTinder.Services
             }
             return true;
         }
-
+        public void RemoveToken(User user)
+        {
+            user.UserToken = "";
+            _context.Update(user);
+            _context.SaveChanges();
+        }
         private async Task<bool> UpdateLanguagesTableAndUserLanguageTable(string username)
         {
             var currentUser = _context.Users.Find(username);
@@ -154,6 +163,11 @@ namespace GiTinder.Services
             var newLanguage = new Language(languageName);
             _context.Languages.Add(newLanguage);
             _context.SaveChanges();
+        }
+
+        public static List<string> SplitReposToList(string repos)
+        {
+            return repos.Split(';').ToList();
         }
 
         public virtual string GetTokenOf(string username)

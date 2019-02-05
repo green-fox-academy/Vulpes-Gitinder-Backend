@@ -37,16 +37,7 @@ namespace GiTinder.Controllers
         [HttpGet("/matches")]
         public Object Matches()
         {
-            this.getCurrentUser();
-
-            GeneralApiResponseBody responseBody;
-            var usertoken = Request.Headers["X-Gitinder-Token"];
-            if (String.IsNullOrEmpty(usertoken))
-            {
-                responseBody = new ErrorResponseBody("error", "Unauthorized request!");
-                return StatusCode(403, responseBody);
-            }
-            else
+            getCurrentUser();
             {
                 List<MatchResponseBody> matches = new List<MatchResponseBody> {
                 new MatchResponseBody("Uno_username","http://ichef-1.bbci.co.uk/news/304/media/images/63133000/jpg/_63133978_francoishollande.jpg",1230),

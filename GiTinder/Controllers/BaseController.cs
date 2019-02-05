@@ -19,10 +19,6 @@ namespace GiTinder.Controllers
         {
             return HttpContext.Items["user"] as User;
         }
-        public GeneralApiResponseBody getResponse()
-        {
-            return HttpContext.Items["response"] as GeneralApiResponseBody;
-        }
     }
 
 }

@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Controllers
 {
-    [ApiController]
-    public class SessionController : ControllerBase
+    public class SessionController : BaseController
     {
         private readonly GiTinderContext _context;
         private readonly UserServices _userServices;
@@ -50,27 +49,11 @@ namespace GiTinder.Controllers
         }
 
         [HttpDelete("/logout")]
-        public GeneralApiResponseBody MockLogout()
+        public async Task<GeneralApiResponseBody> Logout()
         {
-            string Token = Request.Headers["X-Gitinder-Token"];
-            GeneralApiResponseBody responseBody;
+            _userServices.RemoveToken(getCurrentUser());
 
-            if (Token == null)
-            {
-                Response.StatusCode = 403;
-                responseBody = new ErrorResponseBody("X-Gititnder-token is missing!");
-            }
-            else if (Token == "abc")
-            {
-                responseBody = new OKResponseBody("Logged out successfully!");
-            }
-            else
-            {
-                Response.StatusCode = 403;
-                responseBody = new ErrorResponseBody("bad X-Gititnder-token");
-
-            }
-            return responseBody;
+            return new OKResponseBody("Logged out successfully!");
         }
 
 

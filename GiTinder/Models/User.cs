@@ -45,12 +45,12 @@ namespace GiTinder.Models
             this.ReposCount = ReposCount;
             Settings defaultSettings = new Settings(Username);
         }
-        public void getUserRepos(List<UserRepos> reposList)
+        public void setUserRepos(List<UserRepos> repos)
         {
             string urls = null;
-            for (int i = 0; i < reposList.Count; i++)
+            for (int i = 0; i < repos.Count; i++)
             {
-                urls = reposList[i].Url + ";" + urls;
+                urls = repos[i].Url + ";" + urls;
             }
         }
     }

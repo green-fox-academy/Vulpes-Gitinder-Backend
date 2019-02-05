@@ -32,7 +32,7 @@ namespace GiTinder.Controllers
             string Token = Request.Headers["X-Gitinder-Token"];
             GeneralApiResponseBody responseBody;
 
-            if (!string.IsNullOrEmpty(Token) && Token == "aze")
+            if (string.IsNullOrEmpty(Token) && Token == "aze")
             {
                 responseBody = new ProfileResponse();
             }

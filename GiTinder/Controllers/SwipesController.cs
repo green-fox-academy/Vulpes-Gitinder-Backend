@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GiTinder.Controllers
 {
-    public class SwipesController : ControllerBase
+    public class SwipesController : BaseController
     {
         private readonly GiTinderContext _context;
         private readonly UserServices _userServices;
@@ -21,32 +21,24 @@ namespace GiTinder.Controllers
         {
             _context = context;
             _userServices = userServices;
-
         }
         [HttpPut("profiles/{username}/{direction}")]
-        public ObjectResult Swipe([FromRoute] string username, string direction)
+        public GeneralApiResponseBody Swipe([FromRoute] string username, string direction)
 
         {
-            Debug.Write(HttpContext.Items["user"]);
+            //Debug.Write(HttpContext.Items["user"] is User);//is is checking if the type is matching Object type
+            Debug.Write(getCurrentUser());
 
-            GeneralApiResponseBody responseBody;
-            var usertoken = Request.Headers["X-Gitinder-Token"];
-            var Swipe = new Swipe(usertoken, username, direction);
+            OKResponseBody responseBody = new OKResponseBody("success");
+            Response.StatusCode = 200;
 
-            if (String.IsNullOrEmpty(usertoken))
-            {
-                responseBody = new ErrorResponseBody("error", "Unauthorized request!");
-                return StatusCode(403, responseBody);
-            }
-            else
-            {
-                responseBody = new MatchResponse("success", "user","https://f22bfca7a5abd176cefa-59c40a19620c1f22577ade10e9206cf5.ssl.cf1.rackcdn.com/571x670/sir-adam-mbo-k-01-x2-1.jpg", 1233);
-                return StatusCode(200, responseBody);
-            }
+            return responseBody;
         }
         [HttpGet("/matches")]
         public Object Matches()
         {
+            this.getCurrentUser();
+
             GeneralApiResponseBody responseBody;
             var usertoken = Request.Headers["X-Gitinder-Token"];
             if (String.IsNullOrEmpty(usertoken))

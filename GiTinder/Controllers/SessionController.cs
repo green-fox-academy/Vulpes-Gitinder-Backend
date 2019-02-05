@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace GiTinder.Controllers
 {
     [ApiController]
-    public class SessionController : ControllerBase
+    public class SessionController : BaseController
     {
         private readonly GiTinderContext _context;
         private readonly UserServices _userServices;
@@ -53,14 +53,8 @@ namespace GiTinder.Controllers
         public GeneralApiResponseBody MockLogout()
         {
             string Token = Request.Headers["X-Gitinder-Token"];
-            GeneralApiResponseBody responseBody;
-
-            if (Token == null)
-            {
-                Response.StatusCode = 403;
-                responseBody = new ErrorResponseBody("X-Gititnder-token is missing!");
-            }
-            else if (Token == "abc")
+            
+            if (Token == "abc")
             {
                 responseBody = new OKResponseBody("Logged out successfully!");
             }

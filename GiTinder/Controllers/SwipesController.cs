@@ -26,9 +26,6 @@ namespace GiTinder.Controllers
         public GeneralApiResponseBody Swipe([FromRoute] string username, string direction)
 
         {
-            //Debug.Write(HttpContext.Items["user"] is User);//is is checking if the type is matching Object type
-            Debug.Write(getCurrentUser());
-
             OKResponseBody responseBody = new OKResponseBody("success");
             Response.StatusCode = 200;
 

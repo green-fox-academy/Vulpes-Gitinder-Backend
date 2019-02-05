@@ -60,10 +60,5 @@ namespace GiTinder.Controllers
             }
             return responseBody;
         }
-        [HttpGet("/return20Profiles")]
-        public void whatevah()
-        {
-            _profileService.testOnReturn();
-        }
     }
 }

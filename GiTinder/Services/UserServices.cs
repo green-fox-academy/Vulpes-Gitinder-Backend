@@ -26,9 +26,15 @@ namespace GiTinder.Services
         {
             _context = context;
         }
+        public void CreateUser(string username)
+        {
+            User newUser = GetGithubProfileAsync(username).Result as User;
+            newUser.setUserRepos(GetGithubProfilesReposAsync(username).Result);
+            _context.Add(newUser);
+            _context.SaveChanges();
+        }
         public async Task<User> GetGithubProfileAsync(string username)
         {
-            
             HeadersSettingForGitHubApi();
             User rawUser = null;
             HttpResponseMessage responseUser = await client.GetAsync(ApiUrl + username);

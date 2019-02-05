@@ -20,6 +20,7 @@ namespace GiTinder.Controllers
             _userServices = userServices;
         }
 
+
         [HttpGet("/settings")]
         public GeneralApiResponseBody GetSettings()
         {

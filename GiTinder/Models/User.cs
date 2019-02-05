@@ -50,21 +50,9 @@ namespace GiTinder.Models
             }
         }
 
-        public User()
-        {
-        }
-
         public User(string username)
         {
             Username = username;
-        }
-
-        public User(string Username, string UserToken, int ReposCount)
-        {
-            this.Username = Username;
-            this.UserToken = UserToken;
-            this.ReposCount = ReposCount;
-            Settings defaultSettings = new Settings(Username);
         }
 
         public static List<string> SplitReposToList(string repos)

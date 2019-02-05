@@ -21,6 +21,7 @@ namespace GiTinder.Tests.Controllers
         Mock<HttpResponse> response;
         Mock<HttpRequest> httpRequest;
         Mock<HttpContext> httpContext;
+        Mock<ProfileServices> profileServices;
 
         [Fact]
         public void CheckingAvailableProfilesWithNoTokenReturnsAnErrorResponse()
@@ -49,7 +50,9 @@ namespace GiTinder.Tests.Controllers
             mockRepo = new Mock<GiTinderContext>();
 
             userServices = new Mock<UserServices>(mockRepo.Object);
-            usersController = new UsersController(mockRepo.Object, userServices.Object);
+            profileServices = new Mock<ProfileServices>();
+
+            usersController = new UsersController(mockRepo.Object, userServices.Object, profileServices.Object);
             headerDictionary = new HeaderDictionary();
             response = new Mock<HttpResponse>();
             httpContext = new Mock<HttpContext>();

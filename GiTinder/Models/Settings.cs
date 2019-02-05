@@ -46,6 +46,19 @@ namespace GiTinder.Models
         [NotMapped]
         public List<string> PreferredLanguagesNames { get; set; }
 
+        public Settings()
+        {
+        }
+
+        public Settings(string Username)
+        {
+            this.Username = Username;
+            this.EnableNotification = true;
+            this.EnableBackgroundSync = true;
+            this.MaxDistanceInKm = 10;
+            PreferredLanguagesNames = new List<string>();
+        }
+
         public Settings(string Username, bool EnableNotification, bool EnableBackgroundSync, int MaxDistanceInKm)
         {
             this.Username = Username;

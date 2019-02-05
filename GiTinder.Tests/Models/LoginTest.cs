@@ -1,10 +1,5 @@
-﻿using GiTinder.Controllers;
-using GiTinder.Data;
-using GiTinder.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using GiTinder.Models;
+using GiTinder.Models.Responses;
 using Xunit;
 
 namespace GiTinder.Tests.Models
@@ -23,12 +18,8 @@ namespace GiTinder.Tests.Models
         [Fact]
         public void CheckStatus()
         {
-            var response = new ErrorResponse("error");
-            // this was making the build not successful
-           // GiTinderContext item = new GiTinderContext();
-
+            var response = new ErrorResponseBody("error");
             Assert.Contains("ok", response.Status = "ok");
-
         }
 
         [Fact]

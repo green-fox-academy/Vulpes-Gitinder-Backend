@@ -1,8 +1,11 @@
 using GiTinder.Data;
 using GiTinder.Models;
+using GiTinder.Models.Connections;
 using GiTinder.Models.GitHubResponses;
+using GiTinder.Models.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +19,7 @@ namespace GiTinder.Services
         private readonly GiTinderContext _context;
         public const string ApiUrl = "https://api.github.com/";
         private HttpClient client = new HttpClient();
+        
 
         public UserServices(GiTinderContext context)
         {
@@ -23,6 +27,7 @@ namespace GiTinder.Services
         }
         public async Task<User> GetGithubProfileAsync(string username)
         {
+            
             HeadersSettingForGitHubApi();
             User rawUser = null;
             HttpResponseMessage responseUser = await client.GetAsync(ApiUrl + username);
@@ -84,9 +89,11 @@ namespace GiTinder.Services
             };
             _context.Users.Add(newProfile);
             _context.SaveChanges();
+
+
         }
 
-        public virtual void UpdateUser(string username)
+        public virtual async Task<bool> UpdateUser(string username)
         {
             if (UserExists(username))
             {
@@ -95,7 +102,66 @@ namespace GiTinder.Services
             else
             {
                 CreateNewUser(username);
+                await UpdateLanguagesTableAndUserLanguageTable(username);
             }
+            return true;
+        }
+
+        private async Task<bool> UpdateLanguagesTableAndUserLanguageTable(string username)
+        {
+            var currentUser = _context.Users.Find(username);
+            List<UserRepos> userRepos = await GetGithubProfilesReposAsync(username);
+            List<string> repoLanguagesNames = userRepos
+                .Where(rL => !string.IsNullOrEmpty(rL.Language))
+                .Select(rL => rL.Language)
+                .Distinct()
+                .ToList();
+
+            CreateMissingLanguages(repoLanguagesNames);
+
+            List<int> languageIdInRepo = repoLanguagesNames.ConvertAll(rLN => GetLanguageId(rLN));            
+            if (currentUser.UserLanguages == null)
+            {
+                languageIdInRepo.ForEach(rLI => CreateUserLanguage(username, rLI));
+            }
+
+            else
+            {
+                List<Language> currentLanguages = currentUser.UserLanguages.Select(ul => ul.Language).ToList();
+                List<int> currentLanguageId = currentLanguages.ConvertAll(oUL => GetLanguageId(oUL.LanguageName));
+                languageIdInRepo.Except(currentLanguageId).ToList().ForEach(rLI => CreateUserLanguage(username, rLI));
+            }
+            return true;
+        }
+
+        private void CreateMissingLanguages(List<string> languagesNames)
+        {
+            List<string> currentLanguagesNames = _context.Languages.Where(l => languagesNames.Contains(l.LanguageName)).Select(l => l.LanguageName).ToList();
+            List<string> newLanguagesNames = languagesNames.Except(currentLanguagesNames).ToList();
+            newLanguagesNames.ForEach(nLN => CreateLanguage(nLN));
+        }
+
+        private int GetLanguageId(string languageName)
+        {
+            return _context.Languages.Where(l => l.LanguageName == languageName).FirstOrDefault().LanguageId;
+        }
+
+        private bool UserLanguageExists(string username, int language)
+        {
+            return _context.UserLanguages.Any(uL => uL.Username == username && uL.LanguageId == language);
+        }
+
+        private void CreateUserLanguage(string username, int languageId)
+        {
+            _context.UserLanguages.Add(new UserLanguages(username, languageId));
+            _context.SaveChanges();
+        }
+
+        private void CreateLanguage(string languageName)
+        {
+            var newLanguage = new Language(languageName);
+            _context.Languages.Add(newLanguage);
+            _context.SaveChanges();
         }
 
         public virtual string GetTokenOf(string username)
@@ -106,11 +172,16 @@ namespace GiTinder.Services
         public void HeadersSettingForGitHubApi()
         {
             client.DefaultRequestHeaders.Add("User-Agent", "GiTinderApp");
-
         }
-        public bool TokenExists(string usertoken)
+
+        public virtual bool TokenExists(string usertoken)
         {
             return _context.Users.Any(u => u.UserToken == usertoken);
+        }
+
+        public virtual bool LanguageExists(string languageName)
+        {
+            return _context.Languages.Any(l => l.LanguageName == languageName);
         }
 
         public bool UserTokenCorrespondsToUsername(string username, string usertoken)
@@ -120,11 +191,9 @@ namespace GiTinder.Services
 
         public User FindUserByUserToken(string usertoken)
         {
-            User foundUser = _context.Users.Where(u => u.UserToken == usertoken).FirstOrDefault();
+            var foundUser = _context.Users.Where(u => u.UserToken == usertoken).FirstOrDefault();
             return foundUser;
-
         }
-
         public virtual async Task<bool> LoginRequestIsValid(string username, string gitHubToken)
         {
             HeadersSettingForGitHubApi();
@@ -137,8 +206,53 @@ namespace GiTinder.Services
             {
                 profileLoggingIn = await gitHubProfileResponse.Content.ReadAsAsync<GitHubProfile>();
             }
-             
+
             return username.Equals(profileLoggingIn.Login);
+        }
+
+        public List<ProfileResponse> GetListOfProfileResponsesPage1()
+        {
+            List<ProfileResponse> firstTwenty = _context.Users                
+                 .Take(20)
+                 .Include(e => e.UserLanguages)
+                 .ThenInclude(l => l.Language)
+                 .Select(user => new ProfileResponse(user))
+                 .ToList();
+
+            return firstTwenty;
+        }
+
+        public int GetAllUsersCount()
+        {
+            return _context.Users.ToList().Count();
+        }
+
+        public List<ProfileResponse> GetAllProfiles()
+        {
+            var listOfProfileResponses = _context.Users
+                            .Select(user => new ProfileResponse(user))
+                            .ToList();
+            return listOfProfileResponses;
+        }
+
+        public virtual AvailableResponseBody GetAvailableResponseBodyForPage1()
+        {
+            var listOfProfileResponsesPage1 = GetListOfProfileResponsesPage1();
+
+            int countOfProfilesOnPage1;
+            int allUsersCount = GetAllUsersCount();
+
+            if (allUsersCount < 20)
+            {
+                countOfProfilesOnPage1 = allUsersCount;
+            }
+            else
+            {
+                countOfProfilesOnPage1 = 20;
+            }
+
+            var responseBody = new AvailableResponseBody(listOfProfileResponsesPage1, countOfProfilesOnPage1, allUsersCount);
+            return responseBody;
         }
     }
 }

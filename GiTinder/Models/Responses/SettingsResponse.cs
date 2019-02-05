@@ -5,11 +5,14 @@ using System.Linq;
 
 namespace GiTinder.Models
 {
-    public class SettingsResponse
+    public class SettingsResponse : GeneralApiResponseBody
     {
         [JsonIgnore]
         public Settings settingsForSettingsResponse;
-        
+
+        [JsonIgnore]
+        public string Username { get; set; }
+
         [JsonProperty("enable_notifications")]
         public bool EnableNotification { get; set; }
 
@@ -30,8 +33,13 @@ namespace GiTinder.Models
             MaxDistanceInKm = settingsForSettingsResponse.MaxDistanceInKm;
 
             List<string> preferredLanguagesNames = new List<string>();
-            preferredLanguagesNames = settings.SettingsLanguages.Select(sl => sl.Language.LanguageName).ToList();
+            preferredLanguagesNames = GetPreferredLanguagesNamesStringsList(settings);
             PreferredLanguagesNames = preferredLanguagesNames;
+        }
+
+        public virtual List<string> GetPreferredLanguagesNamesStringsList(Settings settings)
+        {
+            return settings.SettingsLanguages.Select(sl => sl.Language.LanguageName).ToList();
         }
     }
 }

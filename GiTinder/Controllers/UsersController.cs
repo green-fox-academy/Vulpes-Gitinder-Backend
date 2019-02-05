@@ -1,9 +1,11 @@
 ﻿using GiTinder.Data;
 using GiTinder.Models;
 using GiTinder.Models.GitHubResponses;
+using GiTinder.Models.Responses;
 using GiTinder.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,35 +16,54 @@ namespace GiTinder.Controllers
     {
         private readonly GiTinderContext _context;
         private readonly UserServices _userServices;
-        public UsersController(GiTinderContext context, UserServices userServices)
+        private readonly ProfileServices _profileService;
+
+        public UsersController(GiTinderContext context, UserServices userServices, ProfileServices profileService)
         {
             _context = context;
             _userServices = userServices;
+            _profileService = profileService;
         }
 
-        [HttpPost("/login")]
-        public async Task<GeneralApiResponseBody> Login([FromBody] LoginRequestBody loginRequestBody)
+        [HttpGet("/profile")]
+        public GeneralApiResponseBody MockProfile()
         {
+            string Token = Request.Headers["X-Gitinder-Token"];
             GeneralApiResponseBody responseBody;
-            var username = loginRequestBody.Username;
-            var accessToken = loginRequestBody.AccessToken;
 
-            if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(accessToken))
+            if (!string.IsNullOrEmpty(Token) && Token == "aze")
             {
-                Response.StatusCode = 400;
-                responseBody =
-                    String.IsNullOrEmpty(username) ?
-                    new ErrorResponseBody("username") : new ErrorResponseBody("access_token");
+                responseBody = new ProfileResponse();
             }
-            else if(await _userServices.LoginRequestIsValid(username, accessToken))
+            else
             {
-                _userServices.UpdateUser(username);
-                responseBody = new TokenResponseBody(_userServices.GetTokenOf(username));
-            } else
-            {
-                responseBody = new ErrorResponseBody("correct authorization");
+                Response.StatusCode = 403;
+                responseBody = new ErrorResponseBody("Unauthorized request!");
             }
             return responseBody;
+        }
+
+        [HttpGet("/available/{page:int?}")]
+        public GeneralApiResponseBody ShowAvailableProfiles(int page = 1)
+        {
+            GeneralApiResponseBody responseBody;
+            string token = Request.Headers["X-Gitinder-Token"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                Response.StatusCode = 403;
+                responseBody = new ErrorResponseBody("Unauthorized request!");
+            }
+            else
+            {
+                responseBody = _userServices.GetAvailableResponseBodyForPage1();
+            }
+            return responseBody;
+        }
+        [HttpGet("/return20Profiles")]
+        public void whatevah()
+        {
+            _profileService.testOnReturn();
         }
     }
 }

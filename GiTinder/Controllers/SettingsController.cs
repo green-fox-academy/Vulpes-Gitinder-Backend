@@ -1,8 +1,10 @@
 ﻿using GiTinder.Data;
 using GiTinder.Models;
+using GiTinder.Models.Responses;
 using GiTinder.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System.Linq;
 
 namespace GiTinder.Controllers
@@ -19,49 +21,56 @@ namespace GiTinder.Controllers
         }
 
         [HttpGet("/settings")]
-        public object GetSettings()
+        public GeneralApiResponseBody GetSettings()
         {
             GeneralApiResponseBody responseBody;
             var usertoken = Request.Headers["X-Gitinder-Token"];
 
-            if (usertoken == "" || !_userServices.TokenExists(usertoken))
+            if (string.IsNullOrEmpty(usertoken) || !_userServices.TokenExists(usertoken))
             {
-                responseBody = new ErrorResponseBody("error", "Unauthorized request!");
-                return StatusCode(403, responseBody);
+                Response.StatusCode = 403;
+                responseBody = new ErrorResponseBody("Unauthorized request!");
+                Log.Information("Info_1 from inside the if statement of GetSettings() method of SettingsController:" +
+                    " New ErrorResponseBody: {@ErrorResponseBody} was created", responseBody);
+                return responseBody;
             }
 
             var foundSettings = _settingsServices.FindSettingsWithLanguagesByUserToken(usertoken);
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            return new SettingsResponse(foundSettings);
+            responseBody = new SettingsResponse(foundSettings);
+            Log.Information("Info_2 from GetSettings() method of SettingsController:" +
+                " New SettingsResponse: {@SettingsResponse} was created from foundSettings {@Settings}", responseBody, foundSettings);
+            return responseBody;
         }
 
         [HttpPut("/settings")]
         //[ValidateAntiForgeryToken]
-        public object PutSettings([FromBody] Settings settings)
+        public GeneralApiResponseBody PutSettings([FromBody] Settings settings)
         {
             GeneralApiResponseBody responseBody;
             var usertoken = Request.Headers["X-Gitinder-Token"];
 
-            if (usertoken == "" || !_userServices.TokenExists(usertoken))
+            if (string.IsNullOrEmpty(usertoken) || !_userServices.TokenExists(usertoken))
             {
-                responseBody = new ErrorResponseBody("error", "Unauthorized request!");
-                return StatusCode(403, responseBody);
+                Response.StatusCode = 403;
+                responseBody = new ErrorResponseBody("Unauthorized request!");
+                Log.Information("Info_1 from inside the if statement of PutSettings() method of SettingsController:" +
+                    " New ErrorResponseBody: {@ErrorResponseBody} was created", responseBody);
+                return responseBody;
             }
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
 
             _settingsServices.UpdateAndSaveSettingsFoundByUserToken(settings, usertoken);
-
-            responseBody = new OKResponseBody("ok", "success");
-            return Ok(responseBody);
+            responseBody = new OKResponseBody("success");
+            Response.StatusCode = 200;
+            Log.Information("Info_2 from PutSettings() method of SettingsController:" +
+               " Settings: {@settings}. " +
+               "ResponseBody returned: {@responseBody}", settings, responseBody);
+            return responseBody;
         }
     }
 }

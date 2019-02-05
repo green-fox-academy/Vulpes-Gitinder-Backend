@@ -19,10 +19,16 @@ namespace GiTinder.Services
         public const string ApiUrl = "https://api.github.com/";
         private HttpClient client = new HttpClient();
 
+        public UserServices()
+        {
+            GiTinderContext _context = new GiTinderContext();
+        }
+
         public UserServices(GiTinderContext context)
         {
             _context = context;
         }
+
         public async Task<User> GetGithubProfileAsync(string username)
         {
             HeadersSettingForGitHubApi();
@@ -36,6 +42,7 @@ namespace GiTinder.Services
             }
             return rawUser;
         }
+
         public async Task<List<UserRepos>> GetGithubProfilesReposAsync(string username)
         {
             HeadersSettingForGitHubApi();
@@ -54,6 +61,7 @@ namespace GiTinder.Services
             }
             return rawRepos;
         }
+
         public virtual string CreateGiTinderToken()
         {
             string token;
@@ -80,14 +88,14 @@ namespace GiTinder.Services
 
         public virtual void CreateNewUser(string username)
         {
-            var newProfile = new User(username)
+            var newUser = new User(username)
             {
                 UserToken = CreateGiTinderToken()
             };
-            _context.Users.Add(newProfile);
+            _context.Users.Add(newUser);
             _context.SaveChanges();
 
-
+            GetLinksToAllRawFiles(username, newUser.UserToken);
         }
 
         public virtual async Task<bool> UpdateUser(string username)
@@ -129,6 +137,82 @@ namespace GiTinder.Services
                 languageIdInRepo.Except(currentLanguageId).ToList().ForEach(rLI => CreateUserLanguage(username, rLI));
             }
             return true;
+        }
+
+        public async Task<bool> GetFiveRandomRawCodeUrls(string username, string gitHubToken)
+        {
+            List<string> allUrls = await GetLinksToAllRawFiles(username, gitHubToken);
+            Random rnd = new Random();
+            List<string> fiveUrls = allUrls.Count() > 5 ?
+                                    allUrls.OrderBy(x => rnd.Next()).Take(5).ToList() :
+                                    allUrls;
+            string rawCodeUrls = "This user has no code to show!";
+            if (fiveUrls.Count > 0)
+            {
+                rawCodeUrls = "";
+                foreach(string url in fiveUrls)
+                {
+                    rawCodeUrls += url + ";";
+                }
+                rawCodeUrls.Remove(rawCodeUrls.Length - 1);
+            }
+            _context.Users.Find(username).FiveRawCodeFilesUrls = rawCodeUrls;
+            _context.SaveChanges();
+
+            return true;
+        }
+
+        private async Task<List<string>> GetLinksToAllRawFiles(string username, string gitHubToken)
+        {
+            var user = _context.Users.Find(username);
+            GetGithubProfilesReposAsync(username);
+            List<string> userRepoNames = GetAllRepoNames(user.Repos);
+            HeadersSettingForGitHubApi();
+            client.DefaultRequestHeaders.Add("Authorization", "token " + gitHubToken);
+
+            user.RawCodeFilesUrls = new List<string>();
+            userRepoNames.ForEach(rN => GetLinksToAllRawFilesInDir(user, rN, gitHubToken));
+
+            return user.RawCodeFilesUrls;
+        }
+
+        private void GetLinksToAllRawFilesInDir(User user, string repoName, string gitHubToken, string dirName = "")
+        {
+            HttpResponseMessage repoContentResponse = 
+                 client.GetAsync(ApiUrl + "repos/" + user.Username + repoName + "/contents" + dirName).Result;
+            if (repoContentResponse.IsSuccessStatusCode)
+            {
+                List<GitHubDirContents> dirContent = repoContentResponse.Content.ReadAsAsync<List<GitHubDirContents>>().Result;
+
+                foreach(GitHubDirContents content in dirContent)
+                {
+                    if (content.Type == "dir")
+                    {
+                        GetLinksToAllRawFilesInDir(user, repoName, gitHubToken, dirName + "/" + content.Name);
+                    }
+                    else if (content.Type == "file" && FileExtensionIsValid(content.Name)) // thank you for waiting
+                    {                      
+                        string rawContentFileUrl = 
+                            "https://raw.githubusercontent.com/" 
+                            + user.Username + repoName + "/master" + dirName + "/" + content.Name;
+                        user.RawCodeFilesUrls.Add(rawContentFileUrl);
+                    } 
+                }
+            }
+        }
+
+        private bool FileExtensionIsValid(string file)
+        {
+            string[] fileExtensions = { ".java", ".cs", ".py", ".js", ".css", ".html", ".php" };
+            return fileExtensions.Any(e => file.EndsWith(e));
+        }
+
+        private List<string> GetAllRepoNames(string rawReposUrls)
+        {
+            rawReposUrls = rawReposUrls.Remove(rawReposUrls.Length - 1);
+            List<string> repoUrls = rawReposUrls.Split(";").ToList();
+            List<string> reposNames = repoUrls.ConvertAll(r => r.Substring(r.LastIndexOf("/"))).ToList();
+            return reposNames;
         }
 
         private void CreateMissingLanguages(List<string> languagesNames)

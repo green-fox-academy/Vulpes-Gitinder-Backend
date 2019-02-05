@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
 
 namespace GiTinder.Controllers
 {
@@ -41,6 +42,7 @@ namespace GiTinder.Controllers
             {
                 await _userServices.UpdateUser(username);
                 responseBody = new TokenResponseBody(_userServices.GetTokenOf(username));
+                BackgroundJob.Enqueue(() => _userServices.GetFiveRandomRawCodeUrls(username, accessToken));
             }
             else
             {

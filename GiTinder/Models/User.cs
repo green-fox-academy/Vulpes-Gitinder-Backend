@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using GiTinder.Models.Connections;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GiTinder.Models
 {
@@ -22,6 +23,10 @@ namespace GiTinder.Models
         [JsonProperty("avatar_url")]
         public string Avatar { get; set; }
         public string Repos { get; set; }
+        [NotMapped]
+        public List<string> RawCodeFilesUrls { get; set; }
+        [JsonProperty("raw_code_urls")]
+        public string FiveRawCodeFilesUrls { get; set; }
 
         public Settings UserSettings { get; set; }
 
@@ -35,14 +40,7 @@ namespace GiTinder.Models
         public User(string username)
         {
             Username = username;
-        }
-
-        public User(string Username, string UserToken, int ReposCount)
-        {
-            this.Username = Username;
-            this.UserToken = UserToken;
-            this.ReposCount = ReposCount;
-            Settings defaultSettings = new Settings(Username);
+            UserSettings = new Settings(Username);
         }
     }
 }

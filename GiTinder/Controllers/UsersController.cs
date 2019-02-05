@@ -20,8 +20,7 @@ namespace GiTinder.Controllers
         {
             _context = context;
             _userServices = userServices;
-        }
-               
+        }             
 
         [HttpGet("/profile")]
         public GeneralApiResponseBody MockProfile()

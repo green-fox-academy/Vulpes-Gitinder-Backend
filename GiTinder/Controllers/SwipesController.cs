@@ -25,17 +25,28 @@ namespace GiTinder.Controllers
         }
         [HttpPut("profiles/{username}/{direction}")]
         public ObjectResult Swipe([FromRoute] string username, string direction)
-
         {
             GeneralApiResponseBody responseBody;
             var usertoken = Request.Headers["X-Gitinder-Token"];
-            var Swipe = new Swipe(usertoken, username, direction);
+            User swipingUser;
 
-            if (String.IsNullOrEmpty(usertoken))
+            if (String.IsNullOrEmpty(usertoken) || !_userServices.TokenExists(usertoken))
             {
                 responseBody = new ErrorResponseBody("error", "Unauthorized request!");
                 return StatusCode(403, responseBody);
             }
+            else
+            {
+                swipingUser = _userServices.FindUserByUserToken(usertoken);
+                _userServices.CreateAndSaveSwipe(swipingUser.Username, username, direction);
+
+                if (direction == "right" && _userServices.MirrorRightSwipeExists(swipingUser.Username, username))
+                {
+                    _userServices.CreateAndSaveMatch(swipingUser.Username, username);
+                }
+
+            }
+
             else
             {
                 responseBody = new MatchResponse("TestUser", "user", "https://f22bfca7a5abd176cefa-59c40a19620c1f22577ade10e9206cf5.ssl.cf1.rackcdn.com/571x670/sir-adam-mbo-k-01-x2-1.jpg", 1233);

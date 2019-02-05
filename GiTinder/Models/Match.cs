@@ -27,7 +27,7 @@ namespace GiTinder.Models
         {
             Username_1 = username_1;
             Username_2 = username_2;
-            Timestamp = DateTime.Now;
+            this.Timestamp = DateTime.Now;
         }
     }
 }

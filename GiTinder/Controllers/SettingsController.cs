@@ -48,7 +48,6 @@ namespace GiTinder.Controllers
         public GeneralApiResponseBody PutSettings([FromBody] Settings settings)
         {
             GeneralApiResponseBody responseBody;
-            var usertoken = Request.Headers["X-Gitinder-Token"];
             
             _settingsServices.UpdateAndSaveSettingsFoundByUserToken(settings, getCurrentUser().UserToken);
             responseBody = new OKResponseBody("success");

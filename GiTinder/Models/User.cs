@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using GiTinder.Models.GitHubResponses;
+using System.ComponentModel.DataAnnotations.Schema;
 using GiTinder.Models.Connections;
 using GiTinder.Models.GitHubResponses;
 
@@ -24,13 +26,29 @@ namespace GiTinder.Models
         public string Avatar { get; set; }
         public string Repos { get; set; }
 
-        public Settings UserSettings { get; set; }
-
         [JsonIgnore]
         public List<UserLanguages> UserLanguages { get; set; }
 
-        public User()
+        public Settings UserSettings { get; set; }
+
+        [NotMapped]
+        public List<string> ReposList
         {
+            get
+            {
+                return SplitReposToList(Repos);
+            }
+        }
+
+        [NotMapped]
+        public List<string> UserLanguageNamesList
+        {
+            get
+            {
+                return UserLanguages
+                    .Select(ul => ul.Language.LanguageName)
+                    .ToList();
+            }
         }
 
         public User(string username)
@@ -38,12 +56,18 @@ namespace GiTinder.Models
             Username = username;
         }
 
-        public User(string Username, string UserToken, int ReposCount)
+        public User()
         {
-            this.Username = Username;
-            this.UserToken = UserToken;
-            this.ReposCount = ReposCount;
-            Settings defaultSettings = new Settings(Username);
+        }
+
+        public static List<string> SplitReposToList(string repos)
+        {
+            if (repos == null)
+            {
+                return new List<string>();
+            }
+            char[] charsToTrim = { ' ', '\'', '\"' };
+            return repos.Split(';').Select(p => p.Trim(charsToTrim)).ToList();
         }
         public void setUserRepos(List<UserRepos> repos)
         {

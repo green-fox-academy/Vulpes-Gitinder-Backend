@@ -1,4 +1,4 @@
-﻿using GiTinder.Models;
+using GiTinder.Models;
 using GiTinder.Models.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Services
 {
-    public class GiTinderMiddleware 
+    public class GiTinderMiddleware
     {
         private readonly RequestDelegate _next;
-        
+
 
         public GiTinderMiddleware(RequestDelegate next)
         {
@@ -41,9 +41,7 @@ namespace GiTinder.Services
                     context.Items["user"] = currentUser;
                 }
             }
-
             await _next(context);
-            
         }
     }
 }

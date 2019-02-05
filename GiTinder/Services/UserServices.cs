@@ -2,6 +2,7 @@ using GiTinder.Data;
 using GiTinder.Models;
 using GiTinder.Models.Connections;
 using GiTinder.Models.GitHubResponses;
+using GiTinder.Models.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -214,6 +215,51 @@ namespace GiTinder.Services
             }
 
             return username.Equals(profileLoggingIn.Login);
+        }
+
+        public List<ProfileResponse> GetListOfProfileResponsesPage1()
+        {
+            List<ProfileResponse> firstTwenty = _context.Users                
+                 .Take(20)
+                 .Include(e => e.UserLanguages)
+                 .ThenInclude(l => l.Language)
+                 .Select(user => new ProfileResponse(user))
+                 .ToList();
+
+            return firstTwenty;
+        }
+
+        public int GetAllUsersCount()
+        {
+            return _context.Users.ToList().Count();
+        }
+
+        public List<ProfileResponse> GetAllProfiles()
+        {
+            var listOfProfileResponses = _context.Users
+                            .Select(user => new ProfileResponse(user))
+                            .ToList();
+            return listOfProfileResponses;
+        }
+
+        public virtual AvailableResponseBody GetAvailableResponseBodyForPage1()
+        {
+            var listOfProfileResponsesPage1 = GetListOfProfileResponsesPage1();
+
+            int countOfProfilesOnPage1;
+            int allUsersCount = GetAllUsersCount();
+
+            if (allUsersCount < 20)
+            {
+                countOfProfilesOnPage1 = allUsersCount;
+            }
+            else
+            {
+                countOfProfilesOnPage1 = 20;
+            }
+
+            var responseBody = new AvailableResponseBody(listOfProfileResponsesPage1, countOfProfilesOnPage1, allUsersCount);
+            return responseBody;
         }
     }
 }

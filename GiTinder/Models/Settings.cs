@@ -66,6 +66,7 @@ namespace GiTinder.Models
             this.EnableNotification = EnableNotification;
             this.EnableBackgroundSync = EnableBackgroundSync;
             this.MaxDistanceInKm = MaxDistanceInKm;
+            this.SettingsLanguages = new List<SettingsLanguage>();
             this.PreferredLanguagesNames = new List<string>();
         }
     }

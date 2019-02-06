@@ -48,9 +48,9 @@ namespace GiTinder.Tests.Controllers
         private void SetUpTestingConditions()
         {
             mockRepo = new Mock<GiTinderContext>();
-
-            profileServices = new Mock<ProfileServices>();
             userServices = new Mock<UserServices>(mockRepo.Object);
+            profileServices = new Mock<ProfileServices>();
+
             usersController = new UsersController(mockRepo.Object, userServices.Object, profileServices.Object);
             headerDictionary = new HeaderDictionary();
             response = new Mock<HttpResponse>();

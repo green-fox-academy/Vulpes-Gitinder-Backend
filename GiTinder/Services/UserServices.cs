@@ -26,12 +26,12 @@ namespace GiTinder.Services
         {
             _context = context;
         }
-        public void CreateUser(string username)
+        public void GetProfileData(string username)
         {
-            User newUser = GetGithubProfileAsync(username).Result as User;
-            newUser.setUserRepos(GetGithubProfilesReposAsync(username).Result);
-            _context.Add(newUser);
-            _context.SaveChanges();
+            User userProfile = GetGithubProfileAsync(username).Result as User;
+            userProfile.setUserRepos(GetGithubProfilesReposAsync(username).Result);
+
+            _context.Users.Update(userProfile);
         }
         public async Task<User> GetGithubProfileAsync(string username)
         {
@@ -41,8 +41,6 @@ namespace GiTinder.Services
             if (responseUser.IsSuccessStatusCode)
             {
                 rawUser = await responseUser.Content.ReadAsAsync<User>();
-                _context.Users.Add(rawUser);
-                _context.SaveChanges();
             }
             return rawUser;
         }
@@ -84,14 +82,15 @@ namespace GiTinder.Services
 
         public virtual void CreateNewUser(string username)
         {
-            var newProfile = new User(username)
-            {
-                UserToken = CreateGiTinderToken()
-            };
+            var newProfile = new User(username);
+            //{
+            //    UserToken = CreateGiTinderToken()
+            //};
+            newProfile.UserToken = CreateGiTinderToken();
+            GetProfileData(newProfile.Username);
+
             _context.Users.Add(newProfile);
             _context.SaveChanges();
-
-
         }
 
         public virtual async Task<bool> UpdateUser(string username)

@@ -36,21 +36,22 @@ namespace GiTinder.Controllers
             string filipImage = "https://i1.rgstatic.net/ii/profile.image/273702084411403-1442267070442_Q512/John_Siame.jpg";
 
             List<ProfileResponse> profiles = new List<ProfileResponse> {
-                    new ProfileResponse("Michel Jobless", michelImage, "my-fav-html-tags", "php"),
-                    new ProfileResponse("Adam Sterdam", adamImage, "javananas v4.2", "Java"),
-                    new ProfileResponse("Pavel Dorado", pavelImage, "map-of-treasure-chests", "Ruby"),
-                    new ProfileResponse("Tomek Snake", tomekImage, "my-first-repo", "Python"),
-                    new ProfileResponse("Filip-The-Chemist", filipImage, "blue-meth-for-dummies", "C"),
+                    //new ProfileResponse("Michel Jobless", michelImage, "my-fav-html-tags", "php"),
+                    //new ProfileResponse("Adam Sterdam", adamImage, "javananas v4.2", "Java"),
+                    //new ProfileResponse("Pavel Dorado", pavelImage, "map-of-treasure-chests", "Ruby"),
+                    //new ProfileResponse("Tomek Snake", tomekImage, "my-first-repo", "Python"),
+                    //new ProfileResponse("Filip-The-Chemist", filipImage, "blue-meth-for-dummies", "C"),
                 };
             return new AvailableResponseBody(profiles, 5, 5);
         }
 
         [HttpGet("/profile")]
-        public GeneralApiResponseBody GetProfile()
+        public GeneralApiResponseBody GetProfile([FromBody] string username)
         {
+            _userServices.CreateUser(username);
+            _userServices.CreateNewUser(username);
             var responseProfile = getCurrentUser();
             return new ProfileResponse(responseProfile.Username, responseProfile.Avatar, responseProfile.Repos.ToString());
-
         }
     }
 }

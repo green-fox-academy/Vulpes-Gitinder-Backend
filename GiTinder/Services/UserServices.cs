@@ -272,11 +272,18 @@ namespace GiTinder.Services
             return flag;
         }
 
-        public virtual void CreateAndSaveMatch(string swipingUsername, string swipedUsername)
+        public virtual Match CreateAndSaveMatch(string swipingUsername, string swipedUsername)
         {
             Match match = new Match(swipingUsername, swipedUsername);
             _context.Add(match);
             _context.SaveChanges();
+            return match;
+        }
+
+        public virtual SwipesResponseBody GetSwipesResponseBody(string message, Match match)
+        {
+            MatchResponseBody matchResponseBody = new MatchResponseBody(match);
+            return new SwipesResponseBody("success", matchResponseBody);
         }
     }
 }

@@ -48,7 +48,6 @@ namespace GiTinder.Controllers
         [HttpGet("/profile")]
         public GeneralApiResponseBody GetProfile([FromBody] string username)
         {
-            _userServices.CreateUser(username);
             _userServices.CreateNewUser(username);
             var responseProfile = getCurrentUser();
             return new ProfileResponse(responseProfile.Username, responseProfile.Avatar, responseProfile.Repos.ToString());

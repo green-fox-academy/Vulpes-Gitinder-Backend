@@ -41,7 +41,7 @@ namespace GiTinder
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseMiddleware<GiTinderMiddleware>(); // should it remain in development how does it differ from production?
+                app.UseMiddleware<GiTinderMiddleware>();
             }
             else
             {

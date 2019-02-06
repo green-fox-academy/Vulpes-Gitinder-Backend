@@ -15,9 +15,10 @@ namespace GiTinder.Tests.Controllers
 {
     public class SwipeControllerTest
     {
+
         Mock<GiTinderContext> mockRepo;
         UserServices userServices;
-        UsersController usersController;
+        SwipesController swipesController;
         HeaderDictionary headerDictionary;
         Mock<HttpResponse> response;
         Mock<HttpContext> httpContext;
@@ -35,12 +36,12 @@ namespace GiTinder.Tests.Controllers
             };
 
             var result = swipesController.Swipe("test", "right");
-            var actual = result.Value as ErrorResponseBody;
+            var actual = result as ErrorResponseBody;
 
 
             Assert.Equal("Unauthorized request!", actual.Message);
             Assert.Equal("error", actual.Status);
-            Assert.Equal(403, result.StatusCode);
+            Assert.Equal(403,response.Object.StatusCode);
 
         }
         [Fact]
@@ -55,11 +56,12 @@ namespace GiTinder.Tests.Controllers
             };
 
             var result = swipesController.Swipe("test", "right");
-            var actual = result.Value as OKResponseBody;
+            var actual = result as OKResponseBody;
 
             Assert.Equal("success", actual.Message);
             Assert.Equal("ok", actual.Status);
-            Assert.Equal(200, result.StatusCode);
+            Assert.Equal(200, response.Object.StatusCode);
+
         }
         [Fact]
         public void UsertokenPresentMatches()

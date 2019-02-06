@@ -2,6 +2,7 @@ using GiTinder.Data;
 using GiTinder.Models;
 using GiTinder.Models.Connections;
 using GiTinder.Models.GitHubResponses;
+using GiTinder.Models.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ namespace GiTinder.Services
         private readonly GiTinderContext _context;
         public const string ApiUrl = "https://api.github.com/";
         private HttpClient client = new HttpClient();
+        
 
         public UserServices()
         {
@@ -31,6 +33,7 @@ namespace GiTinder.Services
 
         public async Task<User> GetGithubProfileAsync(string username)
         {
+            
             HeadersSettingForGitHubApi();
             User rawUser = null;
             HttpResponseMessage responseUser = await client.GetAsync(ApiUrl + username);
@@ -190,12 +193,9 @@ namespace GiTinder.Services
                     {
                         GetLinksToAllRawFilesInDir(user, repoName, gitHubToken, dirName + "/" + content.Name);
                     }
-                    else if (content.Type == "file" && FileExtensionIsValid(content.Name)) // thank you for waiting
-                    {                      
-                        string rawContentFileUrl = 
-                            "https://raw.githubusercontent.com/" 
-                            + user.Username + repoName + "/master" + dirName + "/" + content.Name;
-                        user.RawCodeFilesUrls.Add(rawContentFileUrl);
+                    else if (content.Type == "file" && FileExtensionIsValid(content.Name))
+                    {                            
+                        user.RawCodeFilesUrls.Add(content.DownloadUrl);
                     } 
                 }
             }
@@ -275,7 +275,6 @@ namespace GiTinder.Services
             var foundUser = _context.Users.Where(u => u.UserToken == usertoken).FirstOrDefault();
             return foundUser;
         }
-
         public virtual async Task<bool> LoginRequestIsValid(string username, string gitHubToken)
         {
             HeadersSettingForGitHubApi();
@@ -290,6 +289,51 @@ namespace GiTinder.Services
             }
 
             return username.Equals(profileLoggingIn.Login);
+        }
+
+        public List<ProfileResponse> GetListOfProfileResponsesPage1()
+        {
+            List<ProfileResponse> firstTwenty = _context.Users                
+                 .Take(20)
+                 .Include(e => e.UserLanguages)
+                 .ThenInclude(l => l.Language)
+                 .Select(user => new ProfileResponse(user))
+                 .ToList();
+
+            return firstTwenty;
+        }
+
+        public int GetAllUsersCount()
+        {
+            return _context.Users.ToList().Count();
+        }
+
+        public List<ProfileResponse> GetAllProfiles()
+        {
+            var listOfProfileResponses = _context.Users
+                            .Select(user => new ProfileResponse(user))
+                            .ToList();
+            return listOfProfileResponses;
+        }
+
+        public virtual AvailableResponseBody GetAvailableResponseBodyForPage1()
+        {
+            var listOfProfileResponsesPage1 = GetListOfProfileResponsesPage1();
+
+            int countOfProfilesOnPage1;
+            int allUsersCount = GetAllUsersCount();
+
+            if (allUsersCount < 20)
+            {
+                countOfProfilesOnPage1 = allUsersCount;
+            }
+            else
+            {
+                countOfProfilesOnPage1 = 20;
+            }
+
+            var responseBody = new AvailableResponseBody(listOfProfileResponsesPage1, countOfProfilesOnPage1, allUsersCount);
+            return responseBody;
         }
     }
 }

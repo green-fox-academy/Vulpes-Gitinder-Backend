@@ -13,5 +13,8 @@ namespace GiTinder.Models.GitHubResponses
 
         [JsonProperty("name")]
         public string Name { get; set; }
+
+        [JsonProperty("download_url")]
+        public string DownloadUrl { get; set; }
     }
 }

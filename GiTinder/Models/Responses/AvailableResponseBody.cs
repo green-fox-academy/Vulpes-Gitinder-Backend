@@ -21,5 +21,9 @@ namespace GiTinder.Models.Responses
             Count = count;
             All = all;
         }
+
+        public AvailableResponseBody()
+        {
+        }
     }
 }

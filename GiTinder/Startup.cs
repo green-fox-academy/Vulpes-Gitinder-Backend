@@ -34,6 +34,7 @@ namespace GiTinder
             services.AddTransient<SettingsServices>();
             services.AddTransient<LanguageServices>();
             services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("GiTinderContextMSSqlDb")));
+            services.AddTransient<ProfileServices>();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -46,7 +47,6 @@ namespace GiTinder
             {
                 app.UseHsts();
             }
-
             app.UseHttpsRedirection();
             app.UseMvc();
             using (var serviceScope = app.ApplicationServices.CreateScope())

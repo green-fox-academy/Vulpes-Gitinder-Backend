@@ -31,12 +31,7 @@ namespace GiTinder.Services
         {
             _context = context;
         }
-<<<<<<< HEAD
-
-        public async Task<User> GetGithubProfileAsync(string username)
-=======
         public async Task<GitHubProfile> GetGithubProfileAsync(string gitHubToken)
->>>>>>> 146a5fe0074d44cb0ec431df062e1afa1a08c362
         {
             client = new HttpClient();
             HeadersSettingForGitHubApi();
@@ -83,20 +78,21 @@ namespace GiTinder.Services
 
             List<OneMatchResponse> matchesResponse = null;
             List<Match> matches = _context.Matches.Where(m => m.Username1 == username || m.Username2 == username).ToList();
-            matches.ForEach(m => matchesResponse.Add(new OneMatchResponse(GetOtherUsername(m, username), GetOtherAvatar(m, username), m.Timestamp)));
+            matches.ForEach(m => matchesResponse
+            .Add(new OneMatchResponse(GetOtherUsername(m, username), GetOtherAvatar(m, username), m.Timestamp)));
 
             return new ManyMatchesResponse(matchesResponse);
+        }
+
+        private string GetOtherUsername(Match m, string username)
+        {
+            return (m.Username1 == username) ? m.Username2 : m.Username1;
         }
 
         private string GetOtherAvatar(Match m, string username)
         {
             var otherUsername = (GetOtherUsername(m, username));
             return _context.Users.Find(otherUsername).Avatar;
-        }
-
-        private string GetOtherUsername(Match m, string username)
-        {
-            return (m.Username1 == username) ? m.Username2 : m.Username1;
         }
 
         public virtual bool UserExists(string username)
@@ -112,16 +108,6 @@ namespace GiTinder.Services
 
         public async Task<bool> CreateUser(string token)
         {
-<<<<<<< HEAD
-            var newUser = new User(username)
-            {
-                UserToken = CreateGiTinderToken()
-            };
-            _context.Users.Add(newUser);
-            _context.SaveChanges();
-
-            GetLinksToAllRawFiles(username, newUser.UserToken);
-=======
             GitHubProfile newProfile = await GetGithubProfileAsync(token);
             User newUser = new User(newProfile);
             newUser.UserToken = CreateGiTinderToken();
@@ -129,8 +115,8 @@ namespace GiTinder.Services
 
             _context.Users.Add(newUser);
             _context.SaveChanges();
+            GetLinksToAllRawFiles(newUser.Username, newUser.UserToken);
             return true;
->>>>>>> 146a5fe0074d44cb0ec431df062e1afa1a08c362
         }
         public virtual async Task<bool> UpdateUser(string username, string token)
         {

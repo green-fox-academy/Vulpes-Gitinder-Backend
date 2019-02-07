@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Models.Responses
 {
-    public class MatchesResponseBody
+    public class ManyMatchesResponse
     {
 
         [JsonProperty("matches")]
-        public List<MatchResponseBody> Matches { get; set; }
+        public List<OneMatchResponse> Matches { get; set; }
 
-        public MatchesResponseBody(List<MatchResponseBody> matchesList)
+        public ManyMatchesResponse(List<OneMatchResponse> matchesList)
         {
             Matches = matchesList;
         }

@@ -38,7 +38,7 @@ namespace GiTinder.Controllers
             }
             else
             {
-                responseBody = new MatchResponseBody("success", "user", "https://f22bfca7a5abd176cefa-59c40a19620c1f22577ade10e9206cf5.ssl.cf1.rackcdn.com/571x670/sir-adam-mbo-k-01-x2-1.jpg");
+                responseBody = new OneMatchResponse("success", "user", "https://f22bfca7a5abd176cefa-59c40a19620c1f22577ade10e9206cf5.ssl.cf1.rackcdn.com/571x670/sir-adam-mbo-k-01-x2-1.jpg");
                 return StatusCode(200, responseBody);
             }
         }
@@ -54,11 +54,11 @@ namespace GiTinder.Controllers
             }
             else
             {
-                List<MatchResponseBody> matches = new List<MatchResponseBody> {
-                new MatchResponseBody("Uno_username","http://ichef-1.bbci.co.uk/news/304/media/images/63133000/jpg/_63133978_francoishollande.jpg",1230),
-                new MatchResponseBody("theCat","https://bit.ly/2DIuOQR",1235),
+                List<OneMatchResponse> matches = new List<OneMatchResponse> {
+                new OneMatchResponse("success", "Uno_username","http://ichef-1.bbci.co.uk/news/304/media/images/63133000/jpg/_63133978_francoishollande.jpg"),
+                new OneMatchResponse("success", "theCat","https://bit.ly/2DIuOQR"),
             };
-                return new MatchesResponseBody(matches);
+                return new ManyMatchesResponse(matches);
             }
         }
     }

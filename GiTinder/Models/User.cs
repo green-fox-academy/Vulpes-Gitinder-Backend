@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using GiTinder.Models.GitHubResponses;
 using System.ComponentModel.DataAnnotations.Schema;
 using GiTinder.Models.Connections;
+using GiTinder.Models.GitHubResponses;
 
 namespace GiTinder.Models
 {
@@ -35,7 +36,12 @@ namespace GiTinder.Models
         {
             get
             {
-                return SplitReposToList(Repos);
+                if (Repos == null)
+                {
+                    return new List<string>();
+                }
+                char[] charsToTrim = { ' ', '\'', '\"' };
+                return Repos.Split(';').Select(p => p.Trim(charsToTrim)).ToList();
             }
         }
 
@@ -58,15 +64,21 @@ namespace GiTinder.Models
         public User()
         {
         }
-
-        public static List<string> SplitReposToList(string repos)
+        public User(GitHubProfile newUser)
         {
-            if (repos == null)
+            Username = newUser.Login;
+            ReposCount = newUser.ReposCount;
+            Avatar = newUser.Avatar;
+
+        }
+        public void setUserRepos(List<UserRepos> repos)
+        {
+            string urls = null;
+            for (int i = 0; i < repos.Count; i++)
             {
-                return new List<string>();
+                urls = repos[i].Url + ";" + urls;
             }
-            char[] charsToTrim = { ' ', '\'', '\"' };
-            return repos.Split(';').Select(p => p.Trim(charsToTrim)).ToList();
+            Repos = urls;
         }
     }
 }

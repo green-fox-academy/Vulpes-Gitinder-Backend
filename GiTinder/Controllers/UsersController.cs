@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Controllers
 {
-    [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseController
     {
         private readonly GiTinderContext _context;
         private readonly UserServices _userServices;
@@ -25,40 +24,17 @@ namespace GiTinder.Controllers
             _profileService = profileService;
         }
 
-        [HttpGet("/profile")]
-        public GeneralApiResponseBody MockProfile()
-        {
-            string Token = Request.Headers["X-Gitinder-Token"];
-            GeneralApiResponseBody responseBody;
-
-            if (!string.IsNullOrEmpty(Token) && Token == "aze")
-            {
-                responseBody = new ProfileResponse();
-            }
-            else
-            {
-                Response.StatusCode = 403;
-                responseBody = new ErrorResponseBody("Unauthorized request!");
-            }
-            return responseBody;
-        }
-
         [HttpGet("/available/{page:int?}")]
         public GeneralApiResponseBody ShowAvailableProfiles(int page = 1)
         {
-            GeneralApiResponseBody responseBody;
-            string token = Request.Headers["X-Gitinder-Token"];
+            return _userServices.GetAvailableResponseBodyForPage1();
+        }
 
-            if (string.IsNullOrEmpty(token))
-            {
-                Response.StatusCode = 403;
-                responseBody = new ErrorResponseBody("Unauthorized request!");
-            }
-            else
-            {
-                responseBody = _userServices.GetAvailableResponseBodyForPage1();
-            }
-            return responseBody;
+        [HttpGet("/profile")]
+        public GeneralApiResponseBody GetProfile()
+        {
+            return new ProfileResponse(getCurrentUser());
         }
     }
 }
+

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GiTinder.Models
+namespace GiTinder.Models.Responses
 {
     public class MatchResponse : OKResponseBody
     {
@@ -19,8 +19,6 @@ namespace GiTinder.Models
 
         public MatchResponse(string message,string username, string avatar, int time) : base(message)
         {
-            Status = "ok";
-            message = message;
             Username = username;
             AvatarUrl = avatar;
             Time = time;

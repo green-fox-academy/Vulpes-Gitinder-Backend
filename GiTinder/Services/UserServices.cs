@@ -81,8 +81,7 @@ namespace GiTinder.Services
 
         public ManyMatchesResponse GetAllMatches(string usertoken)
         {
-            var user = FindUserByUserToken(usertoken);
-            var username = user.Username;
+            var username = FindUserByUserToken(usertoken).Username;
 
             List<OneMatchResponse> matchesResponse = null;
             List<Match> matches = _context.Matches.Where(m => m.Username1 == username || m.Username2 == username).ToList();

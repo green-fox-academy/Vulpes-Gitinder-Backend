@@ -28,10 +28,9 @@ namespace GiTinder.Controllers
             User swipingUser = getCurrentUser();
             GeneralApiResponseBody swipesResponseBody = null;
             {
-                swipingUser = _userServices.FindUserByUserToken(swipingUser.UserToken);
                 _userServices.CreateAndSaveSwipe(swipingUser.Username, username, direction);
-                swipesResponseBody = new OKResponseBody("succes");
-                if (direction == "right" && _userServices.MirrorRightSwipeExists(swipingUser.Username, username))
+                swipesResponseBody = new OKResponseBody("success");
+                if (direction == "right" && _userServices.RightSwipeExists(username, swipingUser.Username))
                 {
                     Match match = _userServices.CreateAndSaveMatch(swipingUser.Username, username);
                     swipesResponseBody = _userServices.GetSwipesResponseBody("success", match);

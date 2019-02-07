@@ -364,15 +364,12 @@ namespace GiTinder.Services
             _context.SaveChanges();
         }
 
-        public virtual bool MirrorRightSwipeExists(string swipingUsername, string swipedUsername)
+        public virtual bool RightSwipeExists(string swipingUsername, string swipedUsername)
         {
-            bool flag = false;
-            if (_context.Swipe.Any(s => s.SwipedUserId == swipingUsername && s.SwipingUserId == swipedUsername && s.Direction == "right" /*&& s.Timestamp ==*/)) ;
-            {
-                flag = true;//SqlException: Invalid column name 'Status'.
-
-            }
-            return flag;
+            return _context.Swipe
+                .Any(s => s.SwipingUserId == swipingUsername &&
+                     s.SwipedUserId == swipedUsername &&
+                     s.Direction == "right");
         }
 
         public virtual Match CreateAndSaveMatch(string swipingUsername, string swipedUsername)

@@ -18,7 +18,7 @@ namespace GiTinder.Services
     public class UserServices
     {
         private readonly GiTinderContext _context;
-        public const string ApiUrl = "https://api.github.com/";
+        private const string ApiUrl = "https://api.github.com/";
         private HttpClient client = new HttpClient();
         
 
@@ -31,20 +31,25 @@ namespace GiTinder.Services
         {
             _context = context;
         }
+<<<<<<< HEAD
 
         public async Task<User> GetGithubProfileAsync(string username)
+=======
+        public async Task<GitHubProfile> GetGithubProfileAsync(string gitHubToken)
+>>>>>>> 146a5fe0074d44cb0ec431df062e1afa1a08c362
         {
-            
+            client = new HttpClient();
             HeadersSettingForGitHubApi();
-            User rawUser = null;
-            HttpResponseMessage responseUser = await client.GetAsync(ApiUrl + username);
-            if (responseUser.IsSuccessStatusCode)
+            client.DefaultRequestHeaders.Add("Authorization", "token " + gitHubToken);
+            HttpResponseMessage gitHubProfileResponse = await client.GetAsync(ApiUrl + "user");
+
+            var profileLoggingIn = new GitHubProfile();
+
+            if (gitHubProfileResponse.IsSuccessStatusCode)
             {
-                rawUser = await responseUser.Content.ReadAsAsync<User>();
-                _context.Users.Add(rawUser);
-                _context.SaveChanges();
+                profileLoggingIn = await gitHubProfileResponse.Content.ReadAsAsync<GitHubProfile>();
             }
-            return rawUser;
+            return profileLoggingIn;
         }
 
         public async Task<List<UserRepos>> GetGithubProfilesReposAsync(string username)
@@ -55,13 +60,6 @@ namespace GiTinder.Services
             if (responseRepos.IsSuccessStatusCode)
             {
                 rawRepos = await responseRepos.Content.ReadAsAsync<List<UserRepos>>();
-                string Urls = null;
-                for (int i = 0; i < rawRepos.Count; i++)
-                {
-                    Urls = rawRepos[i].Url + ";" + Urls;
-                }
-                _context.Users.Find(username).Repos = Urls;
-                _context.SaveChanges();
             }
             return rawRepos;
         }
@@ -112,8 +110,9 @@ namespace GiTinder.Services
             _context.SaveChanges();
         }
 
-        public virtual void CreateNewUser(string username)
+        public async Task<bool> CreateUser(string token)
         {
+<<<<<<< HEAD
             var newUser = new User(username)
             {
                 UserToken = CreateGiTinderToken()
@@ -122,9 +121,18 @@ namespace GiTinder.Services
             _context.SaveChanges();
 
             GetLinksToAllRawFiles(username, newUser.UserToken);
-        }
+=======
+            GitHubProfile newProfile = await GetGithubProfileAsync(token);
+            User newUser = new User(newProfile);
+            newUser.UserToken = CreateGiTinderToken();
+            newUser.setUserRepos(await GetGithubProfilesReposAsync(newUser.Username));
 
-        public virtual async Task<bool> UpdateUser(string username)
+            _context.Users.Add(newUser);
+            _context.SaveChanges();
+            return true;
+>>>>>>> 146a5fe0074d44cb0ec431df062e1afa1a08c362
+        }
+        public virtual async Task<bool> UpdateUser(string username, string token)
         {
             if (UserExists(username))
             {
@@ -132,12 +140,17 @@ namespace GiTinder.Services
             }
             else
             {
-                CreateNewUser(username);
+                await CreateUser(token);
                 await UpdateLanguagesTableAndUserLanguageTable(username);
             }
             return true;
         }
-
+        public void RemoveToken(User user)
+        {
+            user.UserToken = "";
+            _context.Update(user);
+            _context.SaveChanges();
+        }
         private async Task<bool> UpdateLanguagesTableAndUserLanguageTable(string username)
         {
             var currentUser = _context.Users.Find(username);
@@ -268,6 +281,11 @@ namespace GiTinder.Services
             _context.SaveChanges();
         }
 
+        public static List<string> SplitReposToList(string repos)
+        {
+            return repos.Split(';').ToList();
+        }
+
         public virtual string GetTokenOf(string username)
         {
             return _context.Find<User>(username).UserToken;
@@ -295,24 +313,17 @@ namespace GiTinder.Services
 
         public User FindUserByUserToken(string usertoken)
         {
-            var foundUser = _context.Users.Where(u => u.UserToken == usertoken).FirstOrDefault();
+            var foundUser = _context.Users
+                 .Include(e => e.UserLanguages)
+                 .ThenInclude(l => l.Language)
+                 .Include(e  => e.UserSettings)
+                 .Where(u => u.UserToken == usertoken).FirstOrDefault();
             return foundUser;
         }
 
         public virtual async Task<bool> LoginRequestIsValid(string username, string gitHubToken)
         {
-            HeadersSettingForGitHubApi();
-            client.DefaultRequestHeaders.Add("Authorization", "token " + gitHubToken);
-            HttpResponseMessage gitHubProfileResponse = await client.GetAsync(ApiUrl + "user");
-
-            var profileLoggingIn = new GitHubProfile();
-
-            if (gitHubProfileResponse.IsSuccessStatusCode)
-            {
-                profileLoggingIn = await gitHubProfileResponse.Content.ReadAsAsync<GitHubProfile>();
-            }
-
-            return username.Equals(profileLoggingIn.Login);
+            return username.Equals((await GetGithubProfileAsync(gitHubToken)).Login);
         }
 
         public List<ProfileResponse> GetListOfProfileResponsesPage1()

@@ -20,7 +20,7 @@ namespace GiTinder.Services
         private readonly GiTinderContext _context;
         private const string ApiUrl = "https://api.github.com/";
         private HttpClient client = new HttpClient();
-        
+
 
         public UserServices(GiTinderContext context)
         {
@@ -119,7 +119,7 @@ namespace GiTinder.Services
 
             CreateMissingLanguages(repoLanguagesNames);
 
-            List<int> languageIdInRepo = repoLanguagesNames.ConvertAll(rLN => GetLanguageId(rLN));            
+            List<int> languageIdInRepo = repoLanguagesNames.ConvertAll(rLN => GetLanguageId(rLN));
             if (currentUser.UserLanguages == null)
             {
                 languageIdInRepo.ForEach(rLI => CreateUserLanguage(username, rLI));
@@ -210,7 +210,7 @@ namespace GiTinder.Services
 
         public List<ProfileResponse> GetListOfProfileResponsesPage1()
         {
-            List<ProfileResponse> firstTwenty = _context.Users                
+            List<ProfileResponse> firstTwenty = _context.Users
                  .Take(20)
                  .Include(e => e.UserLanguages)
                  .ThenInclude(l => l.Language)
@@ -251,6 +251,38 @@ namespace GiTinder.Services
 
             var responseBody = new AvailableResponseBody(listOfProfileResponsesPage1, countOfProfilesOnPage1, allUsersCount);
             return responseBody;
+        }
+
+        public virtual void CreateAndSaveSwipe(string swipingUsername, string swipedUsername, string direction)
+        {
+            Swipe swipe = new Swipe(swipingUsername, swipedUsername, direction);
+            _context.Add(swipe);
+            _context.SaveChanges();
+        }
+
+        public virtual bool MirrorRightSwipeExists(string swipingUsername, string swipedUsername)
+        {
+            bool flag = false;
+            if (_context.Swipe.Any(s => s.SwipedUserId == swipingUsername && s.SwipingUserId == swipedUsername && s.Direction == "right" /*&& s.Timestamp ==*/)) ;
+            {
+                flag = true;//SqlException: Invalid column name 'Status'.
+
+            }
+            return flag;
+        }
+
+        public virtual Match CreateAndSaveMatch(string swipingUsername, string swipedUsername)
+        {
+            Match match = new Match(swipingUsername, swipedUsername);
+            _context.Add(match);
+            _context.SaveChanges();
+            return match;
+        }
+
+        public virtual SwipesResponseBody GetSwipesResponseBody(string message, Match match)
+        {
+            MatchResponseBody matchResponseBody = new MatchResponseBody(match);
+            return new SwipesResponseBody("success", matchResponseBody);
         }
     }
 }

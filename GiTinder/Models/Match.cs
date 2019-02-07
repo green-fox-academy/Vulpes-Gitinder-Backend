@@ -22,12 +22,12 @@ namespace GiTinder.Models
         [Required]
         [JsonProperty("matched_at")]
         public DateTime Timestamp { get; set; }
-
+                       
         public Match(string username_1, string username_2)
         {
             Username_1 = username_1;
             Username_2 = username_2;
-            Timestamp = DateTime.Now;
+            this.Timestamp = DateTime.Now;
         }
     }
 }

@@ -34,7 +34,10 @@ namespace GiTinder.Models
             Avatar = user.Avatar;
             ReposList = user.ReposList;
             UserLanguageNamesList = user.UserLanguageNamesList;
-            Snippets = user.FiveRawCodeFilesUrls.Split(";").ToList();
+            if(!String.IsNullOrEmpty(user.FiveRawCodeFilesUrls))
+            {  
+                Snippets = user.FiveRawCodeFilesUrls.Split(";").ToList();
+            }
         }
     }
 }

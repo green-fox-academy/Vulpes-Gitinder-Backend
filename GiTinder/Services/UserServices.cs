@@ -129,8 +129,6 @@ namespace GiTinder.Services
                 await UpdateLanguagesTableAndUserLanguageTable(username);
             }
 
-            GetLinksToAllRawFiles(username, gitHubToken);
-
             return true;
         }
         public void RemoveToken(User user)

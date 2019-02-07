@@ -18,33 +18,11 @@ namespace GiTinder.Tests.Controllers
 
         Mock<GiTinderContext> mockRepo;
         UserServices userServices;
-<<<<<<< HEAD
-=======
-        SwipesController swipesController;
->>>>>>> 146a5fe0074d44cb0ec431df062e1afa1a08c362
         HeaderDictionary headerDictionary;
         Mock<HttpResponse> response;
         Mock<HttpContext> httpContext;
         Mock<GiTinderMiddleware> Middleware;
 
-        [Fact]
-        public void UsertokenPresent()
-        {
-            ArrangingMockEnviorment();
-
-            SwipesController swipesController = new SwipesController(mockRepo.Object, userServices);
-            swipesController.ControllerContext = new ControllerContext()
-            {
-                HttpContext = httpContext.Object
-            };
-            var result = swipesController.Swipe("test", "right");
-            var actual = result as OKResponseBody;
-
-            Assert.Equal("success", actual.Message);
-            Assert.Equal("ok", actual.Status);
-            Assert.Equal(200, response.Object.StatusCode);
-
-        }
         [Fact]
         public void UsertokenPresentMatches()
         {

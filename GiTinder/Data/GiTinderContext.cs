@@ -54,15 +54,7 @@ namespace GiTinder.Data
                 .HasForeignKey(uL => uL.LanguageId);
 
             modelBuilder.Entity<Swipe>()
-<<<<<<< HEAD
                 .HasKey(t => new { t.SwipingUserId, t.SwipedUserId });         
-=======
-                .HasKey(t => new { t.SwipingUserId, t.SwipedUserId });
-
-            modelBuilder.Entity<Match>()
-                .HasKey(t => new { t.Username_1, t.Username_2 });
-
->>>>>>> 146a5fe0074d44cb0ec431df062e1afa1a08c362
         }
     }
 }

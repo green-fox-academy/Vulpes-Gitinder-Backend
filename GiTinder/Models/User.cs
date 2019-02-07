@@ -7,11 +7,6 @@ using System.ComponentModel.DataAnnotations;
 using GiTinder.Models.GitHubResponses;
 using System.ComponentModel.DataAnnotations.Schema;
 using GiTinder.Models.Connections;
-<<<<<<< HEAD
-using System.ComponentModel.DataAnnotations.Schema;
-=======
-using GiTinder.Models.GitHubResponses;
->>>>>>> 146a5fe0074d44cb0ec431df062e1afa1a08c362
 
 namespace GiTinder.Models
 {

@@ -24,15 +24,6 @@ namespace GiTinder.Tests.Controllers
         Mock<HttpContext> httpContext;
 
         [Fact]
-        public void CheckingAvailableProfilesWithNoTokenReturnsAnErrorResponse()
-        {
-            SetUpTestingConditions();
-            ErrorResponseBody result = usersController.ShowAvailableProfiles() as ErrorResponseBody;
-            response.VerifySet(r => r.StatusCode = 403);
-            Assert.Equal("error", result.Status);
-        }
-
-        [Fact]
         public void CheckingAvailableProfilesWithTokenReturnsAvailableResponseBody()
         {
             SetUpTestingConditions();

@@ -4,14 +4,16 @@ using GiTinder.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GiTinder.Migrations
 {
     [DbContext(typeof(GiTinderContext))]
-    partial class GiTinderContextModelSnapshot : ModelSnapshot
+    [Migration("20190205102113_AddPropFiveRawCodeUrlsToUser")]
+    partial class AddPropFiveRawCodeUrlsToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,19 +50,13 @@ namespace GiTinder.Migrations
 
             modelBuilder.Entity("GiTinder.Models.Match", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Username_1");
+
+                    b.Property<string>("Username_2");
 
                     b.Property<DateTime>("Timestamp");
 
-                    b.Property<string>("Username1")
-                        .IsRequired();
-
-                    b.Property<string>("Username2")
-                        .IsRequired();
-
-                    b.HasKey("Id");
+                    b.HasKey("Username_1", "Username_2");
 
                     b.ToTable("Matches");
                 });
@@ -109,8 +105,6 @@ namespace GiTinder.Migrations
 
                     b.Property<string>("Direction")
                         .IsRequired();
-
-                    b.Property<string>("Status");
 
                     b.Property<DateTime>("Timestamp");
 

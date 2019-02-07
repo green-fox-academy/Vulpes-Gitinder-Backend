@@ -10,24 +10,25 @@ namespace GiTinder.Models
 {
     public class Match
     {
+        [Key]
+        [JsonIgnore]
+        public int Id { get; set; }
         [Required]
         [MinLength(1)]
-        [ForeignKey("User.Username")]
-        public string Username_1 { get; set; }
+        public string Username1 { get; set; }
         [Required]
         [MinLength(1)]
-        [ForeignKey("User.Username")]
-        public string Username_2 { get; set; }
+        public string Username2 { get; set; }
 
         [Required]
         [JsonProperty("matched_at")]
         public DateTime Timestamp { get; set; }
-                       
-        public Match(string username_1, string username_2)
+
+        public Match(string username1, string username2)
         {
-            Username_1 = username_1;
-            Username_2 = username_2;
-            this.Timestamp = DateTime.Now;
+            Username1 = username1;
+            Username2 = username2;
+            Timestamp = DateTime.Now;
         }
     }
 }

@@ -3,6 +3,8 @@ using GiTinder.Data;
 using GiTinder.Models;
 using GiTinder.Models.Responses;
 using GiTinder.Services;
+using Hangfire;
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -70,6 +72,7 @@ namespace GiTinder.Tests.Controllers
             mockService.Setup(u => u.LoginRequestIsValid("Tomek Stasy", "VerySecure123")).Returns(Task.FromResult(true));
             mockService.Setup(u => u.CreateGiTinderToken()).Returns(Guid.NewGuid().ToString());
             sessionController = new SessionController(mockRepo.Object, mockService.Object);
+            JobStorage.Current = new SqlServerStorage("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=novelgitinder;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
 
             TokenResponseBody result = 
                 sessionController.Login(LoginRequestBodyFactory.CreateValidLoginRequest()).Result as TokenResponseBody;

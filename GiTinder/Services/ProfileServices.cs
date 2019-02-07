@@ -13,6 +13,11 @@ namespace GiTinder.Services
     {
         private GiTinderContext _context;
 
+        public ProfileServices()
+        {
+            GiTinderContext _context = new GiTinderContext();
+        }
+
         public ProfileServices(GiTinderContext context)
         {
             _context = context;

@@ -23,7 +23,6 @@ namespace GiTinder.Controllers
             _userServices = userServices;
         }
         [HttpPut("profiles/{username}/{direction}")]
-
         public ObjectResult Swipe([FromRoute] string username, string direction)
         {
             User swipingUser = getCurrentUser();
@@ -42,17 +41,11 @@ namespace GiTinder.Controllers
         }
 
         [HttpGet("/matches")]
-        public Object Matches()
+        public GeneralApiResponseBody Matches()
         {
-            getCurrentUser();
-            {
-                List<MatchResponseBody> matches = new List<MatchResponseBody>
-                {
-                    //new MatchResponseBody("Uno_username","http://ichef-1.bbci.co.uk/news/304/media/images/63133000/jpg/_63133978_francoishollande.jpg",1230),
-                    //new MatchResponseBody("theCat","https://bit.ly/2DIuOQR",1235),
-                };
-                return new MatchesResponseBody(matches);
-            }
+            //Real Implementation of / matches, uncomment when swipping works:
+            var usertoken = getCurrentUser().UserToken;
+            return _userServices.GetAllMatches(usertoken);
         }
     }
 }

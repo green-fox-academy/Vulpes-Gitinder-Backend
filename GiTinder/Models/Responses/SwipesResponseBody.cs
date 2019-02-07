@@ -7,12 +7,11 @@ namespace GiTinder.Models.Responses
 {
     public class SwipesResponseBody : OKResponseBody
     {
-        public MatchResponseBody MatchResponseBody { get; set; }
+        public OneMatchResponse OneMatchResponse { get; set; }
          
-        public SwipesResponseBody(string message, MatchResponseBody matchResponseBody) : base(message)
+        public SwipesResponseBody(OneMatchResponse oneMatchResponse) : base("success")
         {
-            Message = "success";
-            MatchResponseBody = matchResponseBody;
+            OneMatchResponse = oneMatchResponse;
         }
     }
 }

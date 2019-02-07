@@ -43,23 +43,24 @@ namespace GiTinder.Controllers
             }
         }
         [HttpGet("/matches")]
-        public Object Matches()
+        public GeneralApiResponseBody Matches()
         {
             GeneralApiResponseBody responseBody;
             var usertoken = Request.Headers["X-Gitinder-Token"];
             if (String.IsNullOrEmpty(usertoken))
             {
-                responseBody = new ErrorResponseBody("Unauthorized request!");
-                return StatusCode(403, responseBody);
+                responseBody = new ErrorResponseBody("Unauthorized request!");                
             }
             else
             {
-                List<OneMatchResponse> matches = new List<OneMatchResponse> {
+                List<OneMatchResponse> matches = new List<OneMatchResponse>
+                {
                 new OneMatchResponse("success", "Uno_username","http://ichef-1.bbci.co.uk/news/304/media/images/63133000/jpg/_63133978_francoishollande.jpg"),
                 new OneMatchResponse("success", "theCat","https://bit.ly/2DIuOQR"),
-            };
-                return new ManyMatchesResponse(matches);
+                };
+                responseBody = new ManyMatchesResponse(matches);
             }
+            return responseBody;
         }
     }
 }

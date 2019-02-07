@@ -20,7 +20,6 @@ namespace GiTinder.Models.Responses
         public OneMatchResponse(string message, string username, string avatar) : base(message)
         {
             Username = username;
-            Message = message;
             AvatarUrl = avatar;
             Timestamp = DateTime.Now;
         }

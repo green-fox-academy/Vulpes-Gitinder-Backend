@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Models.Responses
 {
-    public class ManyMatchesResponse
+    public class ManyMatchesResponse : GeneralApiResponseBody
     {
 
         [JsonProperty("matches")]

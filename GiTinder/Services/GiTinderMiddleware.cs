@@ -29,7 +29,7 @@ namespace GiTinder.Services
 
                 if (string.IsNullOrEmpty(Token) || !userServices.TokenExists(Token))
                 {
-                    ErrorResponseBody responseBody = new ErrorResponseBody("error", "Unauthorized request!");
+                    ErrorResponseBody responseBody = new ErrorResponseBody("Unauthorized request!");
                     Log.Information("New ErrorResponseBody: {@ErrorResponseBody} was created", responseBody);
                     context.Response.StatusCode = 403;
                     context.Response.WriteAsync(JsonConvert.SerializeObject(responseBody));

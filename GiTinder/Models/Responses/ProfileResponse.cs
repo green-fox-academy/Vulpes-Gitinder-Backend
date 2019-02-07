@@ -42,14 +42,6 @@ namespace GiTinder.Models
             Snippets = new List<string> { "https://github.com/adamgyulavari/gf-chatapp", "https://github.com/adamgyulavari/gf-chatapp" };
         }
 
-        public ProfileResponse(string username, string avatar, List<string> reposList, List<string> userLanguageNamesList)
-        {
-            Username = username;
-            Avatar = avatar;
-            ReposList = reposList;
-            UserLanguageNamesList = userLanguageNamesList;
-        }
-
         public ProfileResponse(User user)
         {
             Username = user.Username;

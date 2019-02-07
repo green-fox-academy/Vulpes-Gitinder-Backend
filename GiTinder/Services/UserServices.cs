@@ -26,25 +26,20 @@ namespace GiTinder.Services
         {
             _context = context;
         }
-        public void CreateUser(string username)
+        public async Task<GitHubProfile> GetGithubProfileAsync(string gitHubToken)
         {
-            User newProfile = GetGithubProfileAsync(username).Result as User;
-            newProfile.UserToken = CreateGiTinderToken();
-            newProfile.setUserRepos(GetGithubProfilesReposAsync(username).Result);
-
-            _context.Users.Add(newProfile);
-            _context.SaveChanges();
-        }
-        public async Task<User> GetGithubProfileAsync(string username)
-        {
+            client = new HttpClient();
             HeadersSettingForGitHubApi();
-            User rawUser = null;
-            HttpResponseMessage responseUser = await client.GetAsync(ApiUrl + username);
-            if (responseUser.IsSuccessStatusCode)
+            client.DefaultRequestHeaders.Add("Authorization", "token " + gitHubToken);
+            HttpResponseMessage gitHubProfileResponse = await client.GetAsync(ApiUrl + "user");
+
+            var profileLoggingIn = new GitHubProfile();
+
+            if (gitHubProfileResponse.IsSuccessStatusCode)
             {
-                rawUser = await responseUser.Content.ReadAsAsync<User>();
+                profileLoggingIn = await gitHubProfileResponse.Content.ReadAsAsync<GitHubProfile>();
             }
-            return rawUser;
+            return profileLoggingIn;
         }
         public async Task<List<UserRepos>> GetGithubProfilesReposAsync(string username)
         {
@@ -82,28 +77,26 @@ namespace GiTinder.Services
             _context.SaveChanges();
         }
 
-        public virtual void CreateNewUser(string username)
+        public async Task<bool> CreateUser(string token)
         {
-            var newProfile = new User(username)
-            {
-                UserToken = CreateGiTinderToken()
-            };
+            GitHubProfile newProfile = await GetGithubProfileAsync(token);
+            User newUser = new User(newProfile);
+            newUser.UserToken = CreateGiTinderToken();
+            newUser.setUserRepos(await GetGithubProfilesReposAsync(newUser.Username));
 
-            _context.Users.Add(newProfile);
+            _context.Users.Add(newUser);
             _context.SaveChanges();
+            return true;
         }
-
-        public virtual async Task<bool> UpdateUser(string username)
+        public virtual async Task<bool> UpdateUser(string username, string token)
         {
             if (UserExists(username))
             {
-                GetGithubProfilesReposAsync(username).Result.ToString();
-                //SplitReposToList(username);
                 UpdateToken(username);
             }
             else
             {
-                CreateNewUser(username);
+                await CreateUser(token);
                 await UpdateLanguagesTableAndUserLanguageTable(username);
             }
             return true;
@@ -203,23 +196,16 @@ namespace GiTinder.Services
 
         public User FindUserByUserToken(string usertoken)
         {
-            var foundUser = _context.Users.Where(u => u.UserToken == usertoken).FirstOrDefault();
+            var foundUser = _context.Users
+                 .Include(e => e.UserLanguages)
+                 .ThenInclude(l => l.Language)
+                 .Include(e  => e.UserSettings)
+                 .Where(u => u.UserToken == usertoken).FirstOrDefault();
             return foundUser;
         }
         public virtual async Task<bool> LoginRequestIsValid(string username, string gitHubToken)
         {
-            HeadersSettingForGitHubApi();
-            client.DefaultRequestHeaders.Add("Authorization", "token " + gitHubToken);
-            HttpResponseMessage gitHubProfileResponse = await client.GetAsync(ApiUrl + "user");
-
-            var profileLoggingIn = new GitHubProfile();
-
-            if (gitHubProfileResponse.IsSuccessStatusCode)
-            {
-                profileLoggingIn = await gitHubProfileResponse.Content.ReadAsAsync<GitHubProfile>();
-            }
-
-            return username.Equals(profileLoggingIn.Login);
+            return username.Equals((await GetGithubProfileAsync(gitHubToken)).Login);
         }
 
         public List<ProfileResponse> GetListOfProfileResponsesPage1()

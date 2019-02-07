@@ -23,8 +23,6 @@ namespace GiTinder.Tests.Controllers
         Mock<HttpContext> httpContext;
         Mock<ProfileServices> profileServices;
 
-        public object SimpleRepository { get; private set; }
-
         [Fact]
         public void CheckingAvailableProfilesWithNoTokenReturnsAnErrorResponse()
         {

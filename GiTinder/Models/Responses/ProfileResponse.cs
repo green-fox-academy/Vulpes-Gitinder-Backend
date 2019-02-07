@@ -28,29 +28,13 @@ namespace GiTinder.Models
         [JsonProperty("snippets")]
         public List<string> Snippets { get; set; }
 
-        public ProfileResponse(string username, string avatar, string repos)
-        {
-        }
-
-        public ProfileResponse(string username, string avatar, List<string> reposList)
-        {
-            Status = "ok";
-            Username = username;
-            Avatar = avatar;
-            ReposList = reposList;
-            UserLanguageNamesList = new List<string> { "Java" };
-            Snippets = new List<string> { "https://github.com/adamgyulavari/gf-chatapp", "https://github.com/adamgyulavari/gf-chatapp" };
-        }
-
         public ProfileResponse(User user)
         {
             Username = user.Username;
             Avatar = user.Avatar;
             ReposList = user.ReposList;
             UserLanguageNamesList = user.UserLanguageNamesList;
+            Snippets = user.FiveRawCodeFilesUrls.Split(";").ToList();
         }
-
     }
-
-
 }

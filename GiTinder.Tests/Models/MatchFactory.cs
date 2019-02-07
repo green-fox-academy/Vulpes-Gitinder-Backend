@@ -15,28 +15,28 @@ namespace GiTinder.Tests.Models
         public static Match CreateMatchWithEmptyUsername_1()
         {
             var match = CreateValidMatch();
-            match.Username_1 = "";
+            match.Username1 = "";
             return match;
         }
 
         public static Match CreateMatchWithEmptyUsername_2()
         {
             var match = CreateValidMatch();
-            match.Username_2 = "";
+            match.Username2 = "";
             return match;
         }
 
         public static Match CreateMatchWithNullUsername_1()
         {
             var match = CreateValidMatch();
-            match.Username_1 = null;
+            match.Username1 = null;
             return match;
         }
 
         public static Match CreateMatchWithNullUsername_2()
         {
             var match = CreateValidMatch();
-            match.Username_2 = null;
+            match.Username2 = null;
             return match;
         }
     }

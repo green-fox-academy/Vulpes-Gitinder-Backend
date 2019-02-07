@@ -16,21 +16,12 @@ namespace GiTinder.Tests.Controllers
     {
         Mock<GiTinderContext> mockRepo;
         Mock<UserServices> userServices;
+        Mock<ProfileServices> profileServices;
         UsersController usersController;
         HeaderDictionary headerDictionary;
         Mock<HttpResponse> response;
         Mock<HttpRequest> httpRequest;
         Mock<HttpContext> httpContext;
-        Mock<ProfileServices> profileServices;
-
-        [Fact]
-        public void CheckingAvailableProfilesWithNoTokenReturnsAnErrorResponse()
-        {
-            SetUpTestingConditions();
-            ErrorResponseBody result = usersController.ShowAvailableProfiles() as ErrorResponseBody;
-            response.VerifySet(r => r.StatusCode = 403);
-            Assert.Equal("error", result.Status);
-        }
 
         [Fact]
         public void CheckingAvailableProfilesWithTokenReturnsAvailableResponseBody()
@@ -48,7 +39,6 @@ namespace GiTinder.Tests.Controllers
         private void SetUpTestingConditions()
         {
             mockRepo = new Mock<GiTinderContext>();
-
             userServices = new Mock<UserServices>(mockRepo.Object);
             profileServices = new Mock<ProfileServices>();
 

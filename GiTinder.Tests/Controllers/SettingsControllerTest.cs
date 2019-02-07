@@ -6,6 +6,7 @@ using GiTinder.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Collections.Generic;
 using Xunit;
 
 namespace GiTinder.Tests.Models
@@ -35,68 +36,15 @@ namespace GiTinder.Tests.Models
             httpContext = new Mock<HttpContext>();
             httpRequest.SetupGet(r => r.Headers).Returns(headerDictionary);
             httpContext.SetupGet(a => a.Request).Returns(httpRequest.Object);
+            var items = new Dictionary<object, object>();
+            items.Add("user", new User());
+            httpContext.SetupGet(a => a.Items).Returns(items);
             httpContext.SetupGet(a => a.Response).Returns(httpResponse.Object);
 
             settingsController.ControllerContext = new ControllerContext()
             {
                 HttpContext = httpContext.Object
             };
-        }
-
-        [Fact]
-        public void ReturnErrorIfTokenInReqHeaderIsEmptyStringInGetSettings()
-        {
-            //Arrange
-            ArrangeForSettingsControllerTests();
-            headerDictionary.Add("X-Gitinder-Token", "");
-
-            //Act
-            var actualResponse = settingsController.GetSettings();
-            var expectedResponseBody = new ErrorResponseBody("Unauthorized request!");
-
-            //Assert
-            Assert.Equal(expectedResponseBody.Status, actualResponse.Status);
-            Assert.Equal(expectedResponseBody.Message, (actualResponse as ErrorResponseBody).Message);
-            httpRequest.VerifyGet(r => r.Headers);
-            httpContext.VerifyGet(a => a.Request);
-            userServices.Verify(s => s.TokenExists(""), Times.Never);
-            httpResponse.VerifySet(r => r.StatusCode = 403);
-        }
-
-        [Fact]
-        public void ReturnErrorIfReqHeaderIsNullInGetSettings()
-        {
-            //Arrange
-            ArrangeForSettingsControllerTests();
-
-            //Act
-            var actualResponse = settingsController.GetSettings();
-            var expectedResponseBody = new ErrorResponseBody("Unauthorized request!");
-
-            //Assert
-            Assert.Equal(expectedResponseBody.Status, actualResponse.Status);
-            Assert.Equal(expectedResponseBody.Message, (actualResponse as ErrorResponseBody).Message);
-            userServices.Verify(s => s.TokenExists(It.IsAny<string>()), Times.Never);
-            httpResponse.VerifySet(r => r.StatusCode = 403);
-        }
-
-        [Fact]
-        public void ReturnErrorIfTokenInReqHeaderNotFoundInGetSettings()
-        {
-            //Arrange
-            ArrangeForSettingsControllerTests();
-            headerDictionary.Add("X-Gitinder-Token", "x");
-            userServices.Setup(s => s.TokenExists(It.IsAny<string>())).Returns(false);
-
-            //Act
-            var actualResponse = settingsController.GetSettings();
-            var expectedResponseBody = new ErrorResponseBody("Unauthorized request!");
-
-            //Assert
-            Assert.Equal(expectedResponseBody.Status, actualResponse.Status);
-            Assert.Equal(expectedResponseBody.Message, (actualResponse as ErrorResponseBody).Message);
-            userServices.Verify(s => s.TokenExists("x"), Times.Once());
-            httpResponse.VerifySet(r => r.StatusCode = 403);
         }
 
         [Fact]
@@ -121,65 +69,6 @@ namespace GiTinder.Tests.Models
             Assert.Equal(expectedResponseBody.Message, (actualResponse as OKResponseBody).Message);
             settingsServices.Verify(s => s.UpdateAndSaveSettingsFoundByUserToken(settings, It.IsAny<string>()), Times.Once());
             httpResponse.VerifySet(r => r.StatusCode = 200);
-        }
-
-        [Fact]
-        public void ReturnErrorIfTokenInReqHeaderIsEmptyStringInPutSettings()
-        {
-            //Arrange
-            ArrangeForSettingsControllerTests();
-            headerDictionary.Add("X-Gitinder-Token", "");
-            Settings settings = SettingsFactory.CreateSettingsWithValidUserName();
-
-            //Act
-            var actualResponse = settingsController.PutSettings(settings);
-            var expectedResponseBody = new ErrorResponseBody("Unauthorized request!");
-
-            //Assert
-            Assert.Equal(expectedResponseBody.Status, actualResponse.Status);
-            Assert.Equal(expectedResponseBody.Message, (actualResponse as ErrorResponseBody).Message);
-            httpRequest.VerifyGet(r => r.Headers);
-            httpContext.VerifyGet(a => a.Request);
-            userServices.Verify(s => s.TokenExists(""), Times.Never);
-            httpResponse.VerifySet(r => r.StatusCode = 403);
-        }
-
-        [Fact]
-        public void ReturnErrorIfReqHeaderIsNullInPutSettings()
-        {
-            //Arrange
-            ArrangeForSettingsControllerTests();
-            Settings settings = SettingsFactory.CreateSettingsWithValidUserName();
-
-            //Act
-            var actualResponse = settingsController.PutSettings(settings);
-            var expectedResponseBody = new ErrorResponseBody("Unauthorized request!");
-
-            //Assert
-            Assert.Equal(expectedResponseBody.Status, actualResponse.Status);
-            Assert.Equal(expectedResponseBody.Message, (actualResponse as ErrorResponseBody).Message);
-            userServices.Verify(s => s.TokenExists(It.IsAny<string>()), Times.Never);
-            httpResponse.VerifySet(r => r.StatusCode = 403);
-        }
-
-        [Fact]
-        public void ReturnErrorIfTokenInReqHeaderNotFoundInPutSettings()
-        {
-            //Arrange
-            ArrangeForSettingsControllerTests();
-            headerDictionary.Add("X-Gitinder-Token", "x");
-            userServices.Setup(s => s.TokenExists(It.IsAny<string>())).Returns(false);
-            Settings settings = SettingsFactory.CreateSettingsWithValidUserName();
-
-            //Act
-            var actualResponse = settingsController.PutSettings(settings);
-            var expectedResponseBody = new ErrorResponseBody("Unauthorized request!");
-
-            //Assert
-            Assert.Equal(expectedResponseBody.Status, actualResponse.Status);
-            Assert.Equal(expectedResponseBody.Message, (actualResponse as ErrorResponseBody).Message);
-            userServices.Verify(s => s.TokenExists("x"), Times.Once());
-            httpResponse.VerifySet(r => r.StatusCode = 403);
         }
     }
 }

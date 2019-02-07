@@ -23,25 +23,40 @@ namespace GiTinder.Controllers
             _userServices = userServices;
         }
         [HttpPut("profiles/{username}/{direction}")]
-        public GeneralApiResponseBody Swipe([FromRoute] string username, string direction)
+        public ObjectResult Swipe([FromRoute] string username, string direction)
 
         {
-            OKResponseBody responseBody = new OKResponseBody("success");
-            Response.StatusCode = 200;
+            GeneralApiResponseBody responseBody;
+            var usertoken = Request.Headers["X-Gitinder-Token"];
+            var Swipe = new Swipe(usertoken, username, direction);
 
-            return responseBody;
+            if (String.IsNullOrEmpty(usertoken))
+            {
+                responseBody = new ErrorResponseBody("Unauthorized request!");
+                return StatusCode(403, responseBody);
+            }
+            else
+            {
+                responseBody = new OneMatchResponse("user", "https://f22bfca7a5abd176cefa-59c40a19620c1f22577ade10e9206cf5.ssl.cf1.rackcdn.com/571x670/sir-adam-mbo-k-01-x2-1.jpg", DateTime.Now);
+                return StatusCode(200, responseBody);
+            }
         }
         [HttpGet("/matches")]
-        public Object Matches()
+        public GeneralApiResponseBody Matches()
         {
+
             getCurrentUser();
             {
-                List<MatchResponseBody> matches = new List<MatchResponseBody> {
-                new MatchResponseBody("Uno_username","http://ichef-1.bbci.co.uk/news/304/media/images/63133000/jpg/_63133978_francoishollande.jpg",1230),
-                new MatchResponseBody("theCat","https://f22bfca7a5abd176cefa-59c40a19620c1f22577ade10e9206cf5.ssl.cf1.rackcdn.com/571x670/sir-adam-mbo-k-01-x2-1.jpg",1235),
+                List<OneMatchResponse> matches = new List<OneMatchResponse> {
+                new OneMatchResponse("Uno_username","http://ichef-1.bbci.co.uk/news/304/media/images/63133000/jpg/_63133978_francoishollande.jpg", DateTime.Now),
+                new OneMatchResponse("theCat","https://f22bfca7a5abd176cefa-59c40a19620c1f22577ade10e9206cf5.ssl.cf1.rackcdn.com/571x670/sir-adam-mbo-k-01-x2-1.jpg", DateTime.Now),
             };
-                return new MatchesResponseBody(matches);
+                return new ManyMatchesResponse(matches);
             }
+
+            //Real Implementation of /matches, uncomment when swipping works:
+            //var usertoken = Request.Headers["X-Gitinder-Token"];
+            //return _userServices.GetAllMatches(usertoken); 
         }
     }
 }

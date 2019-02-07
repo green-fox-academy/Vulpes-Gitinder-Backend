@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Hangfire;
 
 namespace GiTinder
 {
@@ -33,6 +34,7 @@ namespace GiTinder
             services.AddTransient<UserServices>();
             services.AddTransient<SettingsServices>();
             services.AddTransient<LanguageServices>();
+            services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("GiTinderContextMSSqlDb")));
             services.AddTransient<ProfileServices>();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +56,9 @@ namespace GiTinder
                 var context = serviceScope.ServiceProvider.GetService<GiTinderContext>();
                 context.Database.Migrate();
             }
+
+            app.UseHangfireServer();
+            app.UseHangfireDashboard();
         }
     }
 }

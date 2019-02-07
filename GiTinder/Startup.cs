@@ -42,13 +42,13 @@ namespace GiTinder
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                app.UseMiddleware<GiTinderMiddleware>();
+                app.UseDeveloperExceptionPage();               
             }
             else
             {
                 app.UseHsts();
             }
+            app.UseMiddleware<GiTinderMiddleware>();
             app.UseHttpsRedirection();
             app.UseMvc();
             using (var serviceScope = app.ApplicationServices.CreateScope())

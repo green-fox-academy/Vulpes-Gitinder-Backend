@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Models.Responses
 {
-    public class OneMatchResponse : OKResponseBody
+    public class OneMatchResponse : GeneralApiResponseBody
     {
         [JsonProperty("username")]
         public string Username { get; set; }
@@ -17,11 +17,11 @@ namespace GiTinder.Models.Responses
         [JsonIgnore]
         public List<string> Messages { get; set; }
 
-        public OneMatchResponse(string message, string username, string avatar) : base(message)
+        public OneMatchResponse(string username, string avatar, DateTime timeStamp)
         {
             Username = username;
             AvatarUrl = avatar;
-            Timestamp = DateTime.Now;
+            Timestamp = timeStamp;
         }
     }
 }

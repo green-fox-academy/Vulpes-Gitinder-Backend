@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations;
 using GiTinder.Models.GitHubResponses;
 using System.ComponentModel.DataAnnotations.Schema;
 using GiTinder.Models.Connections;
-using GiTinder.Models.GitHubResponses;
 
 namespace GiTinder.Models
 {
@@ -25,6 +24,10 @@ namespace GiTinder.Models
         [JsonProperty("avatar_url")]
         public string Avatar { get; set; }
         public string Repos { get; set; }
+        [NotMapped]
+        public List<string> RawCodeFilesUrls { get; set; }
+        [JsonProperty("raw_code_urls")]
+        public string FiveRawCodeFilesUrls { get; set; }
 
         [JsonIgnore]
         public List<UserLanguages> UserLanguages { get; set; }
@@ -59,6 +62,7 @@ namespace GiTinder.Models
         public User(string username)
         {
             Username = username;
+            UserSettings = new Settings(Username);
         }
 
         public User()

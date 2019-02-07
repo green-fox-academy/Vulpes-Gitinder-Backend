@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 
 namespace GiTinder.Models.Responses
 {
-    public class MatchResponseBody
+    public class OneMatchResponse : GeneralApiResponseBody
     {
-        [JsonProperty]
+        [JsonProperty("username")]
         public string Username { get; set; }
-        [JsonProperty]
+        [JsonProperty("avatar_url")]
         public string AvatarUrl { get; set; }
-        [JsonProperty]
-        public int Time { get; set; }
-        [JsonProperty]
+        [JsonProperty("matched_at")]
+        public DateTime Timestamp { get; set; }
+        [JsonIgnore]
         public List<string> Messages { get; set; }
 
-        public MatchResponseBody(string username, string avatar, int time)
+        public OneMatchResponse(string username, string avatar, DateTime timeStamp)
         {
             Username = username;
             AvatarUrl = avatar;
-            Time = time;
+            Timestamp = timeStamp;
         }
     }
 }

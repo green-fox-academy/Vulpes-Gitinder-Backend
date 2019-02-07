@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,10 +8,13 @@ namespace GiTinder.Models.Responses
 {
     public class MatchesResponseBody
     {
-        public List<MatchResponseBody> matches { get; set; }
+
+        [JsonProperty("matches")]
+        public List<MatchResponseBody> Matches { get; set; }
+
         public MatchesResponseBody(List<MatchResponseBody> matchesList)
         {
-            matches = matchesList;
+            Matches = matchesList;
         }
     }
 }

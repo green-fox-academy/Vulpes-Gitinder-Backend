@@ -10,5 +10,11 @@ namespace GiTinder.Models.GitHubResponses
     {
         [JsonProperty("login")]
         public string Login { get; set; }
+        [JsonProperty("public_repos")]
+        public int ReposCount { get; set; }
+        [JsonProperty("user_token")]
+        public string UserToken { get; set; }
+        [JsonProperty("avatar_url")]
+        public string Avatar { get; set; }
     }
 }

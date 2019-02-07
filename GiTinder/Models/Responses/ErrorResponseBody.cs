@@ -12,11 +12,5 @@ namespace GiTinder.Models.Responses
             Status = "error";
             Message = errorMessage;
         }
-
-        public ErrorResponseBody(string status, string errorMessage)
-        {
-            Status = status;
-            Message = errorMessage;
-        }
     }
 }

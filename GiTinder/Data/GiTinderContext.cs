@@ -1,7 +1,10 @@
 ﻿using GiTinder.Models;
 using GiTinder.Models.Connections;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 
 namespace GiTinder.Data
 {
@@ -10,7 +13,7 @@ namespace GiTinder.Data
         public GiTinderContext(DbContextOptions<GiTinderContext> options)
         : base(options)
         { }
-
+     
         public GiTinderContext() { }
 
         public DbSet<User> Users { get; set; }
@@ -20,6 +23,7 @@ namespace GiTinder.Data
         public DbSet<Swipe> Swipe { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<UserLanguages> UserLanguages { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -54,6 +58,7 @@ namespace GiTinder.Data
 
             modelBuilder.Entity<Match>()
                 .HasKey(t => new { t.Username_1, t.Username_2 });
+
         }
     }
 }

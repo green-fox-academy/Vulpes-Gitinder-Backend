@@ -179,7 +179,7 @@ namespace GiTinder.Services
                 {
                     rawCodeUrls += url + ";";
                 }
-                rawCodeUrls.Remove(rawCodeUrls.Length - 1);
+                rawCodeUrls = rawCodeUrls.Remove(rawCodeUrls.Length - 1);
             }
             _context.Users.Find(username).FiveRawCodeFilesUrls = rawCodeUrls;
             _context.SaveChanges();

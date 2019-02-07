@@ -6,6 +6,7 @@ using GiTinder.Models.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,6 +77,29 @@ namespace GiTinder.Services
             while (_context.Users.Where(e => e.UserToken == token).Count() > 0);
 
             return token;
+        }
+
+        public ManyMatchesResponse GetAllMatches(string usertoken)
+        {
+            var user = FindUserByUserToken(usertoken);
+            var username = user.Username;
+
+            List<OneMatchResponse> matchesResponse = null;
+            List<Match> matches = _context.Matches.Where(m => m.Username1 == username || m.Username2 == username).ToList();
+            matches.ForEach(m => matchesResponse.Add(new OneMatchResponse(GetOtherUsername(m, username), GetOtherAvatar(m, username), m.Timestamp)));
+
+            return new ManyMatchesResponse(matchesResponse);
+        }
+
+        private string GetOtherAvatar(Match m, string username)
+        {
+            var otherUsername = (GetOtherUsername(m, username));
+            return _context.Users.Find(otherUsername).Avatar;
+        }
+
+        private string GetOtherUsername(Match m, string username)
+        {
+            return (m.Username1 == username) ? m.Username2 : m.Username1;
         }
 
         public virtual bool UserExists(string username)
@@ -275,6 +299,7 @@ namespace GiTinder.Services
             var foundUser = _context.Users.Where(u => u.UserToken == usertoken).FirstOrDefault();
             return foundUser;
         }
+
         public virtual async Task<bool> LoginRequestIsValid(string username, string gitHubToken)
         {
             HeadersSettingForGitHubApi();

@@ -38,7 +38,7 @@ namespace GiTinder.Controllers
             }
             else
             {
-                responseBody = new MatchResponse("success", "user", "https://f22bfca7a5abd176cefa-59c40a19620c1f22577ade10e9206cf5.ssl.cf1.rackcdn.com/571x670/sir-adam-mbo-k-01-x2-1.jpg", 1233);
+                responseBody = new MatchResponseBody("success", "user", "https://f22bfca7a5abd176cefa-59c40a19620c1f22577ade10e9206cf5.ssl.cf1.rackcdn.com/571x670/sir-adam-mbo-k-01-x2-1.jpg");
                 return StatusCode(200, responseBody);
             }
         }

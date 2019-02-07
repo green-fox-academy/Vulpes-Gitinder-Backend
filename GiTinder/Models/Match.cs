@@ -10,13 +10,14 @@ namespace GiTinder.Models
 {
     public class Match
     {
+        [Key]
+        [JsonIgnore]
+        public int Id { get; set; }
         [Required]
         [MinLength(1)]
-        [ForeignKey("User.Username")]
         public string Username1 { get; set; }
         [Required]
         [MinLength(1)]
-        [ForeignKey("User.Username")]
         public string Username2 { get; set; }
 
         [Required]

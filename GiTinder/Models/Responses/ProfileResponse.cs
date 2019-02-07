@@ -28,10 +28,6 @@ namespace GiTinder.Models
         [JsonProperty("snippets")]
         public List<string> Snippets { get; set; }
 
-        public ProfileResponse(string username, string avatar, string repos)
-        {
-        }
-
         public ProfileResponse(string username, string avatar, List<string> reposList)
         {
             Status = "ok";
@@ -48,9 +44,7 @@ namespace GiTinder.Models
             Avatar = user.Avatar;
             ReposList = user.ReposList;
             UserLanguageNamesList = user.UserLanguageNamesList;
+            Snippets = user.FiveRawCodeFilesUrls.Split(";").ToList();
         }
-
     }
-
-
 }

@@ -33,7 +33,7 @@ namespace GiTinder.Controllers
 
             if (String.IsNullOrEmpty(usertoken))
             {
-                responseBody = new ErrorResponseBody("error", "Unauthorized request!");
+                responseBody = new ErrorResponseBody("Unauthorized request!");
                 return StatusCode(403, responseBody);
             }
             else
@@ -49,7 +49,7 @@ namespace GiTinder.Controllers
             var usertoken = Request.Headers["X-Gitinder-Token"];
             if (String.IsNullOrEmpty(usertoken))
             {
-                responseBody = new ErrorResponseBody("error", "Unauthorized request!");
+                responseBody = new ErrorResponseBody("Unauthorized request!");
                 return StatusCode(403, responseBody);
             }
             else

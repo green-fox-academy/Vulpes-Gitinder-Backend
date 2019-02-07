@@ -106,19 +106,18 @@ namespace GiTinder.Services
             _context.SaveChanges();
         }
 
-        public async Task<bool> CreateUser(string token)
+        public async Task<bool> CreateUser(string gitHubToken)
         {
-            GitHubProfile newProfile = await GetGithubProfileAsync(token);
+            GitHubProfile newProfile = await GetGithubProfileAsync(gitHubToken);
             User newUser = new User(newProfile);
             newUser.UserToken = CreateGiTinderToken();
             newUser.setUserRepos(await GetGithubProfilesReposAsync(newUser.Username));
 
             _context.Users.Add(newUser);
-            _context.SaveChanges();
-            GetLinksToAllRawFiles(newUser.Username, newUser.UserToken);
+            _context.SaveChanges();            
             return true;
         }
-        public virtual async Task<bool> UpdateUser(string username, string token)
+        public virtual async Task<bool> UpdateUser(string username, string gitHubToken)
         {
             if (UserExists(username))
             {
@@ -126,9 +125,12 @@ namespace GiTinder.Services
             }
             else
             {
-                await CreateUser(token);
+                await CreateUser(gitHubToken);
                 await UpdateLanguagesTableAndUserLanguageTable(username);
             }
+
+            GetLinksToAllRawFiles(username, gitHubToken);
+
             return true;
         }
         public void RemoveToken(User user)

@@ -312,9 +312,10 @@ namespace GiTinder.Services
             return username.Equals((await GetGithubProfileAsync(gitHubToken)).Login);
         }
 
-        public List<ProfileResponse> GetListOfProfileResponsesPage1()
+        public List<ProfileResponse> GetListOfProfileResponsesPage1(string username)
         {
             List<ProfileResponse> firstTwenty = _context.Users
+                 .Where(u => u.Username != username)
                  .Take(20)
                  .Include(e => e.UserLanguages)
                  .ThenInclude(l => l.Language)
@@ -337,9 +338,9 @@ namespace GiTinder.Services
             return listOfProfileResponses;
         }
 
-        public virtual AvailableResponseBody GetAvailableResponseBodyForPage1()
+        public virtual AvailableResponseBody GetAvailableResponseBodyForPage1(string username)
         {
-            var listOfProfileResponsesPage1 = GetListOfProfileResponsesPage1();
+            var listOfProfileResponsesPage1 = GetListOfProfileResponsesPage1(username);
 
             int countOfProfilesOnPage1;
             int allUsersCount = GetAllUsersCount();

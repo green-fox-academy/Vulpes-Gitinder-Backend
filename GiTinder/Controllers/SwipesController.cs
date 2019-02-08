@@ -33,6 +33,7 @@ namespace GiTinder.Controllers
                 swipesResponseBody = new OKResponseBody("succes");
                 if (direction == "right" && _userServices.MirrorRightSwipeExists(swipingUser.Username, username))
                 {
+
                     Match match = _userServices.CreateAndSaveMatch(swipingUser.Username, username);
                     swipesResponseBody = _userServices.GetSwipesResponseBody("success", match);
                 }

@@ -53,7 +53,7 @@ namespace GiTinder.Controllers
         [HttpDelete("/logout")]
         public async Task<GeneralApiResponseBody> Logout()
         {
-            _userServices.RemoveToken(getCurrentUser());
+            _userServices.RemoveToken(GetCurrentUser());
 
             return new OKResponseBody("Logged out successfully!");
         }

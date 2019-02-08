@@ -15,7 +15,7 @@ namespace GiTinder.Controllers
         {
 
         }
-        public User getCurrentUser()
+        public User GetCurrentUser()
         {
             return HttpContext.Items["user"] as User;
         }

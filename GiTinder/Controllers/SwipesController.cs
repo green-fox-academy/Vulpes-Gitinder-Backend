@@ -45,7 +45,7 @@ namespace GiTinder.Controllers
         public GeneralApiResponseBody Matches()
         {
 
-            getCurrentUser();
+            GetCurrentUser();
             {
                 List<OneMatchResponse> matches = new List<OneMatchResponse> {
                 new OneMatchResponse("Uno_username","http://ichef-1.bbci.co.uk/news/304/media/images/63133000/jpg/_63133978_francoishollande.jpg", DateTime.Now),

@@ -28,13 +28,13 @@ namespace GiTinder.Tests.Controllers
         {
             ArrangingMockEnviorment();
             headerDictionary.Add("X-Gitinder-Token", "anytoken");
-            SwipesController swipesMatchEndpoint = new SwipesController(mockRepo.Object,userServices);
+            SwipesController swipesMatchEndpoint = new SwipesController(mockRepo.Object, userServices);
 
         }
 
         private void ArrangingMockEnviorment()
         {
-            
+
             mockRepo = new Mock<GiTinderContext>();
             userServices = new UserServices(mockRepo.Object);
             var request = new Mock<HttpRequest>();

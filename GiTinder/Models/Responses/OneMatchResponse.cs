@@ -14,7 +14,7 @@ namespace GiTinder.Models.Responses
         public string AvatarUrl { get; set; }
         [JsonProperty("matched_at")]
         public DateTime Timestamp { get; set; }
-        [JsonIgnore]
+        [JsonProperty("messages")]
         public List<string> Messages { get; set; }
 
         public OneMatchResponse(string username, string avatar, DateTime timeStamp)
@@ -22,6 +22,7 @@ namespace GiTinder.Models.Responses
             Username = username;
             AvatarUrl = avatar;
             Timestamp = timeStamp;
+            Messages = new List<string>();
         }
     }
 }

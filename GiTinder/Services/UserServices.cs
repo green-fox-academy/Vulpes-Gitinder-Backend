@@ -20,7 +20,7 @@ namespace GiTinder.Services
         private readonly GiTinderContext _context;
         private const string ApiUrl = "https://api.github.com/";
         private HttpClient client = new HttpClient();
-        
+
 
         public UserServices()
         {
@@ -76,10 +76,10 @@ namespace GiTinder.Services
         {
             var username = FindUserByUserToken(usertoken).Username;
 
-            List<OneMatchResponse> matchesResponse = null;
+           
             List<Match> matches = _context.Matches.Where(m => m.Username1 == username || m.Username2 == username).ToList();
-            matches.ForEach(m => matchesResponse
-            .Add(new OneMatchResponse(GetOtherUsername(m, username), GetOtherAvatar(m, username), m.Timestamp)));
+            List<OneMatchResponse> matchesResponse = matches.Select(m =>
+            new OneMatchResponse(GetOtherUsername(m, username), GetOtherAvatar(m, username), m.Timestamp)).ToList();
 
             return new ManyMatchesResponse(matchesResponse);
         }
@@ -149,7 +149,7 @@ namespace GiTinder.Services
 
             CreateMissingLanguages(repoLanguagesNames);
 
-            List<int> languageIdInRepo = repoLanguagesNames.ConvertAll(rLN => GetLanguageId(rLN));            
+            List<int> languageIdInRepo = repoLanguagesNames.ConvertAll(rLN => GetLanguageId(rLN));
             if (currentUser.UserLanguages == null)
             {
                 languageIdInRepo.ForEach(rLI => CreateUserLanguage(username, rLI));
@@ -356,6 +356,35 @@ namespace GiTinder.Services
 
             var responseBody = new AvailableResponseBody(listOfProfileResponsesPage1, countOfProfilesOnPage1, allUsersCount);
             return responseBody;
+        }
+
+        public virtual void CreateAndSaveSwipe(string swipingUsername, string swipedUsername, string direction)
+        {
+            Swipe swipe = new Swipe(swipingUsername, swipedUsername, direction);
+            _context.Add(swipe);
+            _context.SaveChanges();
+        }
+
+        public virtual bool RightSwipeExists(string swipingUsername, string swipedUsername)
+        {
+            return _context.Swipe
+                .Any(s => s.SwipingUserId == swipingUsername &&
+                     s.SwipedUserId == swipedUsername &&
+                     s.Direction == "right");
+        }
+
+        public virtual Match CreateAndSaveMatch(string swipingUsername, string swipedUsername)
+        {
+            Match match = new Match(swipingUsername, swipedUsername);
+            _context.Add(match);
+            _context.SaveChanges();
+            return match;
+        }
+
+        public virtual SwipesResponseBody GetSwipesResponseBody(string message, Match match)
+        {
+            OneMatchResponse oneMatchResponse = new OneMatchResponse(match.Username2,GetOtherAvatar(match,match.Username1),match.Timestamp);
+            return new SwipesResponseBody(oneMatchResponse);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace GiTinder.Services
 
         public Settings FindSettingsWithLanguagesByUser(User user)
         {
-                        var settings = _context.Settings.Include(e => e.SettingsLanguages).ThenInclude(l => l.Language).Where(s => s.Username == user.Username).FirstOrDefault();
+            var settings = _context.Settings.Include(e => e.SettingsLanguages).ThenInclude(l => l.Language).Where(s => s.Username == user.Username).FirstOrDefault();
 
             if (settings == null)
             {

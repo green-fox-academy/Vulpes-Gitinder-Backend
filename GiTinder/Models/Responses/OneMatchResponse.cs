@@ -22,6 +22,8 @@ namespace GiTinder.Models.Responses
             Username = username;
             AvatarUrl = avatar;
             Timestamp = timeStamp;
+            Messages = new List<string>();
+
         }
     }
 }

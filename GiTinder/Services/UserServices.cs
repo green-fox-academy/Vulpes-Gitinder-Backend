@@ -365,9 +365,22 @@ namespace GiTinder.Services
 
         public virtual void CreateAndSaveSwipe(string swipingUsername, string swipedUsername, string direction)
         {
-            Swipe swipe = new Swipe(swipingUsername, swipedUsername, direction);
-            _context.Add(swipe);
+            Swipe swipe = GetSwipe(swipingUsername, swipedUsername);
+            if(swipe == null) {
+                swipe = new Swipe(swipingUsername, swipedUsername, direction);
+                _context.Add(swipe);
+            } else {
+                swipe.Direction = direction;
+                _context.Update(swipe);
+            }
             _context.SaveChanges();
+        }
+
+        public Swipe GetSwipe(string swipingUsername, string swipedUsername)
+        {
+            return _context.Swipe
+                .Where(s => s.SwipingUserId == swipingUsername &&
+                     s.SwipedUserId == swipedUsername).FirstOrDefault();
         }
 
         public virtual bool RightSwipeExists(string swipingUsername, string swipedUsername)

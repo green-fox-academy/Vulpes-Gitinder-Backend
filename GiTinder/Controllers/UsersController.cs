@@ -38,7 +38,7 @@ namespace GiTinder.Controllers
         [HttpGet("profile/{username}")]
         public GeneralApiResponseBody GetProfileByUsername([FromRoute] string username)
         {
-            return new ProfileResponse(_context.Users.Find(username));
+            return new ProfileResponse(_userServices.FindUserByUsername(username));
         }
     }
 }

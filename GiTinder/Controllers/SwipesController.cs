@@ -42,7 +42,6 @@ namespace GiTinder.Controllers
         [HttpGet("/matches")]
         public GeneralApiResponseBody Matches()
         {
-            //Real Implementation of / matches, uncomment when swipping works:
             var usertoken = GetCurrentUser().UserToken;
             return _userServices.GetAllMatches(usertoken);
         }

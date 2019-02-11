@@ -312,9 +312,10 @@ namespace GiTinder.Services
             return username.Equals((await GetGithubProfileAsync(gitHubToken)).Login);
         }
 
-        public List<ProfileResponse> GetListOfProfileResponsesPage1()
+        public List<ProfileResponse> GetListOfProfileResponsesPage1(string username)
         {
             List<ProfileResponse> firstTwenty = _context.Users
+                 .Where(u => u.Username != username)
                  .Take(20)
                  .Include(e => e.UserLanguages)
                  .ThenInclude(l => l.Language)
@@ -337,9 +338,9 @@ namespace GiTinder.Services
             return listOfProfileResponses;
         }
 
-        public virtual AvailableResponseBody GetAvailableResponseBodyForPage1()
+        public virtual AvailableResponseBody GetAvailableResponseBodyForPage1(string username)
         {
-            var listOfProfileResponsesPage1 = GetListOfProfileResponsesPage1();
+            var listOfProfileResponsesPage1 = GetListOfProfileResponsesPage1(username);
 
             int countOfProfilesOnPage1;
             int allUsersCount = GetAllUsersCount();
@@ -359,20 +360,30 @@ namespace GiTinder.Services
 
         public virtual void CreateAndSaveSwipe(string swipingUsername, string swipedUsername, string direction)
         {
-            Swipe swipe = new Swipe(swipingUsername, swipedUsername, direction);
-            _context.Add(swipe);
+            Swipe swipe = GetSwipe(swipingUsername, swipedUsername);
+            if(swipe == null) {
+                swipe = new Swipe(swipingUsername, swipedUsername, direction);
+                _context.Add(swipe);
+            } else {
+                swipe.Direction = direction;
+                _context.Update(swipe);
+            }
             _context.SaveChanges();
         }
 
-        public virtual bool MirrorRightSwipeExists(string swipingUsername, string swipedUsername)
+        public Swipe GetSwipe(string swipingUsername, string swipedUsername)
         {
-            bool flag = false;
-            if (_context.Swipe.Any(s => s.SwipedUserId == swipingUsername && s.SwipingUserId == swipedUsername && s.Direction == "right" /*&& s.Timestamp ==*/)) ;
-            {
-                flag = true;//SqlException: Invalid column name 'Status'.
+            return _context.Swipe
+                .Where(s => s.SwipingUserId == swipingUsername &&
+                     s.SwipedUserId == swipedUsername).FirstOrDefault();
+        }
 
-            }
-            return flag;
+        public virtual bool RightSwipeExists(string swipingUsername, string swipedUsername)
+        {
+            return _context.Swipe
+                .Any(s => s.SwipingUserId == swipingUsername &&
+                     s.SwipedUserId == swipedUsername &&
+                     s.Direction == "right");
         }
 
         public virtual Match CreateAndSaveMatch(string swipingUsername, string swipedUsername)

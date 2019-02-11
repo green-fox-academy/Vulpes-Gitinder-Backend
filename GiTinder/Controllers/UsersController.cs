@@ -26,19 +26,22 @@ namespace GiTinder.Controllers
 
         [HttpGet("/available/{page:int?}")]
         public GeneralApiResponseBody ShowAvailableProfiles(int page = 1)
-        {
-            return _userServices.GetAvailableResponseBodyForPage1();
+        { 
+            return _userServices.GetAvailableResponseBodyForPage1(GetCurrentUser().Username);
         }
 
         [HttpGet("/profile")]
         public GeneralApiResponseBody GetProfile()
         {
             return new ProfileResponse(GetCurrentUser());
+<<<<<<< HEAD
         }
         [HttpGet("profile/{username}")]
         public GeneralApiResponseBody GetProfileByUsername([FromRoute] string username)
         {
             return new ProfileResponse(_context.Users.Find(username));
+=======
+>>>>>>> f96a9d075cffcaf2171aadce65aca1619821773a
         }
     }
 }

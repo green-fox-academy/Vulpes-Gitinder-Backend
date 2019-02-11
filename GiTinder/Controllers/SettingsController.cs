@@ -24,7 +24,7 @@ namespace GiTinder.Controllers
         [HttpGet("/settings")]
         public GeneralApiResponseBody GetSettings()
         {
-            var foundSettings = _settingsServices.FindSettingsWithLanguagesByUserToken(getCurrentUser().UserToken);
+            var foundSettings = _settingsServices.FindSettingsWithLanguagesByUserToken(GetCurrentUser().UserToken);
             var responseBody = new SettingsResponse(foundSettings);
             Log.Information("Info_2 from GetSettings() method of SettingsController:" +
                 " New SettingsResponse: {@SettingsResponse} was created from foundSettings {@Settings}", responseBody, foundSettings);
@@ -37,7 +37,7 @@ namespace GiTinder.Controllers
         {
             GeneralApiResponseBody responseBody;
             
-            _settingsServices.UpdateAndSaveSettingsFoundByUserToken(settings, getCurrentUser().UserToken);
+            _settingsServices.UpdateAndSaveSettingsFoundByUserToken(settings, GetCurrentUser().UserToken);
             responseBody = new OKResponseBody("success");
             Response.StatusCode = 200;
             Log.Information("Info_2 from PutSettings() method of SettingsController:" +

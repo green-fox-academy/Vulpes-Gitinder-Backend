@@ -25,7 +25,7 @@ namespace GiTinder.Controllers
         [HttpPut("profiles/{username}/{direction}")]
         public ObjectResult Swipe([FromRoute] string username, string direction)
         {
-            User swipingUser = getCurrentUser();
+            User swipingUser = GetCurrentUser();
             GeneralApiResponseBody swipesResponseBody = null;
             {
                 swipingUser = _userServices.FindUserByUserToken(swipingUser.UserToken);
@@ -44,7 +44,7 @@ namespace GiTinder.Controllers
         public GeneralApiResponseBody Matches()
         {
             //Real Implementation of / matches, uncomment when swipping works:
-            var usertoken = getCurrentUser().UserToken;
+            var usertoken = GetCurrentUser().UserToken;
             return _userServices.GetAllMatches(usertoken);
         }
     }

@@ -311,6 +311,10 @@ namespace GiTinder.Services
                  .Where(u => u.UserToken == usertoken).FirstOrDefault();
             return foundUser;
         }
+        public User FindUserByUsername(string username)
+        {  
+            return _context.Users.Find(username);
+        }
 
         public virtual async Task<bool> LoginRequestIsValid(string username, string gitHubToken)
         {

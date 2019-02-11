@@ -6,8 +6,7 @@ using GiTinder.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using Xunit;
 
 namespace GiTinder.Tests.Controllers
@@ -29,11 +28,11 @@ namespace GiTinder.Tests.Controllers
             SetUpTestingConditions();
             Mock<AvailableResponseBody> availableResponseBody = new Mock<AvailableResponseBody>();
             headerDictionary.Add("X-Gitinder-Token", "this is a mock token");
-            userServices.Setup(s => s.GetAvailableResponseBodyForPage1()).Verifiable();
+            userServices.Setup(s => s.GetAvailableResponseBodyForPage1("michel")).Verifiable();
 
             GeneralApiResponseBody result = usersController.ShowAvailableProfiles();
 
-            userServices.Verify(s => s.GetAvailableResponseBodyForPage1(), Times.Once());
+            userServices.Verify(s => s.GetAvailableResponseBodyForPage1("michel"), Times.Once());
         }
 
         private void SetUpTestingConditions()
@@ -49,6 +48,9 @@ namespace GiTinder.Tests.Controllers
             httpRequest = new Mock<HttpRequest>();
             httpRequest.SetupGet(r => r.Headers).Returns(headerDictionary);
             httpContext.SetupGet(a => a.Request).Returns(httpRequest.Object);
+            var items = new Dictionary<object, object>();
+            items.Add("user", new User("michel"));
+            httpContext.SetupGet(a => a.Items).Returns(items);
             httpContext.SetupGet(a => a.Response).Returns(response.Object);
             usersController.ControllerContext = new ControllerContext()
             {

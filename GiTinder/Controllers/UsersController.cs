@@ -40,6 +40,11 @@ namespace GiTinder.Controllers
         {
             return new ProfileResponse(_userServices.FindUserByUsername(username));
         }
+        [HttpGet("/languages")]
+        public GeneralApiResponseBody GetLanguageOfUser()
+        {
+            //return _userServices.
+        }
     }
 }
 

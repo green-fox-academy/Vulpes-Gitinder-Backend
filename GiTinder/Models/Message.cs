@@ -12,12 +12,16 @@ namespace GiTinder.Models
         [Key]
         [JsonProperty("id")]
         public int Id { get; set; }
+        [Required]
         [JsonProperty("from")]
         public string From { get; set; }
+        [Required]
         [JsonProperty("to")]
         public string To { get; set; }
+        [Required]
         [JsonProperty("created_at")]
         public DateTime CreatedAt { get; set; }
+        [Required]
         [JsonProperty("message")]
         public string Content { get; set; }
     }

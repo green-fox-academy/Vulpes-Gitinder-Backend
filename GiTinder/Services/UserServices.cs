@@ -76,7 +76,7 @@ namespace GiTinder.Services
         {
             var username = FindUserByUserToken(usertoken).Username;
 
-           
+
             List<Match> matches = _context.Matches.Where(m => m.Username1 == username || m.Username2 == username).ToList();
             List<OneMatchResponse> matchesResponse = matches.Select(m =>
             new OneMatchResponse(GetOtherUsername(m, username), GetOtherAvatar(m, username), m.Timestamp)).ToList();
@@ -114,7 +114,7 @@ namespace GiTinder.Services
             newUser.setUserRepos(await GetGithubProfilesReposAsync(newUser.Username));
 
             _context.Users.Add(newUser);
-            _context.SaveChanges();            
+            _context.SaveChanges();
             return true;
         }
         public virtual async Task<bool> UpdateUser(string username, string gitHubToken)
@@ -175,7 +175,7 @@ namespace GiTinder.Services
             if (fiveUrls.Count > 0)
             {
                 rawCodeUrls = "";
-                foreach(string url in fiveUrls)
+                foreach (string url in fiveUrls)
                 {
                     rawCodeUrls += url + ";";
                 }
@@ -203,22 +203,22 @@ namespace GiTinder.Services
 
         private void GetLinksToAllRawFilesInDir(User user, string repoName, string gitHubToken, string dirName = "")
         {
-            HttpResponseMessage repoContentResponse = 
+            HttpResponseMessage repoContentResponse =
                  client.GetAsync(ApiUrl + "repos/" + user.Username + repoName + "/contents" + dirName).Result;
             if (repoContentResponse.IsSuccessStatusCode)
             {
                 List<GitHubDirContents> dirContent = repoContentResponse.Content.ReadAsAsync<List<GitHubDirContents>>().Result;
 
-                foreach(GitHubDirContents content in dirContent)
+                foreach (GitHubDirContents content in dirContent)
                 {
                     if (content.Type == "dir")
                     {
                         GetLinksToAllRawFilesInDir(user, repoName, gitHubToken, dirName + "/" + content.Name);
                     }
                     else if (content.Type == "file" && FileExtensionIsValid(content.Name))
-                    {                            
+                    {
                         user.RawCodeFilesUrls.Add(content.DownloadUrl);
-                    } 
+                    }
                 }
             }
         }
@@ -302,12 +302,12 @@ namespace GiTinder.Services
             var foundUser = _context.Users
                  .Include(e => e.UserLanguages)
                  .ThenInclude(l => l.Language)
-                 .Include(e  => e.UserSettings)
+                 .Include(e => e.UserSettings)
                  .Where(u => u.UserToken == usertoken).FirstOrDefault();
             return foundUser;
         }
         public User FindUserByUsername(string username)
-        {  
+        {
             return _context.Users.Find(username);
         }
 
@@ -365,10 +365,13 @@ namespace GiTinder.Services
         public virtual void CreateAndSaveSwipe(string swipingUsername, string swipedUsername, string direction)
         {
             Swipe swipe = GetSwipe(swipingUsername, swipedUsername);
-            if(swipe == null) {
+            if (swipe == null)
+            {
                 swipe = new Swipe(swipingUsername, swipedUsername, direction);
                 _context.Add(swipe);
-            } else {
+            }
+            else
+            {
                 swipe.Direction = direction;
                 _context.Update(swipe);
             }
@@ -392,15 +395,31 @@ namespace GiTinder.Services
 
         public virtual Match CreateAndSaveMatch(string swipingUsername, string swipedUsername)
         {
-            Match match = new Match(swipingUsername, swipedUsername);
-            _context.Add(match);
-            _context.SaveChanges();
-            return match;
+            if (!MatchExists(swipingUsername, swipedUsername))
+            {
+                Match match = new Match(swipingUsername, swipedUsername);
+                _context.Add(match);
+                _context.SaveChanges();
+                return match;
+            }
+            else
+            {
+                return _context.Matches
+                    .Where(m => (m.Username1 == swipingUsername && m.Username2 == swipedUsername) || (m.Username1 == swipedUsername && m.Username2 == swipingUsername))
+                    .FirstOrDefault();
+            }
+        }
+
+        private bool MatchExists(string username1, string username2)
+        {
+            bool flag = _context.Matches
+                                .Any(m => m.Username1 == username1 && m.Username2 == username2 || m.Username2 == username1 && m.Username1 == username2);
+            return flag;
         }
 
         public virtual SwipesResponseBody GetSwipesResponseBody(string message, Match match)
         {
-            OneMatchResponse oneMatchResponse = new OneMatchResponse(match.Username2,GetOtherAvatar(match,match.Username1),match.Timestamp);
+            OneMatchResponse oneMatchResponse = new OneMatchResponse(match.Username2, GetOtherAvatar(match, match.Username1), match.Timestamp);
             return new SwipesResponseBody(oneMatchResponse);
         }
     }

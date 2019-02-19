@@ -27,7 +27,7 @@ namespace GiTinder.Controllers
         [HttpGet("/available/{page:int?}")]
         public GeneralApiResponseBody ShowAvailableProfiles(int page = 1)
         { 
-            return _userServices.GetAvailableResponseBodyForPage1(GetCurrentUser().Username);
+            return _userServices.GetAvailableResponseBodyForPage1();
         }
 
         [HttpGet("/profile")]

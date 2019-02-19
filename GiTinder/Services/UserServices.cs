@@ -59,7 +59,7 @@ namespace GiTinder.Services
             return rawRepos;
         }
 
-        public virtual string CreateGiTinderToken()
+        public virtual string CreateGiTinderToken() 
         {
             string token;
 
@@ -72,14 +72,19 @@ namespace GiTinder.Services
             return token;
         }
 
-        public ManyMatchesResponse GetAllMatches(string usertoken)
+        public ManyMatchesResponse GetAllMatches(string username)
         {
-            var username = FindUserByUserToken(usertoken).Username;
+            List<Match> matches = 
+                _context.Matches
+                .Where(m => m.Username1 == username || m.Username2 == username)
+                .ToList();
 
-
-            List<Match> matches = _context.Matches.Where(m => m.Username1 == username || m.Username2 == username).ToList();
-            List<OneMatchResponse> matchesResponse = matches.Select(m =>
-            new OneMatchResponse(GetOtherUsername(m, username), GetOtherAvatar(m, username), m.Timestamp)).ToList();
+            List<OneMatchResponse> matchesResponse = 
+                matches.Select(m => new OneMatchResponse(
+                    GetOtherUsername(m, username), 
+                    GetOtherAvatar(m, username), 
+                    m.Timestamp))
+                    .ToList();
 
             return new ManyMatchesResponse(matchesResponse);
         }

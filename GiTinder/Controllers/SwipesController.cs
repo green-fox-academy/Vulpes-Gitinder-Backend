@@ -42,8 +42,7 @@ namespace GiTinder.Controllers
         [HttpGet("/matches")]
         public GeneralApiResponseBody Matches()
         {
-            var usertoken = GetCurrentUser().UserToken;
-            return _userServices.GetAllMatches(usertoken);
+            return _userServices.GetAllMatches(GetCurrentUser().Username);
         }
     }
 }

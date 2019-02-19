@@ -68,6 +68,7 @@ namespace GiTinder.Models
         public User()
         {
         }
+
         public User(GitHubProfile newUser)
         {
             Username = newUser.Login;

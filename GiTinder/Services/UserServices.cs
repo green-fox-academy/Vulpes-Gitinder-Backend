@@ -59,7 +59,7 @@ namespace GiTinder.Services
             return rawRepos;
         }
 
-        public virtual string CreateGiTinderToken() 
+        public virtual string CreateGiTinderToken()
         {
             string token;
 
@@ -74,15 +74,15 @@ namespace GiTinder.Services
 
         public ManyMatchesResponse GetAllMatches(string username)
         {
-            List<Match> matches = 
+            List<Match> matches =
                 _context.Matches
                 .Where(m => m.Username1 == username || m.Username2 == username)
                 .ToList();
 
-            List<OneMatchResponse> matchesResponse = 
+            List<OneMatchResponse> matchesResponse =
                 matches.Select(m => new OneMatchResponse(
-                    GetOtherUsername(m, username), 
-                    GetOtherAvatar(m, username), 
+                    GetOtherUsername(m, username),
+                    GetOtherAvatar(m, username),
                     m.Timestamp))
                     .ToList();
 
@@ -321,10 +321,9 @@ namespace GiTinder.Services
             return username.Equals((await GetGithubProfileAsync(gitHubToken)).Login);
         }
 
-        public List<ProfileResponse> GetListOfProfileResponsesPage1(string username)
+        public List<ProfileResponse> GetListOfProfileResponsesPage1()
         {
             List<ProfileResponse> firstTwenty = _context.Users
-                 .Where(u => u.Username != username)
                  .Take(20)
                  .Include(e => e.UserLanguages)
                  .ThenInclude(l => l.Language)
@@ -347,9 +346,9 @@ namespace GiTinder.Services
             return listOfProfileResponses;
         }
 
-        public virtual AvailableResponseBody GetAvailableResponseBodyForPage1(string username)
+        public virtual AvailableResponseBody GetAvailableResponseBodyForPage1()
         {
-            var listOfProfileResponsesPage1 = GetListOfProfileResponsesPage1(username);
+            var listOfProfileResponsesPage1 = GetListOfProfileResponsesPage1();
 
             int countOfProfilesOnPage1;
             int allUsersCount = GetAllUsersCount();

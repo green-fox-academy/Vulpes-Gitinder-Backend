@@ -23,6 +23,7 @@ namespace GiTinder.Data
         public DbSet<Swipe> Swipe { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<UserLanguages> UserLanguages { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

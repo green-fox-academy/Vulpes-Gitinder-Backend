@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using System;
+using System.IO;
 
 namespace GiTinder
 {
@@ -12,6 +14,14 @@ namespace GiTinder
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                  .UseStartup<Startup>();
+        //          .UseKestrel()
+        //          .UseContentRoot(Directory.GetCurrentDirectory())
+        //          .UseWebRoot("notusingwwwroot");
+
+
+
+        //private static string GetKeyVaultEndpoint() => Environment.GetEnvironmentVariable("TestDb");
+
     }
 }

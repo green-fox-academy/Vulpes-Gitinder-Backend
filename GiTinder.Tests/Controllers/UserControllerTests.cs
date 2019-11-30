@@ -1,11 +1,13 @@
 ﻿using GiTinder.Controllers;
 using GiTinder.Data;
 using GiTinder.Models;
+using GiTinder.Models.Responses;
 using GiTinder.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace GiTinder.Tests.Controllers
@@ -17,63 +19,27 @@ namespace GiTinder.Tests.Controllers
         UsersController usersController;
         HeaderDictionary headerDictionary;
         Mock<HttpResponse> response;
+        Mock<HttpRequest> httpRequest;
         Mock<HttpContext> httpContext;
 
+        public object SimpleRepository { get; private set; }
+
         [Fact]
-        public void UsernameCannotBeNull()
+        public void CheckingAvailableProfilesWithNoTokenReturnsAnErrorResponse()
         {
             SetUpTestingConditions();
-
-            ErrorResponseBody result = 
-                usersController.Login(LoginRequestBodyFactory.CreateLoginRequestBodyWithNullUsername()) as ErrorResponseBody;
+            ErrorResponseBody result = usersController.ShowAvailableProfiles() as ErrorResponseBody;
+            response.VerifySet(r => r.StatusCode = 403);
             Assert.Equal("error", result.Status);
-            Assert.Equal("username is missing!", result.Message);
         }
 
         [Fact]
-        public void UsernameCannotBeEmpty()
+        public void CheckingAvailableProfilesWithTokenReturnsAvailableResponseBody()
         {
             SetUpTestingConditions();
-
-            ErrorResponseBody result = 
-                usersController.Login(LoginRequestBodyFactory.CreateLoginRequestBodyWithEmptyUsername()) as ErrorResponseBody;
-            Assert.Equal("error", result.Status);
-            Assert.Equal("username is missing!", result.Message);
-        }
-
-        [Fact]
-        public void AccessTokenCannotBeNullOrEmpty()
-        {
-            SetUpTestingConditions();
-
-            ErrorResponseBody resultWithNullAccessToken = 
-                usersController.Login(LoginRequestBodyFactory.CreateLoginRequestBodyWithNullAccessToken()) as ErrorResponseBody;
-            Assert.Equal("error", resultWithNullAccessToken.Status);
-            Assert.Equal("access_token is missing!", resultWithNullAccessToken.Message);
-
-            ErrorResponseBody resultWithEmptyAccessToken =
-                usersController.Login(LoginRequestBodyFactory.CreateLoginRequestBodyWithEmptyAccessToken()) as ErrorResponseBody;
-            Assert.Equal("error", resultWithEmptyAccessToken.Status);
-            Assert.Equal("access_token is missing!", resultWithEmptyAccessToken.Message);
-        }
-
-        [Fact]
-        public void LoginWithValidRequestBodyReturnsTokenResponseBody()
-        {
-            mockRepo = new Mock<GiTinderContext>();
-            var mockService = new Mock<UserServices>(mockRepo.Object);
-            mockService.Setup(u => u.UserExists("Tomek Stasy")).Returns(true);
-            mockService.Setup(u => u.CreateGiTinderToken()).Returns(Guid.NewGuid().ToString());
-            usersController = new UsersController(mockRepo.Object, mockService.Object);
-
-
-            TokenResponseBody result = usersController.Login(new LoginRequestBody()
-            {
-                Username = "Tomek Stasy",
-                AccessToken = "mock token"
-            }) as TokenResponseBody;
-
-            Assert.IsType<TokenResponseBody>(result);
+            headerDictionary.Add("X-Gitinder-Token", "this is a mock token");
+            GeneralApiResponseBody result = usersController.ShowAvailableProfiles();
+            Assert.IsType<AvailableResponseBody>(result);
         }
 
         private void SetUpTestingConditions()
@@ -83,8 +49,10 @@ namespace GiTinder.Tests.Controllers
             usersController = new UsersController(mockRepo.Object, userServices);
             headerDictionary = new HeaderDictionary();
             response = new Mock<HttpResponse>();
-            response.SetupGet(r => r.Headers).Returns(headerDictionary);
             httpContext = new Mock<HttpContext>();
+            httpRequest = new Mock<HttpRequest>();
+            httpRequest.SetupGet(r => r.Headers).Returns(headerDictionary);
+            httpContext.SetupGet(a => a.Request).Returns(httpRequest.Object);
             httpContext.SetupGet(a => a.Response).Returns(response.Object);
             usersController.ControllerContext = new ControllerContext()
             {

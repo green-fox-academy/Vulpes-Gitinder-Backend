@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using GiTinder.Data;
@@ -16,12 +17,13 @@ namespace GiTinder
     public class Startup
     {
         private IConfiguration _configuration;
+        private string connectionString;    
 
         public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
         }
-
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -29,6 +31,7 @@ namespace GiTinder
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddTransient<UserServices>();
             services.AddTransient<SettingsServices>();
+
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -36,14 +39,20 @@ namespace GiTinder
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+               
             }
             else
             {
                 app.UseHsts();
-            }
-
+            }        
+            
             app.UseHttpsRedirection();
             app.UseMvc();
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetService<GiTinderContext>();
+                context.Database.Migrate();
+            }
         }
     }
 }

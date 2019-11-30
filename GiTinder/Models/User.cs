@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
-
+using GiTinder.Models.GitHubResponses;
 
 namespace GiTinder.Models
-{ 
+{
     public class User
     {
         [Key]
@@ -39,7 +39,7 @@ namespace GiTinder.Models
             this.Username = Username;
             this.UserToken = UserToken;
             this.ReposCount = ReposCount;
-            Settings defaultSettings = new Settings(Username, true, true, 10);
+            Settings defaultSettings = new Settings(Username);
         }
     }
 }
